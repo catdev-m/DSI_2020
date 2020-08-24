@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Registro de Usuarios</ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de usuarios</h1>
+                            <h:form id="CrearUsuario">
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel for="input" value="Nombre"/>                               
+                                <p:inputText value="#{loginSecurity.formUserName}" id="input"/>
+                                  
+
+                                <p:outputLabel for="area" value="Carnet"/>
+                                <p:inputText id="area" value="#{loginSecurity.formUser}"/>
+
+                                <p:outputLabel for="correo" value="Correo"/>
+                                <p:inputText id="correo" value="#{loginSecurity.formEmail}"/>
+
+                                <p:outputLabel for="ac" value="Rol"/>
+                                <p:selectOneMenu id="ac" value="#{loginSecurity.formEstado}" style="margin-bottom:10px;">
+                                    <f:selectItem itemLabel="Seleccione un rol" itemValue="" />
+                                    <f:selectItem itemLabel="Rol Administrador" itemValue="ROLE_ADMIN	" />
+                                    <f:selectItem itemLabel="Rol Instructor" itemValue="ROLE_TEACHER" />
+                                    <f:selectItem itemLabel="Rol Estudiante" itemValue="ROLE_STUDENT" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="pwd"  value="Password"/>
+                                <p:password id="pwd" value="#{loginSecurity.formPassword}" />
+                            </p:panelGrid>
+                                <p:commandButton id="dialog2" update="growl" ajax="false" action="#{loginSecurity.crearUsuario()}" value="Guardar" icon="ui-icon-open-in-new" style="max-width:150px;"/>
+                       </h:form>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

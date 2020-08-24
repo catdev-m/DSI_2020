@@ -1,0 +1,40 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <pu:menu widgetVar="me">
+                        <p:submenu rendered="true" id="Mnto_1" label="Gestión de usuarios" icon="ui-icon ui-icon-people">
+                            <p:menuitem id="Mnto_1_1" value="Manto de usuarios" icon="ui-icon ui-icon-account-circle" outcome="/GestionAdmin/AdminUsers" />
+                            <p:menuitem id="Mnto_1_2" value="Manto de roles" icon="ui-icon ui-icon-computer" outcome="/forms" />
+                            <p:menuitem id="Mnto_1_3" value="Manto de carreras" icon="ui-icon ui-icon-school" outcome="/data" />
+                        </p:submenu>
+                        <p:submenu rendered="true" id="um_default" label="Gestión administrativa" icon="ui-icon ui-icon-content-paste">
+                            <p:menuitem id="um_db_landing" value="Manto. Instructores" icon="ui-icon ui-icon-collections-bookmark" outcome="/landing"/>
+                            <p:menuitem id="um_empty" value="Manto. Avisos" icon="ui-icon ui-icon-local-library" outcome="/empty" />                            
+                        </p:submenu>
+                        <p:submenu rendered="true" id="um_hierarchy" label="Reportes" icon="ui-icon ui-icon-library-books">
+                                    <p:menuitem id="um_lnk111" value="Inscritos por carrera" icon="ui-icon ui-icon-assessment" url="#" />
+                                    <p:menuitem id="um_lnk112" value="Inscritos por institución" icon="ui-icon ui-icon-poll" url="#" />
+                                    <p:menuitem id="um_lnk113" value="Fializaron por carrera" icon="ui-icon ui-icon-poll" url="#" />
+                        </p:submenu>
+                        <p:submenu rendered="TRUE" id="mod_estudiante" label="Gestión Archivos" icon="ui-icon ui-icon-folder-shared">
+                                    <p:menuitem id="mod_estudiante_1" value="Carga de archivos" icon="ui-icon ui-icon-attach-file" url="#" />
+                                    <p:menuitem id="mod_estudiante_2" value="Resgitro horas sociales" icon="ui-icon ui-icon-assessment" url="#" />
+                                    <p:menuitem id="mod_estudiante_3" value="Resumen de horas" icon="&#xE8D2;" url="#" />
+                        </p:submenu>
+                        
+                        <p:menuitem id="um_logout" value="Cerrar Sesión" actionListener="#{loginSecurity.logOut()}" icon="ui-icon ui-icon-power-settings-new" ajax="false"/>
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>
