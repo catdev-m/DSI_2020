@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Registro de Instructores</ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de Instructores</h1>
+                            <h:form id="CrearUsuario">
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel for="input" value="Primer nombre"/>                               
+                                <p:inputText value="#{loginSecurity.formUserName}" id="input"/>
+                                
+                                <p:outputLabel for="input" value="Segundo nombre"/>                               
+                                <p:inputText value="#{loginSecurity.formUserName}" id="input2"/>
+                                
+                                <p:outputLabel for="input" value="Apellido"/>                               
+                                <p:inputText value="#{loginSecurity.formUserName}" id="input3"/>
+                                
+                                <p:outputLabel for="input" value="Segundo Apellido"/>                               
+                                <p:inputText value="#{loginSecurity.formUserName}" id="input4"/>
+
+                                <p:outputLabel for="area" value="Carnet"/>
+                                <p:inputText id="area" value="#{loginSecurity.formUser}"/>
+
+                                <p:outputLabel for="correo" value="Correo"/>
+                                <p:inputText id="correo" value="#{loginSecurity.formEmail}"/>
+
+                                <p:outputLabel for="ac" value="Rol"/>
+                                <p:selectOneMenu id="ac" value="#{loginSecurity.formEstado}" style="margin-bottom:10px;">
+                                    <f:selectItem itemLabel="Seleccione un rol" itemValue="" />
+                                    <f:selectItem itemLabel="Rol Administrador" itemValue="ROLE_ADMIN	" />
+                                    <f:selectItem itemLabel="Rol Instructor" itemValue="ROLE_TEACHER" />
+                                    <f:selectItem itemLabel="Rol Estudiante" itemValue="ROLE_STUDENT" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="pwd"  value="Password"/>
+                                <p:password id="pwd" value="#{loginSecurity.formPassword}" />
+                            </p:panelGrid>
+                                <p:commandButton id="dialog2" update="growl" ajax="false" action="#{loginSecurity.crearUsuario()}" value="Guardar" icon="ui-icon-open-in-new" style="max-width:150px;"/>
+                       </h:form>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                    <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Instructores registrados</h1>
+                        <p:dataTable var="insList" value="#{instructorController.instructoresList}" selectionMode="single" reflow="true"
+                                     selection="#{instructorController.instructorSelecter}" rowKey="#{insList.id}" paginator="true" rows="10">
+                            <f:facet name="header">
+                                Single with Row Click
+                            </f:facet>
+                            <p:column headerText="Usuario">
+                                <h:outputText value="#{insList.firstName} #{insList.secondName}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+            
+        </h:form>
+    </ui:define>
+
+</ui:composition>
