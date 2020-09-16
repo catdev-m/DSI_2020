@@ -8,6 +8,7 @@ package org.registrohorasociales.controller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -22,6 +23,7 @@ import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.config.AuthenticationProviderHs;
 import org.registrohorasociales.dto.MenuPrincipalDto;
 import org.registrohorasociales.entity.Usuario;
+import org.registrohorasociales.repository.UsuarioAdminRepository;
 import org.registrohorasociales.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,8 +34,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *
  * @author denisse_mejia
  */
-@ManagedBean
 @SessionScoped
+@ManagedBean
 public class loginSecurity implements Serializable{
 
     private String usuario;
@@ -50,8 +52,6 @@ public class loginSecurity implements Serializable{
     private MenuModel model;
     
     
-
-   
     public loginSecurity() {
     }
     
@@ -64,7 +64,7 @@ public class loginSecurity implements Serializable{
             RequestDispatcher dispatcher = request.getRequestDispatcher("/j_spring_security_check");
             dispatcher.forward(request, response);
             
-            
+           
         System.out.println(getUsuario());
         System.out.println(getPassword());
 
@@ -73,6 +73,11 @@ public class loginSecurity implements Serializable{
         }
         return null;
         
+    }
+    
+    @PostConstruct
+    public void init(){
+        System.out.print("Mensaje de inicio");
     }
     
     public void logOut() {

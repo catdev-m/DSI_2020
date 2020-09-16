@@ -75,7 +75,6 @@
         
     <bean id="messageSource"      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
          <property name="basename" value="org.registrohorasociales.i18n.messages" />
- 
     </bean>
 	
  	
