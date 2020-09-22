@@ -45,21 +45,27 @@
                             </p:column>
                             <p:column headerText="Acciones">
                                 <p:column>
-                                    <p:growl id="growl" showDetail="true" />
+                                    <p:growl id="accept" />
 
-                                    <p:commandButton update="growl" icon="ui-icon-check">
-                                        <p:confirm header="Confirmación" message="¿Está seguro de aprobar solicitud de #{solic.due}?"/> 
+                                    <p:commandButton icon="ui-icon-check" action="/GestionAdmin/AdminSolicitud?faces-redirect=true" actionListener="#{mailController.accept(solic.due, solic.nombre)}" update="accept">
+                                        <p:confirm header="Confirmation" message="¿Está seguro de aprobar a #{solic.due}?" icon="ui-icon-alert"/>
                                     </p:commandButton>
-                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="v" styleClass="ui-confirmdialog-yes" actionListener="#{mailController.accept(solic.due, solic.nombre)}"/>
-                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="No" styleClass="ui-confirmdialog-no"/>
+
+                                    <p:confirmDialog global="true">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
                                     </p:confirmDialog>
-                                    <p:commandButton update="growl" icon="ui-icon-close ">
-                                        <p:confirm header="Confirmación" message="¿Está seguro de aprobar solicitud de #{solic.due}?"/> 
+
+
+                                    <p:growl id="deny" />
+
+                                    <p:commandButton icon="ui-icon-close" action="/GestionAdmin/AdminSolicitud?faces-redirect=true" actionListener="#{mailController.deny(solic.due, solic.nombre)}" update="deny">
+                                        <p:confirm header="Confirmation" message="¿Está seguro de rechazar a #{solic.due}?" icon="ui-icon-alert"/>
                                     </p:commandButton>
-                                    <p:confirmDialog>
-                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="Sí" styleClass="ui-confirmdialog-yes" actionListener="#{mailController.deny(solic.due, solic.nombre)}"/>
-                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="No" styleClass="ui-confirmdialog-yes" />
+
+                                    <p:confirmDialog global="true">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
                                     </p:confirmDialog>
                                 </p:column>
                                 <p:column>
