@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+    </ui:define>
+
+    <ui:define name="title">Solicitudes recibidas</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formAdminSolicitud">]
+
+            <div class="ui-g">
+                <div class="ui-g-12">
+
+                    <div class="card card-w-title">
+
+                        <p:dataTable var="solic" value="#{solicitudController.solicitudes}" selectionMode="single" reflow="true"
+                                     selection="#{solicitudController.solicitudSelector}" rowKey="#{solic.due}" paginator="true" rows="10">
+                            <f:facet name="header">
+                                <h3>Lista de solicitudes</h3>
+                            </f:facet>
+                            <p:column headerText="DUE" sortBy="#{solic.due}">
+                                <h:outputText value="#{solic.due}" />
+                            </p:column>
+
+                            <p:column headerText="Nombres" sortBy="#{solic.nombre}">
+                                <h:outputText value="#{solic.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Apellidos" sortBy="#{solic.apellido}">
+                                <h:outputText value="#{solic.apellido}" />
+                            </p:column>
+
+                            <p:column headerText="Carrera" >
+                                <h:outputText value="#{carreraController.findCarreraById(solic.idcarrera)}" />
+                            </p:column>
+
+                            <p:column headerText="Ciclo" sortBy="#{solic.ciclo}">
+                                <h:outputText value="#{solic.ciclo}" />
+                            </p:column>
+                            <p:column headerText="Acciones">
+                                <p:column>
+                                    <p:growl id="growl" showDetail="true" />
+
+                                    <p:commandButton update="growl" icon="ui-icon-check">
+                                        <p:confirm header="Confirmación" message="¿Está seguro de aprobar solicitud de #{solic.due}?"/> 
+                                    </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="v" styleClass="ui-confirmdialog-yes" actionListener="#{mailController.accept(solic.due, solic.nombre)}"/>
+                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="No" styleClass="ui-confirmdialog-no"/>
+                                    </p:confirmDialog>
+                                    <p:commandButton update="growl" icon="ui-icon-close ">
+                                        <p:confirm header="Confirmación" message="¿Está seguro de aprobar solicitud de #{solic.due}?"/> 
+                                    </p:commandButton>
+                                    <p:confirmDialog>
+                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="Sí" styleClass="ui-confirmdialog-yes" actionListener="#{mailController.deny(solic.due, solic.nombre)}"/>
+                                        <p:commandButton action="/GestionAdmin/AdminSolicitud?faces-redirect=true" value="No" styleClass="ui-confirmdialog-yes" />
+                                    </p:confirmDialog>
+                                </p:column>
+                                <p:column>
+
+
+                                </p:column>
+
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

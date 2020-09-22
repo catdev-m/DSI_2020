@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      template="/WEB-INF/template.xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Registro de solicitud</title>
+
+    </h:head>
+    <h:body styleClass="wizard-body">
+        <h:form>
+        <div class="wizard-wrapper">
+            <div class="wizard-topbar">
+                <div class="logo"></div>
+                <div class="profile">
+                    <div class="profile-text">
+                        <h1>Bienvenido a solicitud de inicio de horas sociales</h1>
+                        <p>Por favor ingrese los campos que se le solicitan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="wizard-content">
+                <div class="wizard-card">
+                    <div class="wizard-card-content active-content register">
+                        <div class="ui-g ">
+                            <div class="ui-g-12  ui-lg-6">
+                                <div class="forms">
+                                    <div class="ui-inputgroup">
+                                        <span class="ui-inputgroup-addon">
+                                            <i class="material-icons">picture-in-picture</i>
+                                        </span>
+                                        <h:panelGroup styleClass="md-inputfield"    >
+                                            <p:inputText value="#{solicitudController.formDue}" />
+                                            <label>DUE</label>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-inputgroup">
+                                        <span class="ui-inputgroup-addon">
+                                            <i class="material-icons">input</i>
+                                        </span>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText value="#{solicitudController.formNombre}" />
+                                            <label>Nombres</label>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-inputgroup">
+                                        <span class="ui-inputgroup-addon">
+                                            <i class="material-icons">input</i>
+                                        </span>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText value="#{solicitudController.formApellido}" />
+                                            <label>Apellidos</label>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-lg-6">
+                                <div class="forms">
+                                    <p:selectOneMenu style="margin-bottom:10px;" value="#{solicitudController.formCarrera}" required="true">
+                                        <f:selectItem itemLabel="Seleccione su carrera" itemValue="#{null}"/>
+                                        <f:selectItems value="#{carreraController.listaCarreras}" itemValue="#{carreraController.listaCarreras.getIdcarrera()}" />
+                                    </p:selectOneMenu>
+                                    <div class="forms">
+                                        <p:selectOneMenu style="margin-bottom:10px;" value="#{solicitudController.formCiclo}">
+                                            <f:selectItem itemLabel="7" itemValue="#{7}" />
+                                            <f:selectItem itemLabel="8" itemValue="#{8}" />
+                                            <f:selectItem itemLabel="9" itemValue="#{8}" />
+                                            <f:selectItem itemLabel="10" itemValue="#{10}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton action="index.xhtml?faces-redirect=true " ajax="false" actionListener="#{solicitudController.crearSolicitud()}" value="Solicitar iniciar HHSS"/>
+                                <p:button value="Atrás" outcome="/index"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </h:form>
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/grid.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+    </h:body>
+
+</html>
