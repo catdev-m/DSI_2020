@@ -8,12 +8,19 @@ package org.registrohorasociales.controller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +58,11 @@ public class loginSecurity implements Serializable{
     private List<MenuPrincipalDto> menuHtml;
     private MenuModel model;
     
-    
+    //Variables para envío de correo
+    private String to = "denisse.hunt28@gmail.com";//change accordingly  
+    private String from = "denisse.mejia28@gmail.com";//change accordingly  
+    private String host = "localhost";//or IP address  
+      
     public loginSecurity() {
     }
     
@@ -111,22 +122,44 @@ public class loginSecurity implements Serializable{
         usr.setEmail(formEmail);
         usr.setStatus("A");
         usr.setClave(vpass.encode(formPassword));
-        
+         
         usuarioRepository.save(usr);
         formUserName = null;
         formEmail = null;
         formUser = null;
         formPassword= null;
-        setFormEstado("");
+        //setFormEstado("");
         
+        enviarCorreo();
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado con éxito", ""));
                 } catch (Exception e) {
          FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al crear el usuario", ""));
-        }
+        }  
         return null;
     }
+    
+    public void enviarCorreo(){
+    //Envío de correo
+        //Get the session object  
+        Properties properties = System.getProperties();  
+        properties.setProperty("mail.smtp.host", host);  
+        Session session = Session.getDefaultInstance(properties);  
+        
+       try {  
+        MimeMessage message = new MimeMessage(session);  
+         message.setFrom(new InternetAddress(from));  
+         message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
+         message.setSubject("Ping");  
+         message.setText("Hello, this is example of sending email  ");  
+        
+         // Send message  
+         Transport.send(message);  
+         System.out.println("message sent successfully....");  
+       }catch (MessagingException mex) {mex.printStackTrace();
+       }  
+   }  
  
     public String getUsuario() {
         return usuario;
