@@ -40,8 +40,8 @@ public class MailController implements Serializable{
         p.setProperty("mail.smtp.auth", "true");
 
         Session s = Session.getDefaultInstance(p);
-        String from = "miguedark92@gmail.com";
-        String pass = "mepc1992";
+        String from = "proyeccionsocial.ues.sv@gmail.com";
+        String pass = "piaqzdvfdwtezrml";
         String clave = generatePass();
         String to = due + "@ues.edu.sv";
         String asunto = "Solicitud aprobada";
