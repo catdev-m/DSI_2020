@@ -29,7 +29,10 @@ import org.primefaces.model.menu.MenuModel;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.config.AuthenticationProviderHs;
 import org.registrohorasociales.dto.MenuPrincipalDto;
+import org.registrohorasociales.entity.RolUsuario;
+import org.registrohorasociales.entity.RolUsuarioPK;
 import org.registrohorasociales.entity.Usuario;
+import org.registrohorasociales.repository.IRolUsuarioRepository;
 import org.registrohorasociales.repository.UsuarioAdminRepository;
 import org.registrohorasociales.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +58,11 @@ public class loginSecurity implements Serializable{
     private String formEstado;
     
     private UsuarioRepository usuarioRepository;
+    private IRolUsuarioRepository rolUsuarioRepository;
+    
     private List<MenuPrincipalDto> menuHtml;
     private MenuModel model;
-    
-    //Variables para envío de correo
-    private String to = "denisse.hunt28@gmail.com";//change accordingly  
-    private String from = "denisse.mejia28@gmail.com";//change accordingly  
-    private String host = "localhost";//or IP address  
+      
       
     public loginSecurity() {
     }
@@ -108,10 +109,9 @@ public class loginSecurity implements Serializable{
     public String crearUsuario(){
         try {
         usuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(UsuarioRepository.class);
-            
         BCryptPasswordEncoder vpass = new BCryptPasswordEncoder(12);  
-        
         Usuario usr = new Usuario();
+        
         if (formUserName.equals("") || formUser.equals("") || formEmail.equals("") || formPassword.equals("") ){
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Deben ingresarse todos los datos", ""));
@@ -121,45 +121,45 @@ public class loginSecurity implements Serializable{
         usr.setUsr(formUser);
         usr.setEmail(formEmail);
         usr.setStatus("A");
-        usr.setClave(vpass.encode(formPassword));
-         
+        usr.setClave(vpass.encode(formPassword)); 
         usuarioRepository.save(usr);
+        
+        /*Guardando en la tabla rol_usuario*/
+        rolUsuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(IRolUsuarioRepository.class);    
+        RolUsuario rolusr = new RolUsuario();
+        RolUsuarioPK pkRoleUsuario = new RolUsuarioPK();
+        pkRoleUsuario.setIdRol(2);
+        pkRoleUsuario.setUsr(formUser);
+        rolusr.setRolUsuarioPK(pkRoleUsuario);
+        rolUsuarioRepository.save(rolusr);
+        
+        /*Borrando campos del formulario*/
         formUserName = null;
         formEmail = null;
         formUser = null;
         formPassword= null;
-        //setFormEstado("");
+        setFormEstado("");
         
-        enviarCorreo();
+
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado con éxito", ""));
                 } catch (Exception e) {
          FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al crear el usuario", ""));
+        e.printStackTrace();
         }  
         return null;
     }
+
+    public IRolUsuarioRepository getRolUsuarioRepository() {
+        return rolUsuarioRepository;
+    }
+
+    public void setRolUsuarioRepository(IRolUsuarioRepository rolUsuarioRepository) {
+        this.rolUsuarioRepository = rolUsuarioRepository;
+    }
     
-    public void enviarCorreo(){
-    //Envío de correo
-        //Get the session object  
-        Properties properties = System.getProperties();  
-        properties.setProperty("mail.smtp.host", host);  
-        Session session = Session.getDefaultInstance(properties);  
-        
-       try {  
-        MimeMessage message = new MimeMessage(session);  
-         message.setFrom(new InternetAddress(from));  
-         message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
-         message.setSubject("Ping");  
-         message.setText("Hello, this is example of sending email  ");  
-        
-         // Send message  
-         Transport.send(message);  
-         System.out.println("message sent successfully....");  
-       }catch (MessagingException mex) {mex.printStackTrace();
-       }  
-   }  
+
  
     public String getUsuario() {
         return usuario;

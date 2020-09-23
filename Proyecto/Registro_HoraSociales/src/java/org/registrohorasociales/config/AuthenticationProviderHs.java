@@ -72,14 +72,17 @@ public class AuthenticationProviderHs implements AuthenticationProvider{
                 System.out.println("MENU PRINCIPAL "+menuPpal);
                 
                 for(Object[] obt: menuPpalDb){
-                  /*  MenuPrincipalDto mp = new MenuPrincipalDto();
-                    mp.setIdMenu(obt[0].toString());
-                    mp.setMenuName(obt[1].toString());
-                    mp.setIcono(obt[2].toString());
-                    menuPpal.add(mp);*/
+                    
                   DefaultSubMenu firstSubmenu = new DefaultSubMenu();
                   firstSubmenu.setLabel(obt[1].toString());
                   firstSubmenu.setIcon(obt[2].toString());
+                  List<Object[]> subMenu = menuRepository.subMenuopc(usr.getUsr(), role.toString(), obt[0].toString());
+       
+                  for(Object[] obtsubm: subMenu){
+                      DefaultMenuItem item = DefaultMenuItem.builder().value(obtsubm[1].toString()).outcome(obtsubm[4].toString()).icon(obtsubm[3].toString()).build();
+                      firstSubmenu.getElements().add(item);
+                        //System.out.println(obt[1].toString() +"-"+ obtsubm[1].toString());
+                  }
                   modelRender.getElements().add(firstSubmenu);
                 }
                 DefaultMenuItem item = new DefaultMenuItem();

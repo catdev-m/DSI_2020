@@ -6,21 +6,16 @@
 package org.registrohorasociales.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -48,13 +43,6 @@ public class Rol implements Serializable {
     @Size(max = 1)
     @Column(name = "status")
     private String status;
-    @ManyToMany(mappedBy = "rolCollection")
-    private Collection<Opcion> opcionCollection;
-    @JoinTable(name = "rol_usuario", joinColumns = {
-        @JoinColumn(name = "id_rol", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "usr", referencedColumnName = "usr")})
-    @ManyToMany
-    private Collection<Usuario> usuarioCollection;
 
     public Rol() {
     }
@@ -85,24 +73,6 @@ public class Rol implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @XmlTransient
-    public Collection<Opcion> getOpcionCollection() {
-        return opcionCollection;
-    }
-
-    public void setOpcionCollection(Collection<Opcion> opcionCollection) {
-        this.opcionCollection = opcionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
     }
 
     @Override
