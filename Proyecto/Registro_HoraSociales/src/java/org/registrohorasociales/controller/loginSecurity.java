@@ -31,11 +31,7 @@ import org.registrohorasociales.dto.MenuPrincipalDto;
 import org.registrohorasociales.entity.RolUsuario;
 import org.registrohorasociales.entity.RolUsuarioPK;
 import org.registrohorasociales.entity.Usuario;
-<<<<<<< HEAD
 import org.registrohorasociales.repository.IRolUsuarioRepository;
-import org.registrohorasociales.repository.UsuarioAdminRepository;
-=======
->>>>>>> 20211df344265fdad99ed5c0fd80be0bece6ff91
 import org.registrohorasociales.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
