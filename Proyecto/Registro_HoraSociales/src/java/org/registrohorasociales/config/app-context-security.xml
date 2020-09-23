@@ -23,7 +23,7 @@
 	
     <security:http auto-config="true" >
         <security:intercept-url pattern="/faces/view/**" access="hasRole('ROLE_AUTHENTICATION')" />
-        <security:intercept-url pattern="/faces/catalogos/**" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/faces/GestionAdmin/**" access="hasRole('ROLE_ADMIN')" />
         <security:form-login login-page="/faces/login.xhtml" 
                                      default-target-url="/faces/default_page/dashboard.xhtml"
                                      login-processing-url="/j_spring_security_check"

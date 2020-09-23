@@ -27,12 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.primefaces.model.menu.MenuModel;
 import org.registrohorasociales.config.ApplicationContextProvider;
-import org.registrohorasociales.config.AuthenticationProviderHs;
 import org.registrohorasociales.dto.MenuPrincipalDto;
 import org.registrohorasociales.entity.Usuario;
-import org.registrohorasociales.repository.UsuarioAdminRepository;
 import org.registrohorasociales.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 

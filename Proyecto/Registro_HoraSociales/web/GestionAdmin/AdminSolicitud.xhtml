@@ -47,7 +47,7 @@
                                 <p:column>
                                     <p:growl id="accept" />
 
-                                    <p:commandButton icon="ui-icon-check" action="/GestionAdmin/AdminSolicitud?faces-redirect=true" actionListener="#{mailController.accept(solic.due, solic.nombre)}" update="accept">
+                                    <p:commandButton icon="ui-icon-check" action="/GestionAdmin/AdminSolicitud?faces-redirect=true" actionListener="#{mailController.accept(solic.due, solic.nombre, solic.apellido, solic.ciclo, solic.idcarrera)}" update="accept">
                                         <p:confirm header="Confirmation" message="¿Está seguro de aprobar a #{solic.due}?" icon="ui-icon-alert"/>
                                     </p:commandButton>
 

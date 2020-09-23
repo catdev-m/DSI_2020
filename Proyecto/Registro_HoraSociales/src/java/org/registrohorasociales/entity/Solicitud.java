@@ -27,9 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Solicitud.findAll", query = "SELECT s FROM Solicitud s")
     , @NamedQuery(name = "Solicitud.findByDue", query = "SELECT s FROM Solicitud s WHERE s.due = :due")
-    , @NamedQuery(name = "Solicitud.findByIdcarrera", query = "SELECT s FROM Solicitud s WHERE s.idcarrera = :idcarrera")
     , @NamedQuery(name = "Solicitud.findByNombre", query = "SELECT s FROM Solicitud s WHERE s.nombre = :nombre")
     , @NamedQuery(name = "Solicitud.findByApellido", query = "SELECT s FROM Solicitud s WHERE s.apellido = :apellido")
+    , @NamedQuery(name = "Solicitud.findByIdcarrera", query = "SELECT s FROM Solicitud s WHERE s.idcarrera = :idcarrera")
     , @NamedQuery(name = "Solicitud.findByCiclo", query = "SELECT s FROM Solicitud s WHERE s.ciclo = :ciclo")})
 public class Solicitud implements Serializable {
 
@@ -38,25 +38,25 @@ public class Solicitud implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 7)
-    @Column(name = "DUE")
+    @Column(name = "due")
     private String due;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IDCARRERA")
-    private int idcarrera;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 25)
-    @Column(name = "NOMBRE")
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
-    @Column(name = "APELLIDO")
+    @Column(name = "apellido")
     private String apellido;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CICLO")
+    @Column(name = "idcarrera")
+    private int idcarrera;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ciclo")
     private short ciclo;
 
     public Solicitud() {
@@ -66,11 +66,11 @@ public class Solicitud implements Serializable {
         this.due = due;
     }
 
-    public Solicitud(String due, int idcarrera, String nombre, String apellido, short ciclo) {
+    public Solicitud(String due, String nombre, String apellido, int idcarrera, short ciclo) {
         this.due = due;
-        this.idcarrera = idcarrera;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.idcarrera = idcarrera;
         this.ciclo = ciclo;
     }
 
@@ -80,14 +80,6 @@ public class Solicitud implements Serializable {
 
     public void setDue(String due) {
         this.due = due;
-    }
-
-    public int getIdcarrera() {
-        return idcarrera;
-    }
-
-    public void setIdcarrera(int idcarrera) {
-        this.idcarrera = idcarrera;
     }
 
     public String getNombre() {
@@ -104,6 +96,14 @@ public class Solicitud implements Serializable {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public int getIdcarrera() {
+        return idcarrera;
+    }
+
+    public void setIdcarrera(int idcarrera) {
+        this.idcarrera = idcarrera;
     }
 
     public short getCiclo() {

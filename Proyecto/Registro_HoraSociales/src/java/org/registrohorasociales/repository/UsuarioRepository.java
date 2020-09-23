@@ -5,9 +5,7 @@
  */
 package org.registrohorasociales.repository;
 
-import java.io.Serializable;
 import java.util.List;
-import org.registrohorasociales.entity.Rol;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.registrohorasociales.entity.Usuario;
@@ -27,4 +25,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String>{
     
     @Query(nativeQuery = true, value = "SELECT B.* FROM rol_usuario A, rol B WHERE A.id_rol = B.id AND usr = ?")
     public List<Object[]> rol(String usuario);
+    
 }
