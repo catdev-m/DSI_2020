@@ -25,8 +25,11 @@ import javax.mail.internet.MimeMessage;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
 import org.registrohorasociales.entity.Rol;
+import org.registrohorasociales.entity.RolUsuario;
+import org.registrohorasociales.entity.RolUsuarioPK;
 import org.registrohorasociales.entity.Usuario;
 import org.registrohorasociales.repository.EstudianteRepository;
+import org.registrohorasociales.repository.IRolUsuarioRepository;
 import org.registrohorasociales.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -139,6 +142,7 @@ public class MailController implements Serializable {
         UsuarioRepository ru = ApplicationContextProvider.getApplicationContext().getBean(UsuarioRepository.class);
         EstudianteRepository er = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
         String pass = vpass.encode(password);
+        IRolUsuarioRepository rolUsuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(IRolUsuarioRepository.class);
         
         Estudiante e = new Estudiante();
         e.setNombres(name);
@@ -154,6 +158,14 @@ public class MailController implements Serializable {
         usr.setUsr(carnet);
         usr.setClave(pass);
         ru.save(usr);        
+        
+        rolUsuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(IRolUsuarioRepository.class);    
+        RolUsuario rolusr = new RolUsuario();
+        RolUsuarioPK pkRoleUsuario = new RolUsuarioPK();
+        pkRoleUsuario.setIdRol(2);
+        pkRoleUsuario.setUsr(carnet);
+        rolusr.setRolUsuarioPK(pkRoleUsuario);
+        rolUsuarioRepository.save(rolusr);
         
         deleteSolicitud(carnet);
     }
