@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+ 
+    </ui:define>
+
+    <ui:define name="title">Listado de carreras</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formTableEstudiante">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <p:dataTable var="est" value="#{estudianteController.estudiantes}" selectionMode="single" reflow="true"
+                                     selection="#{estudianteController.estudianteSelector}" rowKey="#{est.due}" paginator="true" rows="10">
+
+                            <f:facet name="header">
+                                <h3>Estudiantes en proceso de Servicio Social</h3>
+                            </f:facet>
+                            <p:column headerText="DUE" sortBy="#{est.due}">
+                                <h:outputText value="#{est.due}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre" sortBy="#{est.nombres}">
+                                <h:outputText value="#{est.nombres}" />
+                            </p:column>
+                            <p:column headerText="Acciones" >
+                                <p:column>
+                                    <p:growl id="messageEdit" showDetail="true" />
+
+                                    <p:commandButton action="/GestionAdmin/AdminCarreras?faces-redirect=true" update="messageEdit" icon="ui-icon-edit">
+                                        <p:confirm header="Confirmación" message="Are you sure?" icon="pi pi-exclamation-triangle" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                    </p:confirmDialog> 
+                                </p:column>
+                                <p:column>
+                                    <p:growl id="messageDelete" showDetail="true" />
+
+                                    <p:commandButton update="messageDelete" icon="ui-icon-trash">
+                                        <p:confirm header="Confirmación" message="¿Está seguro de eliminar carrera #{est.due}?" icon="pi pi-exclamation-triangle" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton action="/GestionAdmin/AdminCarreras?faces-redirect=true" value="Sí" styleClass="ui-confirmdialog-no" />
+                                        <p:commandButton action="/GestionAdmin/AdminCarreras?faces-redirect=true" value="No" styleClass="ui-confirmdialog-no"/>
+                                    </p:confirmDialog> 
+                                </p:column>
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
