@@ -125,7 +125,7 @@ public class loginSecurity implements Serializable{
         rolUsuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(IRolUsuarioRepository.class);    
         RolUsuario rolusr = new RolUsuario();
         RolUsuarioPK pkRoleUsuario = new RolUsuarioPK();
-        pkRoleUsuario.setIdRol(2);
+        pkRoleUsuario.setIdRol(3);
         pkRoleUsuario.setUsr(formUser);
         rolusr.setRolUsuarioPK(pkRoleUsuario);
         rolUsuarioRepository.save(rolusr);

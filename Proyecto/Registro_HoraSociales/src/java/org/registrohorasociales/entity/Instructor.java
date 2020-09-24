@@ -31,14 +31,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Instructor.findBySecondName", query = "SELECT i FROM Instructor i WHERE i.secondName = :secondName")
     , @NamedQuery(name = "Instructor.findByLastName", query = "SELECT i FROM Instructor i WHERE i.lastName = :lastName")
     , @NamedQuery(name = "Instructor.findBySecondLastName", query = "SELECT i FROM Instructor i WHERE i.secondLastName = :secondLastName")
-    , @NamedQuery(name = "Instructor.findByStatus", query = "SELECT i FROM Instructor i WHERE i.status = :status")})
+    , @NamedQuery(name = "Instructor.findByStatus", query = "SELECT i FROM Instructor i WHERE i.status = :status")
+    , @NamedQuery(name = "Instructor.findByFacultad", query = "SELECT i FROM Instructor i WHERE i.facultad = :facultad")})
 public class Instructor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 100)
     @Column(name = "id")
     private String id;
     @Basic(optional = false)
@@ -66,6 +67,11 @@ public class Instructor implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "status")
     private String status;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Column(name = "facultad")
+    private String facultad;
 
     public Instructor() {
     }
@@ -74,13 +80,14 @@ public class Instructor implements Serializable {
         this.id = id;
     }
 
-    public Instructor(String id, String firstName, String secondName, String lastName, String secondLastName, String status) {
+    public Instructor(String id, String firstName, String secondName, String lastName, String secondLastName, String status, String facultad) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.lastName = lastName;
         this.secondLastName = secondLastName;
         this.status = status;
+        this.facultad = facultad;
     }
 
     public String getId() {
@@ -129,6 +136,14 @@ public class Instructor implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getFacultad() {
+        return facultad;
+    }
+
+    public void setFacultad(String facultad) {
+        this.facultad = facultad;
     }
 
     @Override

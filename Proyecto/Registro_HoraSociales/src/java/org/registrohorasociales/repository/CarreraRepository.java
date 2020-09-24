@@ -24,4 +24,7 @@ public interface CarreraRepository extends JpaRepository<Carrera, Integer>{
     
     @Query(nativeQuery = true, value = "Select * from carrera where idcarrera=?")
     public Carrera getCarreraById(int code);
+    
+    @Query(nativeQuery = true, value ="Select codigofacultad, nombrefacultad from carrera group by codigofacultad, nombrefacultad")
+    public List<Object[]> facultadList();
 }
