@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+    </ui:define>
+
+    <ui:define name="title">Listado de carreras</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formTableEstudiante">
+
+            <div class="ui-g">
+
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+
+                        <p:dataTable var="est" value="#{estudianteController.sintutor}" selectionMode="single" reflow="true"
+                                     selection="#{estudianteController.estudianteSelector}" rowKey="#{est.due}" paginator="true" rows="10">
+                            <f:facet name="header">
+                                <h3>Estudiantes sin tutor asignado</h3>
+                            </f:facet>
+                            <p:column headerText="DUE" sortBy="#{est.due}">
+                                <h:outputText value="#{est.due}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre" sortBy="#{est.nombres}">
+                                <h:outputText value="#{est.nombres}" />
+                            </p:column>
+                            <p:column headerText="Seleccionar tutor">
+                                <h:form>
+                                    <p:selectOneMenu style="margin-bottom:10px;" value="#{estudianteController.formIdTutor}" required="true">
+                                        <f:selectItem itemLabel="Seleccione un tutor" itemValue="#{null}"/> 
+                                        <f:selectItems value="#{estudianteController.listaTutores}" itemValue="#{estudianteController.listaTutores.getId()}" />
+                                    </p:selectOneMenu>
+                                </h:form>
+
+                            </p:column>
+                            <p:column headerText="Acciones" >
+                                <p:growl id="AssignTutor" showDetail="true" />  
+                                <p:commandButton action="/GestionAdmin/AsignarTutor?faces-redirect=true" update="AssignTutor" icon="ui-icon-check" actionListener="#{estudianteController.asignarTutor(est.due)}">
+                                    <p:confirm header="Confirmación" message="¿Está seguro de Asignar este tutor a #{est.due}?" icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                </p:confirmDialog> 
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

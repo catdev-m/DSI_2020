@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/EstudianteController.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/entity/Instructor.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/entity/Carrera.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/instructorController.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/web/GestionAdmin/AsignarTutor.xhtml</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/web/solicitud.xhtml</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/carreraController.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/repository/InstructorRepository.java</file>
+        </group>
+>>>>>>> f67f90cb1c3da2d6c840e680ee0c0dfbdbfd39fd
     </open-files>
 </project-private>
