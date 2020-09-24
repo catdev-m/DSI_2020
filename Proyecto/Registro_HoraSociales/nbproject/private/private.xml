@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/miguel/Documents/NetBeansProjects/DSI_2020/Proyecto/Registro_HoraSociales/nbproject/build-impl.xml</file>
-            <file>file:/C:/Users/miguel/Documents/NetBeansProjects/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/MailController.java</file>
-            <file>file:/C:/Users/miguel/Documents/NetBeansProjects/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/repository/UsuarioAdminRepository.java</file>
-            <file>file:/C:/Users/miguel/Documents/NetBeansProjects/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/repository/UsuarioRepository.java</file>
-            <file>file:/C:/Users/miguel/Documents/NetBeansProjects/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/repository/SolicitudRepository.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/EstudianteController.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/entity/Instructor.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/entity/Carrera.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/instructorController.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/web/GestionAdmin/AsignarTutor.xhtml</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/web/solicitud.xhtml</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/controller/carreraController.java</file>
+            <file>file:/C:/Users/miguel/Desktop/DSI_2020/Proyecto/Registro_HoraSociales/src/java/org/registrohorasociales/repository/InstructorRepository.java</file>
         </group>
     </open-files>
 </project-private>

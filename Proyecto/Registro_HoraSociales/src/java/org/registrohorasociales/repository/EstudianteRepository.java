@@ -20,4 +20,5 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, String>{
     
     @Query(nativeQuery = true, name = "select * from estudiante where due = ?")
     public Estudiante findByDue(String due);
+    
 }

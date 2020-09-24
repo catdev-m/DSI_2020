@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Estudiante.findByClave", query = "SELECT e FROM Estudiante e WHERE e.clave = :clave")
     , @NamedQuery(name = "Estudiante.findByCicloInicio", query = "SELECT e FROM Estudiante e WHERE e.cicloInicio = :cicloInicio")
     , @NamedQuery(name = "Estudiante.findByIdcarrera", query = "SELECT e FROM Estudiante e WHERE e.idcarrera = :idcarrera")
-    , @NamedQuery(name = "Estudiante.findByIdinstitucion", query = "SELECT e FROM Estudiante e WHERE e.idinstitucion = :idinstitucion")})
+    , @NamedQuery(name = "Estudiante.findByIdinstitucion", query = "SELECT e FROM Estudiante e WHERE e.idinstitucion = :idinstitucion")
+    , @NamedQuery(name = "Estudiante.findByIdInstructor", query = "SELECT e FROM Estudiante e WHERE e.idInstructor = :idInstructor")})
 public class Estudiante implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,10 +72,10 @@ public class Estudiante implements Serializable {
     @NotNull
     @Column(name = "IDCARRERA")
     private int idcarrera;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "IDINSTITUCION")
-    private int idinstitucion;
+    private Integer idinstitucion;
+    @Column(name = "idInstructor")
+    private Integer idInstructor;
 
     public Estudiante() {
     }
@@ -83,7 +84,7 @@ public class Estudiante implements Serializable {
         this.due = due;
     }
 
-    public Estudiante(String due, String nombres, String apellidos, String correo, String clave, int cicloInicio, int idcarrera, int idinstitucion) {
+    public Estudiante(String due, String nombres, String apellidos, String correo, String clave, int cicloInicio, int idcarrera) {
         this.due = due;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -91,7 +92,6 @@ public class Estudiante implements Serializable {
         this.clave = clave;
         this.cicloInicio = cicloInicio;
         this.idcarrera = idcarrera;
-        this.idinstitucion = idinstitucion;
     }
 
     public String getDue() {
@@ -150,12 +150,20 @@ public class Estudiante implements Serializable {
         this.idcarrera = idcarrera;
     }
 
-    public int getIdinstitucion() {
+    public Integer getIdinstitucion() {
         return idinstitucion;
     }
 
-    public void setIdinstitucion(int idinstitucion) {
+    public void setIdinstitucion(Integer idinstitucion) {
         this.idinstitucion = idinstitucion;
+    }
+
+    public Integer getIdInstructor() {
+        return idInstructor;
+    }
+
+    public void setIdInstructor(Integer idInstructor) {
+        this.idInstructor = idInstructor;
     }
 
     @Override
