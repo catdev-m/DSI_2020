@@ -17,7 +17,8 @@ import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
 import org.registrohorasociales.entity.Instructor;
 import org.registrohorasociales.repository.EstudianteRepository;
-import org.registrohorasociales.repository.InstructorRepository;
+import org.registrohorasociales.repository.IInstructorRepository;
+
 
 /**
  *
@@ -29,19 +30,19 @@ import org.registrohorasociales.repository.InstructorRepository;
 public class EstudianteController implements Serializable {
 
     private EstudianteRepository repoEstudiante;
-    private InstructorRepository repoTutores;
+    private IInstructorRepository repoTutores;
     private List<Estudiante> estudiantes;
     private List<Estudiante> sintutor;
     private List<Instructor> tutores;
     private List<SelectItem> listaTutores;
     private Estudiante estudianteSelector;
-    private String formDue, formNombre, formApellido, formEmail, formPass;
-    private int formIdInstitucion, formIdTutor;
+    private String formDue, formNombre, formApellido, formEmail, formPass,formIdTutor;
+    private int formIdInstitucion;
 
     @PostConstruct
     public void initialize() {
         repoEstudiante = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
-        repoTutores = ApplicationContextProvider.getApplicationContext().getBean(InstructorRepository.class);
+        repoTutores = ApplicationContextProvider.getApplicationContext().getBean(IInstructorRepository.class);
         loadEstudiantes();
         sinTutor();
         loadInstructores();
@@ -67,7 +68,7 @@ public class EstudianteController implements Serializable {
     
     public void loadInstructores(){
         tutores = new ArrayList<>();
-        tutores = repoTutores.InstructorList();
+        tutores = repoTutores.listaTutores();
         listaTutores = new ArrayList<>();
         listaTutores.clear();
         tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName())).forEachOrdered((c) -> {
@@ -171,11 +172,11 @@ public class EstudianteController implements Serializable {
         this.formIdInstitucion = formIdInstitucion;
     }
 
-    public int getFormIdTutor() {
+    public String getFormIdTutor() {
         return formIdTutor;
     }
 
-    public void setFormIdTutor(int formIdTutor) {
+    public void setFormIdTutor(String formIdTutor) {
         this.formIdTutor = formIdTutor;
     }
 

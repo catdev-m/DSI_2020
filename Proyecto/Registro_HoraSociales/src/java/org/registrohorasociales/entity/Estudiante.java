@@ -29,69 +29,48 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Estudiante.findByDue", query = "SELECT e FROM Estudiante e WHERE e.due = :due")
     , @NamedQuery(name = "Estudiante.findByNombres", query = "SELECT e FROM Estudiante e WHERE e.nombres = :nombres")
     , @NamedQuery(name = "Estudiante.findByApellidos", query = "SELECT e FROM Estudiante e WHERE e.apellidos = :apellidos")
-    , @NamedQuery(name = "Estudiante.findByCorreo", query = "SELECT e FROM Estudiante e WHERE e.correo = :correo")
-    , @NamedQuery(name = "Estudiante.findByClave", query = "SELECT e FROM Estudiante e WHERE e.clave = :clave")
     , @NamedQuery(name = "Estudiante.findByCicloInicio", query = "SELECT e FROM Estudiante e WHERE e.cicloInicio = :cicloInicio")
+    , @NamedQuery(name = "Estudiante.findByClave", query = "SELECT e FROM Estudiante e WHERE e.clave = :clave")
+    , @NamedQuery(name = "Estudiante.findByCorreo", query = "SELECT e FROM Estudiante e WHERE e.correo = :correo")
     , @NamedQuery(name = "Estudiante.findByIdcarrera", query = "SELECT e FROM Estudiante e WHERE e.idcarrera = :idcarrera")
-    , @NamedQuery(name = "Estudiante.findByIdinstitucion", query = "SELECT e FROM Estudiante e WHERE e.idinstitucion = :idinstitucion")
-    , @NamedQuery(name = "Estudiante.findByIdInstructor", query = "SELECT e FROM Estudiante e WHERE e.idInstructor = :idInstructor")})
+    , @NamedQuery(name = "Estudiante.findByIdInstructor", query = "SELECT e FROM Estudiante e WHERE e.idInstructor = :idInstructor")
+    , @NamedQuery(name = "Estudiante.findByIdinstitucion", query = "SELECT e FROM Estudiante e WHERE e.idinstitucion = :idinstitucion")})
 public class Estudiante implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 7)
+    @Size(min = 1, max = 255)
     @Column(name = "DUE")
     private String due;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
+    @Size(max = 255)
     @Column(name = "NOMBRES")
     private String nombres;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
+    @Size(max = 255)
     @Column(name = "APELLIDOS")
     private String apellidos;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 18)
-    @Column(name = "CORREO")
-    private String correo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 250)
+    @Column(name = "CICLO_INICIO")
+    private Integer cicloInicio;
+    @Size(max = 255)
     @Column(name = "CLAVE")
     private String clave;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CICLO_INICIO")
-    private int cicloInicio;
-    @Basic(optional = false)
-    @NotNull
+    @Size(max = 255)
+    @Column(name = "CORREO")
+    private String correo;
     @Column(name = "IDCARRERA")
-    private int idcarrera;
+    private Integer idcarrera;
+    @Size(max = 100)
+    @Column(name = "idInstructor")
+    private String idInstructor;
     @Column(name = "IDINSTITUCION")
     private Integer idinstitucion;
-    @Column(name = "idInstructor")
-    private Integer idInstructor;
 
     public Estudiante() {
     }
 
     public Estudiante(String due) {
         this.due = due;
-    }
-
-    public Estudiante(String due, String nombres, String apellidos, String correo, String clave, int cicloInicio, int idcarrera) {
-        this.due = due;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.correo = correo;
-        this.clave = clave;
-        this.cicloInicio = cicloInicio;
-        this.idcarrera = idcarrera;
     }
 
     public String getDue() {
@@ -118,12 +97,12 @@ public class Estudiante implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public String getCorreo() {
-        return correo;
+    public Integer getCicloInicio() {
+        return cicloInicio;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setCicloInicio(Integer cicloInicio) {
+        this.cicloInicio = cicloInicio;
     }
 
     public String getClave() {
@@ -134,20 +113,28 @@ public class Estudiante implements Serializable {
         this.clave = clave;
     }
 
-    public int getCicloInicio() {
-        return cicloInicio;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setCicloInicio(int cicloInicio) {
-        this.cicloInicio = cicloInicio;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public int getIdcarrera() {
+    public Integer getIdcarrera() {
         return idcarrera;
     }
 
-    public void setIdcarrera(int idcarrera) {
+    public void setIdcarrera(Integer idcarrera) {
         this.idcarrera = idcarrera;
+    }
+
+    public String getIdInstructor() {
+        return idInstructor;
+    }
+
+    public void setIdInstructor(String idInstructor) {
+        this.idInstructor = idInstructor;
     }
 
     public Integer getIdinstitucion() {
@@ -156,14 +143,6 @@ public class Estudiante implements Serializable {
 
     public void setIdinstitucion(Integer idinstitucion) {
         this.idinstitucion = idinstitucion;
-    }
-
-    public Integer getIdInstructor() {
-        return idInstructor;
-    }
-
-    public void setIdInstructor(Integer idInstructor) {
-        this.idInstructor = idInstructor;
     }
 
     @Override
