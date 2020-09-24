@@ -12,9 +12,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
+import org.registrohorasociales.entity.Instructor;
 import org.registrohorasociales.repository.EstudianteRepository;
+import org.registrohorasociales.repository.InstructorRepository;
 
 /**
  *
@@ -23,23 +26,53 @@ import org.registrohorasociales.repository.EstudianteRepository;
 @ManagedBean
 @ViewScoped
 @SessionScoped
-public class EstudianteController implements Serializable{
-    private EstudianteRepository repoEstudiante= ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
+public class EstudianteController implements Serializable {
+
+    private EstudianteRepository repoEstudiante;
+    private InstructorRepository repoTutores;
     private List<Estudiante> estudiantes;
+    private List<Estudiante> sintutor;
+    private List<Instructor> tutores;
+    private List<SelectItem> listaTutores;
     private Estudiante estudianteSelector;
-    
+    private String formDue, formNombre, formApellido, formEmail, formPass;
+    private int formIdInstitucion, formIdTutor;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         repoEstudiante = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
+        repoTutores = ApplicationContextProvider.getApplicationContext().getBean(InstructorRepository.class);
         loadEstudiantes();
+        sinTutor();
+        loadInstructores();
     }
 
     public EstudianteController() {
     }
-    
-    public void loadEstudiantes(){
+
+    public void loadEstudiantes() {
         estudiantes = new ArrayList<>();
-        estudiantes=repoEstudiante.estudiantesList();
+        estudiantes = repoEstudiante.estudiantesList();
+    }
+
+
+    public void sinTutor() {
+        sintutor = new ArrayList<>();
+        for (Estudiante e : estudiantes) {
+            if (e.getIdInstructor() == null) {
+                sintutor.add(e);
+            }
+        }
+    }
+    
+    public void loadInstructores(){
+        tutores = new ArrayList<>();
+        tutores = repoTutores.InstructorList();
+        listaTutores = new ArrayList<>();
+        listaTutores.clear();
+        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName())).forEachOrdered((c) -> {
+            this.listaTutores.add(c);
+        });
     }
 
     public EstudianteRepository getRepoEstudiante() {
@@ -65,8 +98,85 @@ public class EstudianteController implements Serializable{
     public void setEstudianteSelector(Estudiante estudianteSelector) {
         this.estudianteSelector = estudianteSelector;
     }
-    
-    
-    
+
+    public List<Estudiante> getSintutor() {
+        return sintutor;
+    }
+
+    public void setSintutor(List<Estudiante> sintutor) {
+        this.sintutor = sintutor;
+    }
+
+    public List<Instructor> getTutores() {
+        return tutores;
+    }
+
+    public void setTutores(List<Instructor> tutores) {
+        this.tutores = tutores;
+    }
+
+    public String getFormDue() {
+        return formDue;
+    }
+
+    public void setFormDue(String formDue) {
+        this.formDue = formDue;
+    }
+
+    public String getFormNombre() {
+        return formNombre;
+    }
+
+    public void setFormNombre(String formNombre) {
+        this.formNombre = formNombre;
+    }
+
+    public String getFormApellido() {
+        return formApellido;
+    }
+
+    public void setFormApellido(String formApellido) {
+        this.formApellido = formApellido;
+    }
+
+    public String getFormEmail() {
+        return formEmail;
+    }
+
+    public void setFormEmail(String formEmail) {
+        this.formEmail = formEmail;
+    }
+
+    public String getFormPass() {
+        return formPass;
+    }
+
+    public void setFormPass(String formPass) {
+        this.formPass = formPass;
+    }
+
+    public int getFormIdInstitucion() {
+        return formIdInstitucion;
+    }
+
+    public void setFormIdInstitucion(int formIdInstitucion) {
+        this.formIdInstitucion = formIdInstitucion;
+    }
+
+    public int getFormIdTutor() {
+        return formIdTutor;
+    }
+
+    public void setFormIdTutor(int formIdTutor) {
+        this.formIdTutor = formIdTutor;
+    }
+
+    public List<SelectItem> getListaTutores() {
+        return listaTutores;
+    }
+
+    public void setListaTutores(List<SelectItem> listaTutores) {
+        this.listaTutores = listaTutores;
+    }
     
 }
