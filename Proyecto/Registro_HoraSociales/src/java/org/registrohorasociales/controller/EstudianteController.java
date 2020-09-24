@@ -39,7 +39,7 @@ public class EstudianteController implements Serializable {
     private int formIdInstitucion, formIdTutor;
 
     @PostConstruct
-    public void init() {
+    public void initialize() {
         repoEstudiante = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
         repoTutores = ApplicationContextProvider.getApplicationContext().getBean(InstructorRepository.class);
         loadEstudiantes();
@@ -73,6 +73,14 @@ public class EstudianteController implements Serializable {
         tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName())).forEachOrdered((c) -> {
             this.listaTutores.add(c);
         });
+    }
+    
+    public void asignarTutor(String due){
+        Estudiante est = new Estudiante();
+        est = repoEstudiante.findByDue(due);
+        est.setIdInstructor(formIdTutor);
+        repoEstudiante.save(est);
+        System.out.println("Nombre: "+est.getNombres());
     }
 
     public EstudianteRepository getRepoEstudiante() {

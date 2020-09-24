@@ -13,12 +13,14 @@
 
     <ui:define name="content">
         <h:form id="formTableEstudiante">
+
             <div class="ui-g">
+
                 <div class="ui-g-12">
                     <div class="card card-w-title">
+
                         <p:dataTable var="est" value="#{estudianteController.sintutor}" selectionMode="single" reflow="true"
                                      selection="#{estudianteController.estudianteSelector}" rowKey="#{est.due}" paginator="true" rows="10">
-
                             <f:facet name="header">
                                 <h3>Estudiantes sin tutor asignado</h3>
                             </f:facet>
@@ -30,28 +32,24 @@
                                 <h:outputText value="#{est.nombres}" />
                             </p:column>
                             <p:column headerText="Seleccionar tutor">
-
-                                <p:selectOneMenu style="margin-bottom:10px;" value="#{estudianteController.formIdTutor}" required="true">
-                                    <f:selectItem itemLabel="Seleccione un tutor" itemValue="#{null}"/> 
-                                    <f:selectItems value="#{estudianteController.listaTutores}" itemValue="#{estudianteController.listaTutores.getId()}" />
-                                </p:selectOneMenu>
-
+                                <h:form>
+                                    <p:selectOneMenu style="margin-bottom:10px;" value="#{estudianteController.formIdTutor}" required="true">
+                                        <f:selectItem itemLabel="Seleccione un tutor" itemValue="#{null}"/> 
+                                        <f:selectItems value="#{estudianteController.listaTutores}" itemValue="#{estudianteController.listaTutores.getId()}" />
+                                    </p:selectOneMenu>
+                                </h:form>
 
                             </p:column>
                             <p:column headerText="Acciones" >
-                                <p:column>
-                                    <p:growl id="messageEdit" showDetail="true" />
+                                <p:growl id="AssignTutor" showDetail="true" />  
+                                <p:commandButton action="/GestionAdmin/AsignarTutor?faces-redirect=true" update="AssignTutor" icon="ui-icon-check" actionListener="#{estudianteController.asignarTutor(est.due)}">
+                                    <p:confirm header="Confirmación" message="¿Está seguro de Asignar este tutor a #{est.due}?" icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
 
-                                    <p:commandButton action="/GestionAdmin/AdminCarreras?faces-redirect=true" update="messageEdit" icon="ui-icon-check">
-                                        <p:confirm header="Confirmación" message="¿Está seguro de Asignar este tutor a #{est.due}?Are you sure?" icon="pi pi-exclamation-triangle" />
-                                    </p:commandButton>
-
-                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-                                    </p:confirmDialog> 
-                                </p:column>
-
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                </p:confirmDialog> 
                             </p:column>
                         </p:dataTable>
 
