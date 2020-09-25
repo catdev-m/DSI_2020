@@ -19,6 +19,7 @@ import org.registrohorasociales.entity.Instructor;
 import org.registrohorasociales.repository.EstudianteRepository;
 import org.registrohorasociales.repository.IInstructorRepository;
 
+
 /**
  *
  * @author Miguel
@@ -35,8 +36,8 @@ public class EstudianteController implements Serializable {
     private List<Instructor> tutores;
     private List<SelectItem> listaTutores;
     private Estudiante estudianteSelector;
-    private String formDue, formNombre, formApellido, formEmail, formPass;
-    private int formIdInstitucion, formIdTutor;
+    private String formDue, formNombre, formApellido, formEmail, formPass,formIdTutor;
+    private int formIdInstitucion;
 
     @PostConstruct
     public void initialize() {
@@ -44,7 +45,7 @@ public class EstudianteController implements Serializable {
         repoTutores = ApplicationContextProvider.getApplicationContext().getBean(IInstructorRepository.class);
         loadEstudiantes();
         sinTutor();
-       // loadInstructores();
+        loadInstructores();
     }
 
     public EstudianteController() {
@@ -65,15 +66,15 @@ public class EstudianteController implements Serializable {
         }
     }
     
-   /* public void loadInstructores(){
+    public void loadInstructores(){
         tutores = new ArrayList<>();
-        tutores = repoTutores.InstructorList();
+        tutores = repoTutores.listaTutores();
         listaTutores = new ArrayList<>();
         listaTutores.clear();
-        tutores.stream().map((car) -> new SelectItem(car.getId(), car.getFirstName())).forEachOrdered((c) -> {
+        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName())).forEachOrdered((c) -> {
             this.listaTutores.add(c);
         });
-    }*/
+    }
     
     public void asignarTutor(String due){
         Estudiante est = new Estudiante();
@@ -171,11 +172,11 @@ public class EstudianteController implements Serializable {
         this.formIdInstitucion = formIdInstitucion;
     }
 
-    public int getFormIdTutor() {
+    public String getFormIdTutor() {
         return formIdTutor;
     }
 
-    public void setFormIdTutor(int formIdTutor) {
+    public void setFormIdTutor(String formIdTutor) {
         this.formIdTutor = formIdTutor;
     }
 
