@@ -36,8 +36,7 @@ public class EstudianteController implements Serializable {
     private List<Instructor> tutores;
     private List<SelectItem> listaTutores;
     private Estudiante estudianteSelector;
-    private String formDue, formNombre, formApellido, formEmail, formPass;
-    private int formIdTutor;
+    private String formDue, formNombre, formApellido, formEmail, formPass, formIdTutor;
     private int formIdInstitucion;
 
     @PostConstruct
@@ -173,11 +172,11 @@ public class EstudianteController implements Serializable {
         this.formIdInstitucion = formIdInstitucion;
     }
 
-    public int getFormIdTutor() {
+    public String getFormIdTutor() {
         return formIdTutor;
     }
 
-    public void setFormIdTutor(int formIdTutor) {
+    public void setFormIdTutor(String formIdTutor) {
         this.formIdTutor = formIdTutor;
     }
 

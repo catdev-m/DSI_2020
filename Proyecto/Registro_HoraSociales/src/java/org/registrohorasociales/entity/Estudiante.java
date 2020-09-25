@@ -75,7 +75,7 @@ public class Estudiante implements Serializable {
     @Column(name = "IDINSTITUCION")
     private Integer idinstitucion;
     @Column(name = "idInstructor")
-    private Integer idInstructor;
+    private String idInstructor;
 
     public Estudiante() {
     }
@@ -158,11 +158,11 @@ public class Estudiante implements Serializable {
         this.idinstitucion = idinstitucion;
     }
 
-    public Integer getIdInstructor() {
+    public String getIdInstructor() {
         return idInstructor;
     }
 
-    public void setIdInstructor(Integer idInstructor) {
+    public void setIdInstructor(String idInstructor) {
         this.idInstructor = idInstructor;
     }
 
