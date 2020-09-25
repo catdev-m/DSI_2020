@@ -4,7 +4,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
-    <ui:define name="titulo">Registro de Usuarios</ui:define>
+    <ui:define name="titulo">Registro de Carrera</ui:define>
     <ui:define name="content">
         <h:form>
             <p:growl id="growl-crearcarrera" showDetail="true" sticky="true" /> 
@@ -17,6 +17,8 @@
                             <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                                 <p:inputText value="#{carreraController.formCode}" placeholder="Código de carrera"/>
                                 <p:inputText  value="#{carreraController.formName}" placeholder="Nombre de la carrera"/>
+                                <p:inputText value="#{carreraController.formCodeFacu}" placeholder="Código de facultad"/>
+                                <p:inputText value="#{carreraController.formNameFacu}" placeholder="Nombre de la facultad"/>
                             </p:panelGrid>
                                 <p:commandButton action="/GestionAdmin/AdminCarreras?faces-redirect=true" ajax="false" actionListener="#{carreraController.crearCarrera()}" value="Guardar" icon="ui-icon-open-in-new" style="max-width:150px;"/>
                        </h:form>

@@ -29,7 +29,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 @SessionScoped
 public class carreraController implements Serializable {
 
-    private String formName,formCode;
+    private String formName,formCode, formCodeFacu, formNameFacu;
     private CarreraRepository carreraRepo = ApplicationContextProvider.getApplicationContext().getBean(CarreraRepository.class);
     private List<Carrera> carreras;
     private List<SelectItem> listaCarreras;
@@ -48,6 +48,8 @@ public class carreraController implements Serializable {
             Carrera car = new Carrera();
             car.setCodigocarrera(formCode);
             car.setNombrecarrera(formName);
+            car.setCodigofacultad(formCodeFacu);
+            car.setNombrefacultad(formNameFacu);
             carreraRepo.save(car);
             
             FacesContext context = FacesContext.getCurrentInstance();
@@ -131,5 +133,22 @@ public class carreraController implements Serializable {
         this.listaCarreras = listaCarreras;
     }
 
+    public String getFormCodeFacu() {
+        return formCodeFacu;
+    }
+
+    public void setFormCodeFacu(String formCodeFacu) {
+        this.formCodeFacu = formCodeFacu;
+    }
+
+    public String getFormNameFacu() {
+        return formNameFacu;
+    }
+
+    public void setFormNameFacu(String formNameFacu) {
+        this.formNameFacu = formNameFacu;
+    }
+
+    
 
 }
