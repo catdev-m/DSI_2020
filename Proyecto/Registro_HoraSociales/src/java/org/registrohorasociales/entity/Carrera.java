@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Miguel
+ * @author denisse_mejia
  */
 @Entity
 @Table(name = "carrera")
@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Carrera.findAll", query = "SELECT c FROM Carrera c")
     , @NamedQuery(name = "Carrera.findByIdcarrera", query = "SELECT c FROM Carrera c WHERE c.idcarrera = :idcarrera")
     , @NamedQuery(name = "Carrera.findByCodigocarrera", query = "SELECT c FROM Carrera c WHERE c.codigocarrera = :codigocarrera")
-    , @NamedQuery(name = "Carrera.findByNombrecarrera", query = "SELECT c FROM Carrera c WHERE c.nombrecarrera = :nombrecarrera")})
+    , @NamedQuery(name = "Carrera.findByNombrecarrera", query = "SELECT c FROM Carrera c WHERE c.nombrecarrera = :nombrecarrera")
+    , @NamedQuery(name = "Carrera.findByCodigofacultad", query = "SELECT c FROM Carrera c WHERE c.codigofacultad = :codigofacultad")
+    , @NamedQuery(name = "Carrera.findByNombrefacultad", query = "SELECT c FROM Carrera c WHERE c.nombrefacultad = :nombrefacultad")})
 public class Carrera implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,16 +41,22 @@ public class Carrera implements Serializable {
     @Basic(optional = false)
     @Column(name = "idcarrera")
     private Integer idcarrera;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 7)
+    @Size(max = 255)
     @Column(name = "codigocarrera")
     private String codigocarrera;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 75)
+    @Size(max = 255)
     @Column(name = "nombrecarrera")
     private String nombrecarrera;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "codigofacultad")
+    private String codigofacultad;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Column(name = "nombrefacultad")
+    private String nombrefacultad;
 
     public Carrera() {
     }
@@ -57,10 +65,10 @@ public class Carrera implements Serializable {
         this.idcarrera = idcarrera;
     }
 
-    public Carrera(Integer idcarrera, String codigocarrera, String nombrecarrera) {
+    public Carrera(Integer idcarrera, String codigofacultad, String nombrefacultad) {
         this.idcarrera = idcarrera;
-        this.codigocarrera = codigocarrera;
-        this.nombrecarrera = nombrecarrera;
+        this.codigofacultad = codigofacultad;
+        this.nombrefacultad = nombrefacultad;
     }
 
     public Integer getIdcarrera() {
@@ -85,6 +93,22 @@ public class Carrera implements Serializable {
 
     public void setNombrecarrera(String nombrecarrera) {
         this.nombrecarrera = nombrecarrera;
+    }
+
+    public String getCodigofacultad() {
+        return codigofacultad;
+    }
+
+    public void setCodigofacultad(String codigofacultad) {
+        this.codigofacultad = codigofacultad;
+    }
+
+    public String getNombrefacultad() {
+        return nombrefacultad;
+    }
+
+    public void setNombrefacultad(String nombrefacultad) {
+        this.nombrefacultad = nombrefacultad;
     }
 
     @Override

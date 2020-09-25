@@ -45,6 +45,8 @@
 	
     <beans:bean id="japAuthProvider" class="org.registrohorasociales.config.AuthenticationProviderHs">
     </beans:bean>	
+    <beans:bean id="mail" class="org.registrohorasociales.utils.SendMail">
+    </beans:bean>
 		
 	
 </beans:beans>

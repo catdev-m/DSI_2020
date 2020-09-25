@@ -31,14 +31,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Instructor.findBySecondName", query = "SELECT i FROM Instructor i WHERE i.secondName = :secondName")
     , @NamedQuery(name = "Instructor.findByLastName", query = "SELECT i FROM Instructor i WHERE i.lastName = :lastName")
     , @NamedQuery(name = "Instructor.findBySecondLastName", query = "SELECT i FROM Instructor i WHERE i.secondLastName = :secondLastName")
-    , @NamedQuery(name = "Instructor.findByStatus", query = "SELECT i FROM Instructor i WHERE i.status = :status")})
+    , @NamedQuery(name = "Instructor.findByStatus", query = "SELECT i FROM Instructor i WHERE i.status = :status")
+    , @NamedQuery(name = "Instructor.findByIdEscuela", query = "SELECT i FROM Instructor i WHERE i.idEscuela = :idEscuela")})
 public class Instructor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 100)
     @Column(name = "id")
     private String id;
     @Basic(optional = false)
@@ -46,9 +47,7 @@ public class Instructor implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "first_name")
     private String firstName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "second_name")
     private String secondName;
     @Basic(optional = false)
@@ -56,9 +55,7 @@ public class Instructor implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "last_name")
     private String lastName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "second_last_name")
     private String secondLastName;
     @Basic(optional = false)
@@ -66,6 +63,11 @@ public class Instructor implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "status")
     private String status;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Column(name = "id_escuela")
+    private String idEscuela;
 
     public Instructor() {
     }
@@ -74,13 +76,12 @@ public class Instructor implements Serializable {
         this.id = id;
     }
 
-    public Instructor(String id, String firstName, String secondName, String lastName, String secondLastName, String status) {
+    public Instructor(String id, String firstName, String lastName, String status, String idEscuela) {
         this.id = id;
         this.firstName = firstName;
-        this.secondName = secondName;
         this.lastName = lastName;
-        this.secondLastName = secondLastName;
         this.status = status;
+        this.idEscuela = idEscuela;
     }
 
     public String getId() {
@@ -129,6 +130,14 @@ public class Instructor implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getIdEscuela() {
+        return idEscuela;
+    }
+
+    public void setIdEscuela(String idEscuela) {
+        this.idEscuela = idEscuela;
     }
 
     @Override
