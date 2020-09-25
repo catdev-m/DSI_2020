@@ -17,41 +17,49 @@
                             <h1>Registro de Instructores</h1>
                             <h:form id="CrearInstructor">
                                 <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                    <p:outputLabel for="input" value="Primer nombre"/>                               
-                                    <p:inputText value="#{instructorController.formfName}" id="input"/>
+                                    <p:outputLabel for="name" value="Primer nombre"/>                               
+                                    <p:inputText value="#{instructorController.formfName}" id="name" required="true"/>
 
-                                    <p:outputLabel for="input" value="Segundo nombre"/>                               
-                                    <p:inputText value="#{instructorController.formsName}" id="input2"/>
+                                    <p:outputLabel for="sname" value="Segundo nombre"/>                               
+                                    <p:inputText value="#{instructorController.formsName}" id="sname" />
 
-                                    <p:outputLabel for="input" value="Primer Apellido"/>                               
-                                    <p:inputText value="#{instructorController.formfApellido}" id="input3"/>
+                                    <p:outputLabel for="lastname" value="Primer Apellido"/>                               
+                                    <p:inputText value="#{instructorController.formfApellido}" id="lastname" required="true"/>
 
-                                    <p:outputLabel for="input" value="Segundo Apellido"/>                               
-                                    <p:inputText value="#{instructorController.formsApellido}" id="input4"/>
+                                    <p:outputLabel for="slastname" value="Segundo Apellido"/>                               
+                                    <p:inputText value="#{instructorController.formsApellido}" id="slastname"/>
 
-                                    <p:outputLabel for="area" value="Carnet"/>
-                                    <p:inputText id="area" value="#{instructorController.formCarnet}"/>
+                                    <p:outputLabel for="carnet" value="Carnet"/>
+                                    <p:inputText id="carnet" value="#{instructorController.formCarnet}" required="true"/>
 
                                     <p:outputLabel for="correo" value="Correo"/>
-                                    <p:inputText id="correo" value="#{instructorController.formEmail}"/>
+                                    <p:inputText id="correo" value="#{instructorController.formEmail}" required="true" validatorMessage="Email Invalido">
+                                       <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                    </p:inputText>
 
-                                    <p:outputLabel for="x" value="Facultad"/>
+                                    <p:outputLabel for="escuela" value="Escuela"/>
 
-                                    <p:selectOneMenu id="x" value="#{instructorController.idfacultad}" required="true">
-                                        <f:selectItem itemLabel="Seleccione una facultad" itemValue="" />
-                                        <f:selectItems value="#{instructorController.listfacultad}" />
+                                    <p:selectOneMenu id="escuela" value="#{instructorController.formescuela}" required="true">
+                                        <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
+                                        <f:selectItems value="#{instructorController.escuelaSelect}" />
                                     </p:selectOneMenu>
-                                    
-                                    <p:outputLabel for="y" value="Estado"/>
-                                    <p:selectOneMenu id="y" value="#{instructorController.formestado}" required="true">
+
+                                    <p:outputLabel for="estado" value="Estado"/>
+                                    <p:selectOneMenu id="estado" value="#{instructorController.formestado}" required="true">
                                         <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
                                         <f:selectItem itemLabel="Activo" itemValue="A" />
                                         <f:selectItem itemLabel="Inactivo" itemValue="I" />
                                     </p:selectOneMenu>
 
-
+                                    <br/><br/><br/>
                                 </p:panelGrid>
-                                <p:commandButton id="dialog2" update="growl,instructoresTbl" ajax="false" action="#{instructorController.crearInstructor()}" value="Guardar" icon="ui-icon-open-in-new" style="max-width:150px;"/>
+                                <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                    <p:commandButton id="guardar" update=":instructorform:growl :instructorform:instructoresTbl" ajax="false" action="#{instructorController.crearInstructor()}" value="Guardar" icon="ui-icon-open-in-new"/>
+                                    <p:commandButton id="limpiar" update="CrearInstructor" immediate="true" ajax="false" process="@this" actionListener="#{instructorController.clearFormInst()}" value="Limpiar" icon="ui-icon-open-in-new"/>
+                                    <p:commandButton id="eliminar" update=":instructorform:growl :instructorform:instructoresTbl" ajax="false" action="#{instructorController.EliminarInstructor()}" value="Eliminar" icon="ui-icon-open-in-new"/>
+                                </p:panelGrid>
+
                             </h:form>
                         </div>
                     </div>

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -23,14 +24,18 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import org.primefaces.PrimeFaces;
 import org.registrohorasociales.config.ApplicationContextProvider;
+import org.registrohorasociales.dto.EscuelaInfo;
 import org.registrohorasociales.dto.InstructorInfo;
 import org.registrohorasociales.entity.Carrera;
+import org.registrohorasociales.entity.Escuela;
 import org.registrohorasociales.entity.Instructor;
 import org.registrohorasociales.entity.RolUsuario;
 import org.registrohorasociales.entity.RolUsuarioPK;
 import org.registrohorasociales.entity.Usuario;
 import org.registrohorasociales.repository.CarreraRepository;
+import org.registrohorasociales.repository.EscuelaRepository;
 import org.registrohorasociales.repository.IRolUsuarioRepository;
 import org.registrohorasociales.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,24 +47,18 @@ import org.registrohorasociales.utils.SendMail;
  *
  * @author denisse_mejia
  */
-
 @ViewScoped
 @ManagedBean
-public class instructorController implements Serializable{
-    
+public class instructorController implements Serializable {
+
     private IInstructorRepository instructorRepository;
-    private List<InstructorInfo> instructoresList ;
+    private List<InstructorInfo> instructoresList;
     private InstructorInfo instructorSelecter;
-    
+
     private String usuario;
+    private String passBase;
     private String password;
-    private String primerNombre;
-    private String segundoNombre;
-    private String primerApellido;
-    private String segundoApellido;
-    private String correo;
-  
-    
+
     private String formCarnet;
     private String formfName;
     private String formsName;
@@ -68,37 +67,39 @@ public class instructorController implements Serializable{
     private String formEmail;
     private String formestado;
     private String formescuela;
-    
+
     private UsuarioRepository usuarioRepository;
     private IRolUsuarioRepository rolUsuarioRepository;
-    private IInstructorRepository intructorRepository;
-    private CarreraRepository facultadRepository;
+    private EscuelaRepository escuelaRepository;
     private SendMail sendMailService;
     private ParametroRepository parametroRepository;
-    
-    private Carrera facultadSelector;
+
+    private Escuela escuelaSelector;
     private String idfacultad;
     private String formFacultad;
-    private List<Object[]> facultadList;
-    private List<SelectItem> listfacultad;
-    
-    
-@PostConstruct    
-    public void init(){
+    private List<EscuelaInfo> escuelaList;
+    private List<SelectItem> escuelaSelect;
+
+    @PostConstruct
+    public void init() {
         instructorRepository = ApplicationContextProvider.getApplicationContext().getBean(IInstructorRepository.class);
-        facultadRepository =ApplicationContextProvider.getApplicationContext().getBean(CarreraRepository.class);   
-        facultadList = facultadRepository.facultadList();
-        for(Object[] b : facultadList){
-            listfacultad = new ArrayList<SelectItem>();
-            listfacultad.add(new SelectItem(b[0].toString(),b[1].toString()));
-        }
+        escuelaRepository = ApplicationContextProvider.getApplicationContext().getBean(EscuelaRepository.class);
+        usuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(UsuarioRepository.class);
+        sendMailService = ApplicationContextProvider.getApplicationContext().getBean(SendMail.class);
+        parametroRepository = ApplicationContextProvider.getApplicationContext().getBean(ParametroRepository.class);
+        rolUsuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(IRolUsuarioRepository.class);
+        
+        escuelaSelect = new ArrayList<>();
+        escuelaRepository.findAll().forEach(o -> {
+            escuelaSelect.add(new SelectItem(o.getIdEscuela(),o.getEscuela()));
+        });
         loadInstructors();
     }
-    
-    public void loadInstructors(){
+
+    public void loadInstructors() {
         instructoresList = new ArrayList<>();
 
-        instructorRepository.InstructorList().forEach(o->{
+        instructorRepository.InstructorList().forEach(o -> {
             InstructorInfo i = new InstructorInfo();
             i.id = o[0].toString();
             i.firstName = o[1].toString();
@@ -106,94 +107,160 @@ public class instructorController implements Serializable{
             i.lastName = o[3].toString();
             i.slastName = o[4].toString();
             i.estatus = o[5].toString();
-            i.facultad = o[6].toString();
+            i.escuela = o[6].toString();
             i.email = o[7].toString();
             instructoresList.add(i);
         });
-        
+
     }
-    
-    public String crearInstructor(){
+
+    public void EliminarInstructor() {
         try {
+            usuarioRepository.delete(formCarnet);
+            loadInstructors();
             
-        usuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(UsuarioRepository.class);
-        instructorRepository = ApplicationContextProvider.getApplicationContext().getBean(IInstructorRepository.class);
-        sendMailService = ApplicationContextProvider.getApplicationContext().getBean(SendMail.class);
-        BCryptPasswordEncoder vpass = new BCryptPasswordEncoder(12);  
-        
-        Usuario usr = new Usuario();
-        Instructor usrInstructor = new Instructor();
-        
-        if (formCarnet.equals("") || formfName.equals("") || formfApellido.equals("") || formEmail.equals("") ){
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Deben ingresarse todos los datos obligatorios", ""));
-            return null;
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha eliminado el usuario: " + formCarnet, ""));
+            clearFormInst();
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un eliminar el usuario", ""));
+            e.printStackTrace();
         }
-        
-        usrInstructor.setFirstName(formfName);
-        usrInstructor.setSecondName(formsName);
-        usrInstructor.setLastName(formfApellido);
-        usrInstructor.setSecondLastName(formsApellido);
-        usrInstructor.setId(formCarnet);
-        usrInstructor.setStatus(formestado);
-        usrInstructor.setFacultad(getIdfacultad());
-        instructorRepository.save(usrInstructor);
-        
-        usr.setNombre(formfName);
-        usr.setUsr(formCarnet);
-        usr.setClave(vpass.encode("123")); 
-        usr.setEmail(formEmail);
-        usr.setStatus(formestado);
-        usuarioRepository.save(usr);
-        
-        parametroRepository = ApplicationContextProvider.getApplicationContext().getBean(ParametroRepository.class);
-        Object[] obj = parametroRepository.getValor("msjInstructor");
-        
-        
-        sendMailService.enviar(formEmail,1,obj[0].toString()+"Mensaje adicional o parámetros");
-        
-        
-        /*Guardando en la tabla rol_usuario*/
-        rolUsuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(IRolUsuarioRepository.class);    
-        RolUsuario rolusr = new RolUsuario();
-        RolUsuarioPK pkRoleUsuario = new RolUsuarioPK();
-        pkRoleUsuario.setIdRol(3);
-        pkRoleUsuario.setUsr(formCarnet);
-        rolusr.setRolUsuarioPK(pkRoleUsuario);
-        rolUsuarioRepository.save(rolusr);
-        
+    }
+
+    public String crearInstructor() {
+        try {
+            passBase = UUID.randomUUID().toString();
+            password = passBase.split("-")[0]+passBase.split("-")[1];
+            
+            System.out.println(password);
+            BCryptPasswordEncoder vpass = new BCryptPasswordEncoder(12);
+
+            Usuario usr = new Usuario();
+            Instructor usrInstructor = new Instructor();
+
+            if (formCarnet.equals("") || formfName.equals("") || formfApellido.equals("") || formEmail.equals("")) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Deben ingresarse todos los datos obligatorios", ""));
+                return null;
+            }
+
+            usrInstructor.setFirstName(formfName);
+            usrInstructor.setSecondName(formsName);
+            usrInstructor.setLastName(formfApellido);
+            usrInstructor.setSecondLastName(formsApellido);
+            usrInstructor.setId(formCarnet);
+            usrInstructor.setStatus(formestado);
+            usrInstructor.setIdEscuela(formescuela);
+            instructorRepository.save(usrInstructor);
+
+            usr.setNombre(formfName);
+            usr.setUsr(formCarnet);
+            usr.setClave(vpass.encode(password));
+            usr.setEmail(formEmail);
+            usr.setStatus(formestado);
+            usuarioRepository.save(usr);
+            
+
+            Object[] obj = parametroRepository.getValor("msjInstructor");
+            sendMailService.enviar(formEmail, 1, obj[0].toString() + "\nSu Usuario es: "+formCarnet+"\nSu password: "+password);
+             
+            /*Guardando en la tabla rol_usuario*/
+            RolUsuario rolusr = new RolUsuario();
+            RolUsuarioPK pkRoleUsuario = new RolUsuarioPK();
+            pkRoleUsuario.setIdRol(3);
+            pkRoleUsuario.setUsr(formCarnet);
+            rolusr.setRolUsuarioPK(pkRoleUsuario);
+            rolUsuarioRepository.save(rolusr);
+
+            loadInstructors();
+            clearFormInst();
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado con éxito", ""));
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al crear el usuario", ""));
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void clearFormInst() {
         /*Borrando campos del formulario*/
+
         formCarnet = null;
         formfName = null;
         formsName = null;
         formfApellido = null;
         formsApellido = null;
         formEmail = null;
-        setFormFacultad("");
+        setFormescuela("");
         setFormestado("");
-        
-        loadInstructors();
-        
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado con éxito", ""));
-                } catch (Exception e) {
-         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al crear el usuario", ""));
-        e.printStackTrace();
-        }  
-        return null;
     }
-    
-    public void obtenerDatos(){
+
+    public void obtenerDatos() {
         setFormfName(instructorSelecter.getFirstName());
         setFormsName(instructorSelecter.getSecondName());
         setFormfApellido(instructorSelecter.getLastName());
         setFormsApellido(instructorSelecter.getSlastName());
         setFormEmail(instructorSelecter.getEmail());
         setFormestado(instructorSelecter.getEstatus());
+        setFormescuela(instructorSelecter.getEscuela());
+        setFormCarnet(instructorSelecter.getId());
     }
 
+    public Escuela getEscuelaSelector() {
+        return escuelaSelector;
+    }
+
+    public void setEscuelaSelector(Escuela escuelaSelector) {
+        this.escuelaSelector = escuelaSelector;
+    }
+
+    public List<SelectItem> getEscuelaSelect() {
+        return escuelaSelect;
+    }
+
+    public void setEscuelaSelect(List<SelectItem> escuelaSelect) {
+        this.escuelaSelect = escuelaSelect;
+    }
+
+    
+    public String getPassBase() {
+        return passBase;
+    }
+
+    public void setPassBase(String passBase) {
+        this.passBase = passBase;
+    }
+
+    public EscuelaRepository getEscuelaRepository() {
+        return escuelaRepository;
+    }
+
+    public void setEscuelaRepository(EscuelaRepository escuelaRepository) {
+        this.escuelaRepository = escuelaRepository;
+    }
+
+    public ParametroRepository getParametroRepository() {
+        return parametroRepository;
+    }
+
+    public void setParametroRepository(ParametroRepository parametroRepository) {
+        this.parametroRepository = parametroRepository;
+    }
+
+    public List<EscuelaInfo> getEscuelaList() {
+        return escuelaList;
+    }
+
+    public void setEscuelaList(List<EscuelaInfo> escuelaList) {
+        this.escuelaList = escuelaList;
+    }
+
+    
     public String getFormestado() {
         return formestado;
     }
@@ -210,8 +277,6 @@ public class instructorController implements Serializable{
         this.formescuela = formescuela;
     }
 
-    
-
     public SendMail getSendMailService() {
         return sendMailService;
     }
@@ -219,16 +284,7 @@ public class instructorController implements Serializable{
     public void setSendMailService(SendMail sendMailService) {
         this.sendMailService = sendMailService;
     }
-    
-    
-    
-    public List<Object[]> getFacultadList() {
-        return facultadList;
-    }
 
-    public void setFacultadList(List<Object[]> facultadList) {
-        this.facultadList = facultadList;
-    }
 
     public String getFormFacultad() {
         return formFacultad;
@@ -238,14 +294,6 @@ public class instructorController implements Serializable{
         this.formFacultad = formFacultad;
     }
 
-    public Carrera getFacultadSelector() {
-        return facultadSelector;
-    }
-
-    public void setFacultadSelector(Carrera facultadSelector) {
-        this.facultadSelector = facultadSelector;
-    }
-    
     public String getIdfacultad() {
         return idfacultad;
     }
@@ -253,23 +301,7 @@ public class instructorController implements Serializable{
     public void setIdfacultad(String idfacultad) {
         this.idfacultad = idfacultad;
     }
-    
-    public CarreraRepository getFacultadRepository() {
-        return facultadRepository;
-    }
 
-    public void setFacultadRepository(CarreraRepository facultadRepository) {
-        this.facultadRepository = facultadRepository;
-    }
-
-    public List<SelectItem> getListfacultad() {
-        return listfacultad;
-    }
-
-    public void setListfacultad(List<SelectItem> listfacultad) {
-        this.listfacultad = listfacultad;
-    }
-    
     public String getUsuario() {
         return usuario;
     }
@@ -286,45 +318,7 @@ public class instructorController implements Serializable{
         this.password = password;
     }
 
-    public String getPrimerNombre() {
-        return primerNombre;
-    }
-
-    public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
-    }
-
-    public String getSegundoNombre() {
-        return segundoNombre;
-    }
-
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
-    }
-
-    public String getPrimerApellido() {
-        return primerApellido;
-    }
-
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+   
 
     public String getFormCarnet() {
         return formCarnet;
@@ -390,15 +384,6 @@ public class instructorController implements Serializable{
         this.rolUsuarioRepository = rolUsuarioRepository;
     }
 
-    public IInstructorRepository getIntructorRepository() {
-        return intructorRepository;
-    }
-
-    public void setIntructorRepository(IInstructorRepository intructorRepository) {
-        this.intructorRepository = intructorRepository;
-    }
-    
-    
     public IInstructorRepository getInstructorRepository() {
         return instructorRepository;
     }
@@ -422,6 +407,5 @@ public class instructorController implements Serializable{
     public void setInstructorSelecter(InstructorInfo instructorSelecter) {
         this.instructorSelecter = instructorSelecter;
     }
-    
-    
+
 }

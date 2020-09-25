@@ -15,7 +15,7 @@ public class InstructorInfo {
     public String secondName;
     public String lastName;
     public String slastName;
-    public String facultad;
+    public String escuela;
     public String email;
     public String estatus;
 
@@ -59,12 +59,12 @@ public class InstructorInfo {
         this.slastName = slastName;
     }
 
-    public String getFacultad() {
-        return facultad;
+    public String getEscuela() {
+        return escuela;
     }
 
-    public void setFacultad(String facultad) {
-        this.facultad = facultad;
+    public void setEscuela(String escuela) {
+        this.escuela = escuela;
     }
 
     public String getEmail() {

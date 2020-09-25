@@ -17,7 +17,7 @@ import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
 import org.registrohorasociales.entity.Instructor;
 import org.registrohorasociales.repository.EstudianteRepository;
-import org.registrohorasociales.repository.InstructorRepository;
+import org.registrohorasociales.repository.IInstructorRepository;
 
 /**
  *
@@ -29,7 +29,7 @@ import org.registrohorasociales.repository.InstructorRepository;
 public class EstudianteController implements Serializable {
 
     private EstudianteRepository repoEstudiante;
-    private InstructorRepository repoTutores;
+    private IInstructorRepository repoTutores;
     private List<Estudiante> estudiantes;
     private List<Estudiante> sintutor;
     private List<Instructor> tutores;
@@ -41,10 +41,10 @@ public class EstudianteController implements Serializable {
     @PostConstruct
     public void initialize() {
         repoEstudiante = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
-        repoTutores = ApplicationContextProvider.getApplicationContext().getBean(InstructorRepository.class);
+        repoTutores = ApplicationContextProvider.getApplicationContext().getBean(IInstructorRepository.class);
         loadEstudiantes();
         sinTutor();
-        loadInstructores();
+       // loadInstructores();
     }
 
     public EstudianteController() {
@@ -65,15 +65,15 @@ public class EstudianteController implements Serializable {
         }
     }
     
-    public void loadInstructores(){
+   /* public void loadInstructores(){
         tutores = new ArrayList<>();
         tutores = repoTutores.InstructorList();
         listaTutores = new ArrayList<>();
         listaTutores.clear();
-        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName())).forEachOrdered((c) -> {
+        tutores.stream().map((car) -> new SelectItem(car.getId(), car.getFirstName())).forEachOrdered((c) -> {
             this.listaTutores.add(c);
         });
-    }
+    }*/
     
     public void asignarTutor(String due){
         Estudiante est = new Estudiante();
