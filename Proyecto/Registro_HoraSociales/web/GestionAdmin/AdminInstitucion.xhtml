@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h:form id="formtadminIns">
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card card-w-title">
+                                <p:button value="Nueva Institucion" outcome="/GestionAdmin/InsertarInstitucion"/>
+                                <p:dataTable var="inst" value="#{institucionController.instituciones}" selectionMode="single" reflow="true"
+                                             selection="#{institucionController.institucionSelector}" rowKey="#{inst.idInstitucion}" paginator="true" rows="10">
+                                    
+                                    <f:facet name="header">
+                                        <h3>Instituciones Disponibles</h3>
+                                    </f:facet>
+                                    <p:column headerText="Nombre de Institución">
+                                        <h:outputText value="#{inst.nomInstitucion}" />
+                                    </p:column>
+                                    <p:column headerText="Encargado de Institucion">
+                                        <h:outputText value="#{inst.encInstitucion}"/>
+                                    </p:column>
+                                    <p:column headerText="Teléfono de Institucion">
+                                        <h:outputText value="#{inst.telInstitucion}"/>
+                                    </p:column>
+                                    <p:column headerText="Acciones">
+                                        <p:growl id="messageDelete" showDetail="true" />
+                                        <p:commandButton update="messageDelete" icon="ui-icon-trash">
+                                            <p:confirm header="Confirmación" message="¿Está seguro de eliminar carrera #{inst.nomInstitucion}?" icon="pi pi-exclamation-triangle" />
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton action="/GestionAdmin/AdminInstitucion?faces-redirect=true" value="Sí" styleClass="ui-confirmdialog-no" 
+                                                             actionListener="#{institucionController.eliminarInstitucion(inst.idInstitucion)}"/>
+                                            <p:commandButton action="/GestionAdmin/AdminInstitucion?faces-redirect=true" value="No" styleClass="ui-confirmdialog-no"/>
+                                        </p:confirmDialog>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

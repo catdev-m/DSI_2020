@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="titulo">Registro de una institución</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="growl-crearInstitucion" showDetail="true" sticky="true"/>
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de una Institucion</h1>
+                            <h:form id="formCrearInstitucion">
+                                <p:panelGrid columns="1" columnClasses="ui-grid-col-2, ui-grid-col-4,ui-grid-col-2, ui-grid-col-4," layout="grid"
+                                             styleClass="ui-panelgrid-blank form-group ui-panelgrid-center" style="border: 0px none; background-color: transparent;">
+                                    <p:inputText value="#{institucionController.formName}" placeholder="Nombre de Institución"/>
+                                    <p:inputText value="#{institucionController.formHead}" placeholder="Encargado"/>
+                                    <p:inputText value="#{institucionController.formTel}" placeholder="Teléfono"/>
+                                    <p:inputText value="#{institucionController.formMail}" placeholder="Dirección de Correo"/>
+                                    <p:inputText value="#{institucionController.formRs}" placeholder="Razón Social"/>
+                                    <p:inputText value="#{institucionController.formRes}" placeholder="Reseña"/>
+                                </p:panelGrid>
+                                <p:commandButton action="/GestionAdmin/AdminInstitucion?faces-redirect=true" ajax="false" actionListener="#{institucionController.crearInstitucion()}"
+                                                 value="Guardar" icon="ui-icon-open-in-new" style="max-width: 150px;"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
