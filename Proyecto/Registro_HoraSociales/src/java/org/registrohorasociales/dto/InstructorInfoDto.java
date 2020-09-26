@@ -9,7 +9,7 @@ package org.registrohorasociales.dto;
  *
  * @author denisse_mejia
  */
-public class InstructorInfo {
+public class InstructorInfoDto {
     public String id;
     public String firstName;
     public String secondName;

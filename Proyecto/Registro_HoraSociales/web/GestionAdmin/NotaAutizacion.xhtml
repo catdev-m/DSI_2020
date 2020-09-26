@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Registro de Instructores</ui:define>
+
+    <ui:define name="content">
+        <h:form id="Notasform">
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
+            <div class="ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Generar Notas de autorización de estudiantes</h1>
+                        <p:dataTable id="estudiantesTbl" var="eList" value="#{notasAController.estudianteList}" selectionMode="single" reflow="true"
+                                     selection="#{notasAController.estudianteSelect}" rowKey="#{eList.due}" paginator="true" rows="10">
+                            <f:facet name="header">
+                                Estudiantes inscritos para horas sociales 
+                            </f:facet>
+
+                            <p:column headerText="Nombre estudiante">
+                                <h:outputText value="#{eList.first_name} #{eList.apellidos}" />
+                            </p:column>
+                            <p:column headerText="Due">
+                                <h:outputText value="#{eList.due}" />
+                            </p:column>
+                            <p:column headerText="Carrera">
+                                <h:outputText value="#{eList.nombrecarrera}" />
+                            </p:column>
+                            <p:column headerText="Institución">
+                                <h:outputText value="#{eList.nom_institucion}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -21,4 +21,11 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, String>{
     @Query(nativeQuery = true, name = "select * from estudiante where due = ?")
     public Estudiante findByDue(String due);
     
+    @Query(nativeQuery = true, value="select e.*, c.nombrecarrera, c.codigocarrera, i.nom_institucion,"
+                    + "inst.first_name, inst.second_name, inst.last_name, inst.second_last_name\n" 
+                    +"from estudiante e, carrera c, institucion i, instructor inst\n" 
+                    +"where e.idcarrera = c.idcarrera and e.idinstitucion = i.id_institucion "
+                    + "and e.idInstructor = inst.id")
+    public List<Object[]> estudiantesInfoList();
+    
 }

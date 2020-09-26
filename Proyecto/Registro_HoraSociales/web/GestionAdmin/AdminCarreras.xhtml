@@ -17,7 +17,7 @@
                 <div class="ui-g-12">
 
                     <div class="card card-w-title">
-                        <p:button value="Nueva carrera" outcome="/GestionAdmin/insertCarrera" />
+              
                         <p:dataTable var="car" value="#{carreraController.carreras}" selectionMode="single" reflow="true"
                                      selection="#{carreraController.carreraSelector}" rowKey="#{car.idcarrera}" paginator="true" rows="10">
 
@@ -32,7 +32,7 @@
                                 <h:outputText value="#{car.nombrecarrera}" />
                             </p:column>
                             <p:column headerText="Acciones" >
-                                <p:column>
+                               <!-- <p:column>
                                     <p:growl id="messageEdit" showDetail="true" />
 
                                     <p:commandButton action="/GestionAdmin/AdminCarreras?faces-redirect=true" update="messageEdit" icon="ui-icon-edit">
@@ -43,7 +43,7 @@
                                         <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
                                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
                                     </p:confirmDialog> 
-                                </p:column>
+                                </p:column>-->
                                 <p:column>
                                     <p:growl id="messageDelete" showDetail="true" />
 
@@ -58,6 +58,7 @@
                                 </p:column>
                             </p:column>
                         </p:dataTable>
+                        <p:button value="Nueva carrera" outcome="/GestionAdmin/insertCarrera" />
 
                     </div>
                 </div>

@@ -48,12 +48,10 @@ public class Carrera implements Serializable {
     @Column(name = "nombrecarrera")
     private String nombrecarrera;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "codigofacultad")
     private String codigofacultad;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 250)
     @Column(name = "nombrefacultad")
     private String nombrefacultad;

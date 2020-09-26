@@ -26,8 +26,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.primefaces.PrimeFaces;
 import org.registrohorasociales.config.ApplicationContextProvider;
-import org.registrohorasociales.dto.EscuelaInfo;
-import org.registrohorasociales.dto.InstructorInfo;
+import org.registrohorasociales.dto.EscuelaInfoDto;
+import org.registrohorasociales.dto.InstructorInfoDto;
 import org.registrohorasociales.entity.Carrera;
 import org.registrohorasociales.entity.Escuela;
 import org.registrohorasociales.entity.Instructor;
@@ -52,8 +52,8 @@ import org.registrohorasociales.utils.SendMail;
 public class instructorController implements Serializable {
 
     private IInstructorRepository instructorRepository;
-    private List<InstructorInfo> instructoresList;
-    private InstructorInfo instructorSelecter;
+    private List<InstructorInfoDto> instructoresList;
+    private InstructorInfoDto instructorSelecter;
 
     private String usuario;
     private String passBase;
@@ -77,7 +77,7 @@ public class instructorController implements Serializable {
     private Escuela escuelaSelector;
     private String idfacultad;
     private String formFacultad;
-    private List<EscuelaInfo> escuelaList;
+    private List<EscuelaInfoDto> escuelaList;
     private List<SelectItem> escuelaSelect;
 
     @PostConstruct
@@ -100,7 +100,7 @@ public class instructorController implements Serializable {
         instructoresList = new ArrayList<>();
 
         instructorRepository.InstructorList().forEach(o -> {
-            InstructorInfo i = new InstructorInfo();
+            InstructorInfoDto i = new InstructorInfoDto();
             i.id = o[0].toString();
             i.firstName = o[1].toString();
             i.secondName = o[2].toString();
@@ -116,7 +116,7 @@ public class instructorController implements Serializable {
 
     public void EliminarInstructor() {
         try {
-            usuarioRepository.delete(formCarnet);
+            instructorRepository.delete(formCarnet);
             loadInstructors();
             
             FacesContext context = FacesContext.getCurrentInstance();
@@ -199,7 +199,10 @@ public class instructorController implements Serializable {
         setFormescuela("");
         setFormestado("");
     }
-
+    public void entra(){
+        System.out.println("ENTRA AQUI");
+    }
+    
     public void obtenerDatos() {
         setFormfName(instructorSelecter.getFirstName());
         setFormsName(instructorSelecter.getSecondName());
@@ -252,11 +255,11 @@ public class instructorController implements Serializable {
         this.parametroRepository = parametroRepository;
     }
 
-    public List<EscuelaInfo> getEscuelaList() {
+    public List<EscuelaInfoDto> getEscuelaList() {
         return escuelaList;
     }
 
-    public void setEscuelaList(List<EscuelaInfo> escuelaList) {
+    public void setEscuelaList(List<EscuelaInfoDto> escuelaList) {
         this.escuelaList = escuelaList;
     }
 
@@ -392,19 +395,19 @@ public class instructorController implements Serializable {
         this.instructorRepository = instructorRepository;
     }
 
-    public List<InstructorInfo> getInstructoresList() {
+    public List<InstructorInfoDto> getInstructoresList() {
         return instructoresList;
     }
 
-    public void setInstructoresList(List<InstructorInfo> instructoresList) {
+    public void setInstructoresList(List<InstructorInfoDto> instructoresList) {
         this.instructoresList = instructoresList;
     }
 
-    public InstructorInfo getInstructorSelecter() {
+    public InstructorInfoDto getInstructorSelecter() {
         return instructorSelecter;
     }
 
-    public void setInstructorSelecter(InstructorInfo instructorSelecter) {
+    public void setInstructorSelecter(InstructorInfoDto instructorSelecter) {
         this.instructorSelecter = instructorSelecter;
     }
 

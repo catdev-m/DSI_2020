@@ -15,7 +15,6 @@
                     <div class="ui-g-12">
                         <div class="card card-w-title">
                             <h1>Registro de Instructores</h1>
-                            <h:form id="CrearInstructor">
                                 <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                                     <p:outputLabel for="name" value="Primer nombre"/>                               
                                     <p:inputText value="#{instructorController.formfName}" id="name" required="true"/>
@@ -55,12 +54,12 @@
                                     <br/><br/><br/>
                                 </p:panelGrid>
                                 <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                    <p:commandButton id="guardar" update=":instructorform:growl :instructorform:instructoresTbl" ajax="false" action="#{instructorController.crearInstructor()}" value="Guardar" icon="ui-icon-open-in-new"/>
-                                    <p:commandButton id="limpiar" update="CrearInstructor" immediate="true" ajax="false" process="@this" actionListener="#{instructorController.clearFormInst()}" value="Limpiar" icon="ui-icon-open-in-new"/>
-                                    <p:commandButton id="eliminar" update=":instructorform:growl :instructorform:instructoresTbl" ajax="false" action="#{instructorController.EliminarInstructor()}" value="Eliminar" icon="ui-icon-open-in-new"/>
+                                    <p:commandButton id="guardar" update="growl,instructoresTbl" ajax="false" action="#{instructorController.crearInstructor()}" value="Guardar" icon="ui-icon-open-in-new"/>
+                                    <p:commandButton id="limpiar" update="instructorform" process="@this" action="#{instructorController.clearFormInst()}" value="Limpiar" icon="ui-icon-open-in-new">
+                                    </p:commandButton>
+                                    <p:commandButton id="eliminar" update="growl,instructoresTbl" ajax="false" action="#{instructorController.EliminarInstructor()}" value="Eliminar" icon="ui-icon-open-in-new"/>
                                 </p:panelGrid>
 
-                            </h:form>
                         </div>
                     </div>
 
