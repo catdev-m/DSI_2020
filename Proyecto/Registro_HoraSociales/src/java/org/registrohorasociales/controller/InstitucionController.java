@@ -25,7 +25,6 @@ import org.registrohorasociales.repository.InstitucionRepository;
  */
 @ManagedBean
 @ViewScoped
-@SessionScoped
 public class InstitucionController implements Serializable{
 
     private String formName, formHead, formTel, formMail, formRs, formRes;  //inputText elements
@@ -35,7 +34,7 @@ public class InstitucionController implements Serializable{
     private Institucion institucionSelector;
     
     @PostConstruct
-    public void init(){
+    public void initialize(){
         institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
         loadInstituciones();
     }
@@ -86,6 +85,7 @@ public class InstitucionController implements Serializable{
     public void eliminarInstitucion(int idInstitucion){
         try {
             institucionRepo.delete(idInstitucion);
+            loadInstituciones();
         } catch (Exception e) {
         }
     }

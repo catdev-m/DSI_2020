@@ -16,14 +16,16 @@ import org.springframework.stereotype.Repository;
  * @author balmore
  */
 @Repository
-public interface InstitucionRepository extends JpaRepository<Institucion, String>{
+public interface InstitucionRepository extends JpaRepository<Institucion, Integer>{
     
     @Query(nativeQuery = true, value = "select * from institucion where status = 'A' ")
     public List<Institucion> institucionList();
     
     @Query(nativeQuery = true, value = "select * from institucion where idInstitucion = ?")
     public Institucion getInstitucionById(int id);
+    
+    
+    @Query(nativeQuery = true, value = "delete from institucion where idInstitucion = ?")
+    public void borrar(int id);
    
-    @Query(nativeQuery = true, value = "delete from 'institucion' where idInstitucion = ?")
-    public void delete(int idInstitucion);
 }

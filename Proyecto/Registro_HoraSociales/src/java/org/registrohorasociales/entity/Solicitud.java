@@ -37,7 +37,6 @@ public class Solicitud implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 7)
     @Column(name = "due")
     private String due;
     @Basic(optional = false)
