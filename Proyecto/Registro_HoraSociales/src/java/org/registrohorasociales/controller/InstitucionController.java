@@ -54,7 +54,7 @@ public class InstitucionController implements Serializable{
             ins.setRsInstitucion(formRs);
             ins.setRes(formRes);
             ins.setStatus("A");
-            institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+            //institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
             institucionRepo.save(ins);
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -74,14 +74,17 @@ public class InstitucionController implements Serializable{
     //UPDATE
     public void actualizarInstitucion(int id){
         try {
-            institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+            /*
+            lo que vamos a hacer para actualizar, es, cargar los datos de la fila seleccionada en los campos del form,
+            eliminar la linea seleccionada al presionar el botón guardar y luego insertar todo el registro de nuevo.
+            Mas o menos así
+            */
         } catch (Exception e) {
         }
     }
     //DELETE
     public void eliminarInstitucion(int idInstitucion){
         try {
-            //institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
             institucionRepo.delete(idInstitucion);
         } catch (Exception e) {
         }
