@@ -12,7 +12,7 @@
                     <div class="ui-g">
                         <div class="ui-g-12">
                             <div class="card card-w-title">
-                                <p:button value="Nueva Institucion" outcome="/GestionAdmin/InsertarInstitucion"/>
+                                
                                 <p:dataTable var="inst" value="#{institucionController.instituciones}" selectionMode="single" reflow="true"
                                              selection="#{institucionController.institucionSelector}" rowKey="#{inst.idInstitucion}" paginator="true" rows="10">
                                     
@@ -40,6 +40,11 @@
                                         </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
+                                
+                                <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                    <p:button value="Nueva Institucion" outcome="/GestionAdmin/InsertarInstitucion" icon="ui-icon-open-in-new"/>
+                                </p:panelGrid>
+                                
                             </div>
                         </div>
                     </div>
