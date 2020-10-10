@@ -31,8 +31,7 @@
                                     <p:column headerText="Acciones">
                                         <p:growl id="messageDelete" showDetail="true" />
                                         <p:commandButton update="messageDelete , tblInst" icon="ui-icon-trash" ajax="false"
-                                                         actionListener="#{institucionController.eliminarInstitucion(inst.idInstitucion)}"                                                       >
-                                           
+                                                         actionListener="#{institucionController.eliminarInstitucion(inst.idInstitucion)}">
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                             <p:commandButton action="/GestionAdmin/AdminInstitucion?faces-redirect=true" value="Sí" styleClass="ui-confirmdialog-no"/>
