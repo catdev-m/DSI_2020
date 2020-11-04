@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+ 
+    </ui:define>
+
+    <ui:define name="title">Listado de alumnos</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formTableEstudiante">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <p:dataTable var="estu" value="#{estudianteInstructorController.estudiantes}" selectionMode="single" reflow="true"
+                                     selection="#{estudianteInstructorController.estudianteSelector}" rowKey="#{estu.due}" paginator="true" rows="10">
+
+                            <f:facet name="header">
+                                <h3>Estudiantes bajo tu cargo</h3>
+                            </f:facet>
+                            <p:column headerText="DUE" sortBy="#{estu.due}">
+                                <a href="#">
+                                    <h:outputText value="#{estu.due}" />
+                                </a>
+                            </p:column>
+
+                            <p:column headerText="Nombre" sortBy="#{estu.nombres}">
+                                <h:outputText value="#{estu.nombres}" />
+                            </p:column>
+                            <p:column headerText="Apellidos" sortBy="#{estu.nombres}">
+                                <h:outputText value="#{estu.apellidos}" />
+                            </p:column>
+                            <p:column headerText="Carrera" sortBy="#{estu.nombres}">
+                                <h:outputText value="#{carreraController.findCarreraById(estu.idcarrera)}" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

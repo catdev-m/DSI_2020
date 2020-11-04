@@ -28,4 +28,6 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, String>{
                     + "and e.idInstructor = inst.id")
     public List<Object[]> estudiantesInfoList();
     
+    @Query(nativeQuery = true, value = "select * from estudiante where idInstructor= ?")
+    public List<Estudiante> estudiantesByInstructorList(String instructor);
 }

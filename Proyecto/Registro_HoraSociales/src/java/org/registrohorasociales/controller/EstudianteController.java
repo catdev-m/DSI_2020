@@ -71,7 +71,7 @@ public class EstudianteController implements Serializable {
         tutores = repoTutores.listaTutores();
         listaTutores = new ArrayList<>();
         listaTutores.clear();
-        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName())).forEachOrdered((c) -> {
+        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName()+car.getLastName())).forEachOrdered((c) -> {
             this.listaTutores.add(c);
         });
     }
@@ -81,7 +81,7 @@ public class EstudianteController implements Serializable {
         est = repoEstudiante.findByDue(due);
         est.setIdInstructor(formIdTutor);
         repoEstudiante.save(est);
-        System.out.println("Nombre: "+est.getNombres());
+        System.out.println("Nombre: " + est.getNombres());
     }
 
     public EstudianteRepository getRepoEstudiante() {

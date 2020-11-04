@@ -23,4 +23,7 @@ public interface IInstructorRepository extends JpaRepository<Instructor, String>
     
     @Query(nativeQuery = true, value = "select * from instructor")
     public List<Instructor> listaTutores();
+    
+    @Query(nativeQuery = true, value = "select * from instructor ")
+    public List<Object[]> estudiantesTutor();
 }

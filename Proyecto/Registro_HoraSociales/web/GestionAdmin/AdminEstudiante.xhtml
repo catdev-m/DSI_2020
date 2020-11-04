@@ -29,6 +29,12 @@
                             <p:column headerText="Nombre" sortBy="#{est.nombres}">
                                 <h:outputText value="#{est.nombres}" />
                             </p:column>
+                            <p:column headerText="Apellidos" sortBy="#{est.nombres}">
+                                <h:outputText value="#{est.apellidos}" />
+                            </p:column>
+                            <p:column headerText="Carrera" sortBy="#{est.nombres}">
+                                <h:outputText value="#{carreraController.findCarreraById(est.idcarrera)}" />
+                            </p:column>
                         <!--   <p:column headerText="Acciones" >
                                 <p:column>
                                     <p:growl id="messageEdit" showDetail="true" />
