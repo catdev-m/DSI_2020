@@ -15,9 +15,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManager;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Institucion;
 import org.registrohorasociales.repository.InstitucionRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -25,6 +27,7 @@ import org.registrohorasociales.repository.InstitucionRepository;
  */
 @ManagedBean
 @ViewScoped
+//@SessionScoped
 public class InstitucionController implements Serializable{
 
     private String formName, formHead, formTel, formMail, formRs, formRes;  //inputText elements
@@ -32,6 +35,7 @@ public class InstitucionController implements Serializable{
     private List<Institucion> instituciones;
     private List<SelectItem> listaInstituciones;
     private Institucion institucionSelector;
+    private EntityManager em;
     
     @PostConstruct
     public void initialize(){
@@ -40,7 +44,7 @@ public class InstitucionController implements Serializable{
     }
     public void loadInstituciones(){
         instituciones = new ArrayList<>();
-        instituciones = institucionRepo.institucionList();     //method to select * from institucion
+        instituciones = institucionRepo.institucionList();
     }
     //CREATE
     public void crearInstitucion(){
@@ -48,13 +52,13 @@ public class InstitucionController implements Serializable{
             Institucion ins = new Institucion();
             ins.setNomInstitucion(formName);
             ins.setEncInstitucion(formHead);
-            ins.setTelInstitucion(Integer.parseInt(formTel));
+            ins.setTelInstitucion(formTel);
             ins.setCorreoInstitucion(formMail);
             ins.setRsInstitucion(formRs);
-            ins.setRes(formRes);
-            ins.setStatus("A");
-            //institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+            ins.setResInstitucion(formRes);
+            ins.setStatusInstitucion('A');
             institucionRepo.save(ins);
+            clearFormInstitucion();
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error creating", ""));
@@ -64,30 +68,60 @@ public class InstitucionController implements Serializable{
     public void obtenerDatos(){
         setFormName(institucionSelector.getNomInstitucion());
         setFormHead(institucionSelector.getEncInstitucion());
-        int i = institucionSelector.getTelInstitucion();
-        setFormTel(Integer.toString(i));
+        setFormTel(institucionSelector.getTelInstitucion());
         setFormMail(institucionSelector.getCorreoInstitucion());
         setFormRs(institucionSelector.getRsInstitucion());
-        setFormRes(institucionSelector.getRes());
+        setFormRes(institucionSelector.getResInstitucion());
     }
     //UPDATE
-    public void actualizarInstitucion(int id){
+    public void actualizarInstitucion(){
         try {
             /*
             lo que vamos a hacer para actualizar, es, cargar los datos de la fila seleccionada en los campos del form,
             eliminar la linea seleccionada al presionar el botón guardar y luego insertar todo el registro de nuevo.
             Mas o menos así
             */
+            Institucion ins = new Institucion();
+            ins.setIdInstitucion(institucionSelector.getIdInstitucion());
+            ins.setNomInstitucion(formName);
+            ins.setEncInstitucion(formHead);
+            ins.setTelInstitucion(formTel);
+            ins.setCorreoInstitucion(formMail);
+            ins.setRsInstitucion(formRs);
+            ins.setResInstitucion(formRes);
+            ins.setStatusInstitucion('A');
+            institucionRepo.save(ins);
+            loadInstituciones();
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ACTUALIZADO la institucion: "+formName, "") );
+            clearFormInstitucion();
         } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al actualizar", ""));
         }
     }
     //DELETE
-    public void eliminarInstitucion(int idInstitucion){
+    public void eliminarInstitucion(){
         try {
-            institucionRepo.delete(idInstitucion);
+            institucionRepo.delete(institucionSelector.getIdInstitucion());
             loadInstituciones();
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO la institucion: "+formName, "") );
+            clearFormInstitucion();
         } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al eliminar", ""));
+            e.printStackTrace();
         }
+    }
+    public void clearFormInstitucion(){
+        formName = null;
+        formHead = null;
+        formTel = null;
+        formMail = null;
+        formRs = null;
+        formRes = null;
     }
     
         public String getFormName() {

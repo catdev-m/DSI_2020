@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,11 +34,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Institucion.findByTelInstitucion", query = "SELECT i FROM Institucion i WHERE i.telInstitucion = :telInstitucion")
     , @NamedQuery(name = "Institucion.findByCorreoInstitucion", query = "SELECT i FROM Institucion i WHERE i.correoInstitucion = :correoInstitucion")
     , @NamedQuery(name = "Institucion.findByRsInstitucion", query = "SELECT i FROM Institucion i WHERE i.rsInstitucion = :rsInstitucion")
-    , @NamedQuery(name = "Institucion.findByStatus", query = "SELECT i FROM Institucion i WHERE i.status = :status")})
+    , @NamedQuery(name = "Institucion.findByResInstitucion", query = "SELECT i FROM Institucion i WHERE i.resInstitucion = :resInstitucion")
+    , @NamedQuery(name = "Institucion.findByStatusInstitucion", query = "SELECT i FROM Institucion i WHERE i.statusInstitucion = :statusInstitucion")})
 public class Institucion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_institucion")
     private Integer idInstitucion;
@@ -47,33 +51,29 @@ public class Institucion implements Serializable {
     private String nomInstitucion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 60)
+    @Size(min = 1, max = 70)
     @Column(name = "enc_institucion")
     private String encInstitucion;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 16)
     @Column(name = "tel_institucion")
-    private int telInstitucion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 60)
-    @Column(name = "correo_institucion")
-    private String correoInstitucion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "rs_institucion")
-    private String rsInstitucion;
+    private String telInstitucion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
-    @Column(name = "res")
-    private String res;
+    @Column(name = "correo_institucion")
+    private String correoInstitucion;
+    @Size(max = 255)
+    @Column(name = "rs_institucion")
+    private String rsInstitucion;
+    @Size(max = 255)
+    @Column(name = "res_institucion")
+    private String resInstitucion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "status")
-    private String status;
+    @Column(name = "status_institucion")
+    private Character statusInstitucion;
 
     public Institucion() {
     }
@@ -82,15 +82,13 @@ public class Institucion implements Serializable {
         this.idInstitucion = idInstitucion;
     }
 
-    public Institucion(Integer idInstitucion, String nomInstitucion, String encInstitucion, int telInstitucion, String correoInstitucion, String rsInstitucion, String res, String status) {
+    public Institucion(Integer idInstitucion, String nomInstitucion, String encInstitucion, String telInstitucion, String correoInstitucion, Character statusInstitucion) {
         this.idInstitucion = idInstitucion;
         this.nomInstitucion = nomInstitucion;
         this.encInstitucion = encInstitucion;
         this.telInstitucion = telInstitucion;
         this.correoInstitucion = correoInstitucion;
-        this.rsInstitucion = rsInstitucion;
-        this.res = res;
-        this.status = status;
+        this.statusInstitucion = statusInstitucion;
     }
 
     public Integer getIdInstitucion() {
@@ -117,11 +115,11 @@ public class Institucion implements Serializable {
         this.encInstitucion = encInstitucion;
     }
 
-    public int getTelInstitucion() {
+    public String getTelInstitucion() {
         return telInstitucion;
     }
 
-    public void setTelInstitucion(int telInstitucion) {
+    public void setTelInstitucion(String telInstitucion) {
         this.telInstitucion = telInstitucion;
     }
 
@@ -141,20 +139,20 @@ public class Institucion implements Serializable {
         this.rsInstitucion = rsInstitucion;
     }
 
-    public String getRes() {
-        return res;
+    public String getResInstitucion() {
+        return resInstitucion;
     }
 
-    public void setRes(String res) {
-        this.res = res;
+    public void setResInstitucion(String resInstitucion) {
+        this.resInstitucion = resInstitucion;
     }
 
-    public String getStatus() {
-        return status;
+    public Character getStatusInstitucion() {
+        return statusInstitucion;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusInstitucion(Character statusInstitucion) {
+        this.statusInstitucion = statusInstitucion;
     }
 
     @Override
@@ -171,10 +169,7 @@ public class Institucion implements Serializable {
             return false;
         }
         Institucion other = (Institucion) object;
-        if ((this.idInstitucion == null && other.idInstitucion != null) || (this.idInstitucion != null && !this.idInstitucion.equals(other.idInstitucion))) {
-            return false;
-        }
-        return true;
+        return !((this.idInstitucion == null && other.idInstitucion != null) || (this.idInstitucion != null && !this.idInstitucion.equals(other.idInstitucion)));
     }
 
     @Override

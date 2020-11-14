@@ -1,57 +1,88 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
-
+    <ui:define name="title">Registro de Institucinoes</ui:define>
     <ui:define name="content">
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <h:form id="formtadminIns">
-                    <div class="ui-g">
-                        <div class="ui-g-12">
-                            <div class="card card-w-title">
-                                
-                                <p:dataTable var="inst" value="#{institucionController.instituciones}" id="tblInst" selectionMode="single" reflow="true"
-                                             selection="#{institucionController.institucionSelector}" rowKey="#{inst.idInstitucion}" paginator="true" rows="10">
-                                    
-                                    <f:facet name="header">
-                                        <h3>Instituciones Disponibles</h3>
-                                    </f:facet>
-                                    <p:column headerText="Nombre de Institución">
-                                        <h:outputText value="#{inst.nomInstitucion}" />
-                                    </p:column>
-                                    <p:column headerText="Encargado de Institucion">
-                                        <h:outputText value="#{inst.encInstitucion}"/>
-                                    </p:column>
-                                    <p:column headerText="Teléfono de Institucion">
-                                        <h:outputText value="#{inst.telInstitucion}"/>
-                                    </p:column>
-                                    <p:column headerText="Acciones">
-                                        <p:growl id="messageDelete" showDetail="true" />
-                                        <p:commandButton update="messageDelete , tblInst" icon="ui-icon-trash" ajax="false"
-                                                         actionListener="#{institucionController.eliminarInstitucion(inst.idInstitucion)}">
-                                        </p:commandButton>
-                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                            <p:commandButton action="/GestionAdmin/AdminInstitucion?faces-redirect=true" value="Sí" styleClass="ui-confirmdialog-no"/>
-                                            <p:commandButton action="/GestionAdmin/AdminInstitucion?faces-redirect=true" value="No" styleClass="ui-confirmdialog-no"/>
-                                        </p:confirmDialog>
-                                    </p:column>
-                                </p:dataTable>
-                                
-                                <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                    <p:button value="Nueva Institucion" outcome="/GestionAdmin/InsertarInstitucion" icon="ui-icon-open-in-new"/>
-                                </p:panelGrid>
-                                
-                            </div>
+        <h:form id="institucionform">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de Instituciones</h1>
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <!-- NOMBRE DE INSTITUCION-->
+                                <p:outputLabel for="nomInstitucion" value="Nombre"/>
+                                <p:inputText value="#{institucionController.formName}" id="nomInstitucion" required="true"/>
+                                <!-- ENCARGADO INSTITUCION-->
+                                <p:outputLabel for="encInstitucion" value="Encargado"/>
+                                <p:inputText value="#{institucionController.formHead}" id="encInstitucion" required="true"/>
+                                <!-- TELEFONO INSTITUCION-->
+                                <p:outputLabel for="telInstitucion" value="Teléfono"/>
+                                <p:inputMask value="#{institucionController.formTel}" id="telInstitucion" required="true" validatorMessage="Teléfono Incorrecto" mask="+(999) 9999-9999">
+                                    <f:validateRegex pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"/>
+                                </p:inputMask>
+                                <!-- CORREO DE INSTITUCION-->
+                                <p:outputLabel for="correoInstitucion" value="Correo"/>
+                                <p:inputText value="#{institucionController.formMail}" id="correoInstitucion" required="true" validatorMessage="Correo incorrecto">
+                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                </p:inputText>
+                                <!-- RAZON SOCIAL INSTITUCION-->
+                                <p:outputLabel for="rsInstitucion" value="Razón Social"/>
+                                <p:inputText value="#{institucionController.formRs}" id="rsInstitucion" required="false"/>
+                                <!-- RESEÑA INSTITUCION-->
+                                <p:outputLabel for="resInstitucion" value="Reseña"/>
+                                <p:inputText value="#{institucionController.formRes}" id="resInstitucion" required="false"/>
+                                <br/><br/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:commandButton id="guardarInstitucion" update="growl, institucionesTbl" ajax="false"
+                                                 action="#{institucionController.crearInstitucion()}" value="Guardar" icon="ui-icon-open-in-new"/>
+                                <p:commandButton id="limpiarFormInstitucion" update="institucionform" process="@this"
+                                                 action="#{institucionController.clearFormInstitucion()}" value="Limpiar" icon="ui-icon-open-in-new"/>
+                                <p:commandButton id="eliminarInstitucion" update="growl, institucionesTbl" ajax="false"
+                                                 action="#{institucionController.eliminarInstitucion()}" value="Eliminar" icon="ui-icon-open-in-new"/>
+                                <p:commandButton id="actualizarInstitucion" update="growl, institucionesTbl" ajax="false"
+                                                 action="#{institucionController.actualizarInstitucion()}" value="Actualizar" icon="ui-icon-open-in-new"/>
+                            </p:panelGrid>
                         </div>
                     </div>
-                </h:form>
+                </div>
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Instructores registrados</h1>
+                        <p:dataTable id="institucionesTbl" var="inst" value="#{institucionController.instituciones}" selectionMode="single" reflow="true"
+                                     selection="#{institucionController.institucionSelector}" rowKey="#{inst.idInstitucion}" paginator="true" rows="10">
+                            <p:ajax listener="#{institucionController.obtenerDatos()}" update="institucionform" event="rowSelect"/>
+                            <f:facet name="header">
+                                Instituciones
+                            </f:facet>
+                            <!-- COLUMNA NOMBRE INSTITUCION-->
+                            <p:column headerText="Institucion">
+                                <h:outputText value="#{inst.nomInstitucion}"/>
+                            </p:column>
+                            <!-- COLUMNA ENCARGADO INSTITUCION-->
+                            <p:column headerText="Encargado">
+                                <h:outputText value="#{inst.encInstitucion}"/>
+                            </p:column>
+                            <!-- COLUMNA TELEFONO CONTACTO INSTITUCION-->
+                            <p:column headerText="Teléfono">
+                                <h:outputText value="#{inst.telInstitucion}"/>
+                            </p:column>
+                            <!-- COLUMNA ESTADO INSTITUCION-->
+                            <p:column headerText="Estado">
+                                <h:outputText value="#{inst.statusInstitucion == 'A'?'Activo':'Inactivo'}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
             </div>
-        </div>
 
-
+        </h:form>
     </ui:define>
 
 </ui:composition>
