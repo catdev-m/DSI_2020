@@ -27,9 +27,11 @@ import javax.mail.internet.MimeMessage;
 import org.primefaces.PrimeFaces;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.dto.EscuelaInfoDto;
+import org.registrohorasociales.dto.EstudianteInfoDto;
 import org.registrohorasociales.dto.InstructorInfoDto;
 import org.registrohorasociales.entity.Carrera;
 import org.registrohorasociales.entity.Escuela;
+import org.registrohorasociales.entity.Estudiante;
 import org.registrohorasociales.entity.Instructor;
 import org.registrohorasociales.entity.RolUsuario;
 import org.registrohorasociales.entity.RolUsuarioPK;
@@ -42,6 +44,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.registrohorasociales.repository.IInstructorRepository;
 import org.registrohorasociales.repository.ParametroRepository;
 import org.registrohorasociales.utils.SendMail;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -128,6 +132,8 @@ public class instructorController implements Serializable {
             e.printStackTrace();
         }
     }
+    
+
 
     public String crearInstructor() {
         try {

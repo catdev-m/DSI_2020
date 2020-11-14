@@ -10,10 +10,10 @@ package org.registrohorasociales.dto;
  * @author denisse_mejia
  */
 public class EstudianteInfoDto {
-    private String due;
-    private String nombres;
-    private String apellidos;
-    private String correo;
+    public String due;
+    public String nombres;
+    public String apellidos;
+    public String correo;
     private String clave;
     private int cicloInicio;
     private int idcarrera;
