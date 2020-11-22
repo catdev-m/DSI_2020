@@ -36,8 +36,9 @@
                                 <h:outputText value="#{FileList.ruta}" />
                             </p:column>
                             <p:column headerText="">
-                                <p:linkButton outcome="Archivos" value="Agregar comentario" icon="ui-icon-comment">
-                                    <f:param name="productId" value="20" />
+                                <p:linkButton outcome="Archivos" value="Agregar Observaciones" icon="ui-icon-comment">
+                                    <f:param name="usr" value="#{FileList.usuario}" />
+                                    <f:param name="fileId" value="#{FileList.id_archivo}" />
                                 </p:linkButton>
                             </p:column>
                             
