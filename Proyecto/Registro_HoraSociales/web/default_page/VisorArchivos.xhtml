@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+ <ui:define name="title">Lista de archivos</ui:define>
+
+    <ui:define name="content">
+        <h:form id="instructorform">
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
+             <div class="ui-g">   
+                   
+                     <div class="card card-w-title">
+                        <h1>Lista de archivos entregados</h1>
+                        <p:dataTable id="ArchivoTbl" var="FileList" value="#{archivoController.listadoArchivos}"
+                                     selectionMode="single" reflow="true"
+                                     selection="#{archivoController.archivoSelecter}" 
+                                     rowKey="#{FileList.id_archivo}" paginator="true" rows="10">
+                            
+                            <f:facet name="header">
+                                
+                            </f:facet>
+                            
+                            <p:column headerText="Estudiante">
+                                <h:outputText value="#{FileList.nombreUsr}" />
+                            </p:column>
+                            <p:column headerText="Contenido">
+                                <h:outputText value="#{FileList.descripcionContent}" />
+                            </p:column>
+                            <p:column headerText="Fecha cargado">
+                                <h:outputText value="#{FileList.fechaCarga}" />
+                            </p:column>
+                            <p:column headerText="Enlace">
+                                <h:outputText value="#{FileList.ruta}" />
+                            </p:column>
+                            <p:column headerText="Comentarios">
+                                <p:linkButton outcome="Archivos" value="Agregar comentario" icon="mode-comment">
+                                    <f:param name="productId" value="20" />
+                                </p:linkButton>
+                            </p:column>
+                            
+                         </p:dataTable>
+                    </div>
+                </div>
+        </h:form>
+    </ui:define>
+        
+</ui:composition>

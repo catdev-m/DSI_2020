@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="titulo">Registro de una institución</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="growl-crearInstitucion" showDetail="true" sticky="true"/>
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de Institucion</h1>
+                            <h:form id="formCrearInstitucion">
+                                   
+                                <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                    
+                                    <p:outputLabel for="name" value="Nombre de Institución"/>  
+                                    <p:inputText value="#{institucionController.formName}" id="name" required="true"/>
+                                    
+                                    <p:outputLabel for="encargado" value="Encargado"/>
+                                    <p:inputText value="#{institucionController.formHead}" id="encargado" required="true"/>
+                                    
+                                    <p:outputLabel for="phone" value="Teléfono"/>
+                                    <p:inputNumber value="#{institucionController.formTel}" id="phone" required="true"/>
+                                    
+                                    <p:outputLabel for="dir" value="Dirección de Correo"/>
+                                    <p:inputText value="#{institucionController.formMail}" id="dir" required="true" validatorMessage="Email Invalido">
+                                    <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                    </p:inputText>
+                                    
+                                    <p:outputLabel for="rsocial" value="Razón Social"/>
+                                    <p:inputText value="#{institucionController.formRs}" id="rsocial" required="true"/>
+                                    
+                                    <p:outputLabel for="resena" value="Reseña"/>
+                                    <p:inputText value="#{institucionController.formRes}" id="resena" required="true"/>
+
+                                    <br/><br/><br/>
+                                </p:panelGrid>
+                                <p:commandButton  ajax="false" action="/GestionAdmin/AdminInstitucion?faces-redirect=true" actionListener="#{institucionController.crearInstitucion()}"
+                                                 value="Guardar" icon="ui-icon-open-in-new" style="max-width: 150px;"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
