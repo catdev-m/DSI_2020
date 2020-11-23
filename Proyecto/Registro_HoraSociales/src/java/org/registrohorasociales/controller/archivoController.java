@@ -5,15 +5,10 @@
  */
 package org.registrohorasociales.controller;
 
+import java.io.File;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,7 +18,6 @@ import org.registrohorasociales.entity.Archivo;
 import org.registrohorasociales.repository.IArchivoRepository;
 
 /**
- *
  * @author denisse_mejia
  */
 @ViewScoped
@@ -57,7 +51,7 @@ public class archivoController implements Serializable{
             i.descripcionContent = o[2].toString();
             i.usuario = o[3].toString();
             i.fechaCarga = o[4].toString();
-            i.nombreUsr = o[5].toString() + o[6].toString();
+            i.nombreUsr = o[5].toString() +" "+ o[6].toString();
             
             listadoArchivos.add(i);
             });
@@ -66,7 +60,30 @@ public class archivoController implements Serializable{
         }
         
     }
+    
+    public void CrearDirectorio(){
+      try {
+      //Se crea la carpeta del estudiante según id de usuario + fecha actual 
+      String path;
+      boolean bool =false;
+      path = "C:"+File.separator+"Users"+File.separator+"denisse_mejia"+File.separator+"Desktop"+File.separator+"Carga_archivos"+File.separator+"prueba2";
+      
+      File file = new File(path);
+      //Creación del directorio
 
+
+      if (!file.exists()) {   
+        bool = file.mkdirs();
+      }
+      
+      if(bool){
+         System.out.println("Directory created successfully");
+      }
+      }catch(Exception e) {
+            e.printStackTrace();
+      }
+    }
+    
     public List<CargasArchInfoDto> getListadoArchivos() {
         return listadoArchivos;
     }
