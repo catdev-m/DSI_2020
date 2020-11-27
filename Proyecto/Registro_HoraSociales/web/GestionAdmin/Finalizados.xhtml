@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+    </ui:define>
+
+    <ui:define name="title">titulo</ui:define>
+
+    <ui:define name="content">
+        <h:form id="finForm">
+                        <p:growl id="growl" showDetail="true" sticky="true" /> 
+             <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Estudiantes finalizados</h1>
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <h:outputLabel for="due" value="DUE"/>
+                                <h:inputText id="due" value="#{finalizadoController.formDue}" required="true" disabled="true"/>
+                                
+                                <h:outputLabel for="nombres" value="Nombres"/>
+                                <h:inputText id="nombres" value="#{finalizadoController.formNombres}" required="true"/>
+                                
+                                <h:outputLabel for="apellidos" value="Apellidos"/>
+                                <h:inputText id="apellidos" value="#{finalizadoController.formApellidos}" required="true"/>
+                                
+                            </p:panelGrid>
+                            <p:panelGrid>
+                                <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                    <p:commandButton id="guardar" update="growl,finTable" ajax="false" actionListener="#{finalizadoController.editFinalizado()}" value="Guardar" icon="ui-icon-open-in-new" action="/GestionAdmin/Finalizados?redirect=true"/>
+                                    <p:commandButton id="limpiar" update="finForm" process="@this" action="#{finalizadoController.clearForm()}" value="Limpiar" icon="ui-icon-open-in-new">
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            
+                        </div>
+                    </div>
+             </div>
+            <p:growl id="msgs" showDetail="true"/>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <p:dataTable id="finTable" var="final" value="#{finalizadoController.finalizados}" selectionMode="single" reflow="true"
+                                     selection="#{finalizadoController.finSelector}" rowKey="#{final.due}" paginator="true" rows="10"
+                                     widgetVar="tablaFinalizado" globalFilterFunction="#{finalizadoController.gloalFilterFunction}">
+                            <p:ajax listener="#{finalizadoController.obtenerDatos()}" update="finForm" event="rowSelect"/>
+                            <f:facet name="header">
+                                <h3>Listado de Alumnos que han finalizado el servicio social</h3>
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar: "/>
+                                    <p:inputText id="globalFilter" onkeyup="PF('tablaFinalizado').filter()" placeholder="Digite el due" style="color: #ffffff" />
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column headerText="DUE" >
+                                    <h:outputText value="#{final.due}" />
+                            </p:column>
+                            <p:column headerText="Nombres">
+                                <h:outputText value="#{final.nombres}"/>
+                            </p:column>
+                            <p:column headerText="Apellidos">
+                                <h:outputText value="#{final.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Imprimir certificación">
+                                <p:column>
+                                    <p:growl id="accept" />
+                                    <p:commandButton icon="ui-icon-check" action="/GestionAdmin/Finalizados?faces-redirect=true" actionListener="null" update="accept">
+                                        <p:confirm header="Confirmation" message="¿Generar certificación a #{final.due}?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

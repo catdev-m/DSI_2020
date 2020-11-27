@@ -6,8 +6,10 @@
 package org.registrohorasociales.controller;
 
 import java.io.Serializable;
+import static java.lang.Integer.getInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -32,6 +34,7 @@ public class EstudianteController implements Serializable {
     private EstudianteRepository repoEstudiante;
     private IInstructorRepository repoTutores;
     private List<Estudiante> estudiantes;
+    private List<Estudiante> estudiantesFilter;
     private List<Estudiante> sintutor;
     private List<Instructor> tutores;
     private List<SelectItem> listaTutores;
@@ -64,6 +67,11 @@ public class EstudianteController implements Serializable {
                 sintutor.add(e);
             }
         }
+    }
+    
+    public void eliminarEstudiante(String due){
+        repoEstudiante = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
+        repoEstudiante.delete(due);
     }
     
     public void loadInstructores(){
@@ -186,6 +194,28 @@ public class EstudianteController implements Serializable {
 
     public void setListaTutores(List<SelectItem> listaTutores) {
         this.listaTutores = listaTutores;
+    }
+
+    public List<Estudiante> getEstudiantesFilter() {
+        return estudiantesFilter;
+    }
+
+    public void setEstudiantesFilter(List<Estudiante> estudiantesFilter) {
+        this.estudiantesFilter = estudiantesFilter;
+    }
+    
+    public boolean globalFilterFunction(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
+        if (filterText == null || filterText.equals("")) {
+            return true;
+        }
+        String filterInt = (filterText);
+        System.out.println("Aqui estoy imprimiendo alv: "+filterInt);
+ 
+        Estudiante est = (Estudiante) value;
+        return est.getDue().toLowerCase().contains(filterText)
+                ||est.getNombres().toLowerCase().contains(filterText)
+                ||est.getApellidos().toLowerCase().contains(filterText);
     }
     
 }
