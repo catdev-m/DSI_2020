@@ -16,6 +16,8 @@ import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.dto.CargasArchInfoDto;
 import org.registrohorasociales.entity.Archivo;
 import org.registrohorasociales.repository.IArchivoRepository;
+import org.registrohorasociales.repository.UsuarioRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author denisse_mejia
@@ -25,6 +27,7 @@ import org.registrohorasociales.repository.IArchivoRepository;
 public class archivoController implements Serializable{
     
     private IArchivoRepository archivoRepository;
+    private UsuarioRepository usrRepository;
     private List<CargasArchInfoDto> listadoArchivos;
     private Archivo archivoSelecter;
     
@@ -35,6 +38,7 @@ public class archivoController implements Serializable{
     
     @PostConstruct
      public void init() {
+        usrRepository = ApplicationContextProvider.getApplicationContext().getBean(UsuarioRepository.class);
         archivoRepository = ApplicationContextProvider.getApplicationContext().getBean(IArchivoRepository.class);
         loadArchivo();
      }
@@ -42,9 +46,10 @@ public class archivoController implements Serializable{
     public void loadArchivo() {
         listadoArchivos = new ArrayList<>();
         
-        System.out.print(archivoRepository.ArchivoList().size());
         try {
-          archivoRepository.ArchivoList().forEach(o -> {
+          final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+           System.out.println("Cantidad de elementos File "+archivoRepository.ArchivoList(currentUserName).size());
+          archivoRepository.ArchivoList(currentUserName).forEach(o -> {
             CargasArchInfoDto i = new CargasArchInfoDto();
             i.id_archivo = o[0].toString();
             i.ruta = o[1].toString();
@@ -101,6 +106,15 @@ public class archivoController implements Serializable{
         
     }
 
+    public UsuarioRepository getUsrRepository() {
+        return usrRepository;
+    }
+
+    public void setUsrRepository(UsuarioRepository usrRepository) {
+        this.usrRepository = usrRepository;
+    }
+    
+    
     public String getFormNombre() {
         return formNombre;
     }

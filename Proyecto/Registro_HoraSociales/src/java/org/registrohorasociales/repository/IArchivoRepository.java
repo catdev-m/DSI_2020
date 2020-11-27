@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IArchivoRepository extends JpaRepository<Archivo, String>{
     @Query(nativeQuery = true, value = "select id_file, url, descripcion, carnet, fecha, nombres, apellidos from archivo, estudiante \n" +
-                                        "where archivo.carnet = estudiante.due order by fecha desc ")
-    public List<Object[]> ArchivoList();
+                                        "where archivo.carnet = estudiante.due and archivo.carnet = ? order by fecha desc ")
+    public List<Object[]> ArchivoList(String i);
     
     @Query(nativeQuery = true, value = "select * from archivo")
     public List<Archivo> listaArchivo();

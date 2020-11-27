@@ -7,7 +7,7 @@ import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
-import org.registrohorasociales.controller.loginSecurity;
+import org.registrohorasociales.controller.LoginSecurity;
 import org.registrohorasociales.dto.MenuPrincipalDto;
 import org.registrohorasociales.entity.Rol;
 import org.registrohorasociales.entity.Usuario;
@@ -44,7 +44,7 @@ public class AuthenticationProviderHs implements AuthenticationProvider{
     List<MenuPrincipalDto> menuPpal = new ArrayList<>();
     BCryptPasswordEncoder vpass = new BCryptPasswordEncoder(12);
     FacesContext facesContext = FacesContext.getCurrentInstance();
-        loginSecurity sec = (loginSecurity) facesContext.getApplication().getELResolver().getValue(facesContext.getELContext(), null, "loginSecurity");
+        LoginSecurity sec = (LoginSecurity) facesContext.getApplication().getELResolver().getValue(facesContext.getELContext(), null, "loginSecurity");
         Authentication authRet = null;
         List<GrantedAuthority> roles = new ArrayList<>();
         GrantedAuthority role = null;

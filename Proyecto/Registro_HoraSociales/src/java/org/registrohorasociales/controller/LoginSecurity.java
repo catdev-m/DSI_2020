@@ -43,7 +43,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @SessionScoped
 @ManagedBean
-public class loginSecurity implements Serializable{
+public class LoginSecurity implements Serializable{
 
     private String usuario;
     private String password;
@@ -61,7 +61,7 @@ public class loginSecurity implements Serializable{
     private MenuModel model;
       
       
-    public loginSecurity() {
+    public LoginSecurity() {
     }
     
     public String ingresar(){
@@ -99,10 +99,8 @@ public class loginSecurity implements Serializable{
         } catch (ServletException | IOException ex) {
         }
         
-        
-        
-
     }
+    
     public String crearUsuario(){
         try {
         usuarioRepository = ApplicationContextProvider.getApplicationContext().getBean(UsuarioRepository.class);
