@@ -22,4 +22,5 @@
     <system systemId="http://www.springframework.org/schema/tx/spring-tx-4.2.xsd" uri="www.springframework.org/schema/tx/spring-tx-4.2.xsd"/>
     <system systemId="https://www.springframework.org/schema/beans/spring-beans-4.2.xsd" uri="www.springframework.org/schema/beans/spring-beans-4.2.xsd"/>
     <system systemId="https://www.springframework.org/schema/tool/spring-tool-4.2.xsd" uri="www.springframework.org/schema/tool/spring-tool-4.2.xsd"/>
+    <system systemId="http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" uri="jasperreports.sourceforge.net/xsd/jasperreport.xsd"/>
 </catalog>
