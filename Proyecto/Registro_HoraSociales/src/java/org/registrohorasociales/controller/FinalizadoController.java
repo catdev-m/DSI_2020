@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
@@ -64,11 +63,9 @@ public class FinalizadoController implements Serializable {
             fin.setCarrera(fin2.getCarrera());
             finRepo.save(fin);
         } else {
-            
         }
-
-        
     }
+    
 
     public void obtenerDatos() {
         setFormDue(finSelector.getDue());

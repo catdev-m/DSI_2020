@@ -39,7 +39,9 @@
                             
                         </div>
                     </div>
-             </div>
+             </div>       
+        </h:form>
+        <h:form>
             <p:growl id="msgs" showDetail="true"/>
             <div class="ui-g">
                 <div class="ui-g-12">
@@ -67,7 +69,7 @@
                             <p:column headerText="Imprimir certificación">
                                 <p:column>
                                     <p:growl id="accept" />
-                                    <p:commandButton icon="ui-icon-check" action="/GestionAdmin/Finalizados?faces-redirect=true" actionListener="null" update="accept">
+                                    <p:commandButton icon="ui-icon-check" action="/GestionAdmin/Finalizados?faces-redirect=true" actionListener="#{certificaion.generarCertifiacion(final.due, final.nombres, final.apellidos, final.carrera)}" update="accept">
                                         <p:confirm header="Confirmation" message="¿Generar certificación a #{final.due}?" icon="ui-icon-alert"/>
                                     </p:commandButton>
 
@@ -82,8 +84,7 @@
                     </div>
                 </div>
             </div>
-        </h:form>
-
+</h:form>
     </ui:define>
 
 </ui:composition>
