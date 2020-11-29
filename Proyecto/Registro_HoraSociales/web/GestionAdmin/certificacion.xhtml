@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+    </ui:define>
+
+    <ui:define name="title">Listado de carreras</ui:define>
+
+    <ui:define name="content">
+        <h:form id="certificacionForm">
+                        <p:growl id="growl" showDetail="true" sticky="true" /> 
+             <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Datos para certifiación</h1>
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <h:outputLabel for="id" value="Id"/>
+                                <h:inputText id="id" value="#{certificacionContrller.formId}" required="true" disabled="true"/>
+                                
+                                <h:outputLabel for="due" value="Titulo"/>
+                                <h:inputText id="due" value="#{certificacionContrller.formTitulo}" required="true"/>
+                                
+                                <h:outputLabel for="nombres" value="Nombres"/>
+                                <h:inputText id="nombres" value="#{certificacionContrller.formNombre}" required="true"/>
+                                
+                                <h:outputLabel for="apellidos" value="Cargo"/>
+                                <h:inputText id="apellidos" value="#{certificacionContrller.formCargo}" required="true"/>
+                                
+                            </p:panelGrid>
+                            <p:panelGrid>
+                                <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                    <p:commandButton id="guardar" update="growl,tablaCertificacion" ajax="false" actionListener="#{finalizadoController.editFinalizado()}" value="Guardar" icon="ui-icon-open-in-new" action="/GestionAdmin/Finalizados?redirect=true"/>
+                                    <p:commandButton id="limpiar" update="certificacionForm" process="@this" action="#{finalizadoController.clearForm()}" value="Limpiar" icon="ui-icon-open-in-new">
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            
+                        </div>
+                    </div>
+             </div>       
+        </h:form>
+        <h:form >
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <p:dataTable id="tableCertificacion" var="datos" value="#{certificacionContrller.datos}" selectionMode="single"
+                                     widgetVar="tablaCertificacion" rowKey="#{datos.id}" selection="#{certificacionContrller.datosSelector}"> 
+                            <p:ajax listener="#{certificacionContrller.obtenerDatos()}" update="certificacionForm" event="rowSelect"/>
+                            <p:column headerText="Titulo">
+                                <h:outputText value="#{datos.titulo}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre" sortBy="#{datos.nombre}">
+                                <h:outputText value="#{datos.nombre}" />
+                            </p:column>
+                            <p:column headerText="Cargo" sortBy="#{datos.cargo}">
+                                <h:outputText value="#{datos.cargo}" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
