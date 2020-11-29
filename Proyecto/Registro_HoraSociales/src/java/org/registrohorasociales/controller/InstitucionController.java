@@ -35,7 +35,6 @@ public class InstitucionController implements Serializable{
     private List<Institucion> instituciones;
     private List<SelectItem> listaInstituciones;
     private Institucion institucionSelector;
-    private EntityManager em;
     
     @PostConstruct
     public void initialize(){
