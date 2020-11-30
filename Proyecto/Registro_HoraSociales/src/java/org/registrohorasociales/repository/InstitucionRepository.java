@@ -21,7 +21,7 @@ public interface InstitucionRepository extends JpaRepository<Institucion, Intege
     @Query(nativeQuery = true, value = "select * from institucion")
     public List<Institucion> institucionList();
     
-    @Query(nativeQuery = true, value = "select * from institucion where idInstitucion = ?")
+    @Query(nativeQuery = true, value = "select * from institucion where id_institucion = ?")
     public Institucion getInstitucionById(int id);
    
 }

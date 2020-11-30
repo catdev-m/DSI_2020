@@ -16,10 +16,12 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -28,6 +30,7 @@ import java.util.Locale;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.registrohorasociales.entity.Datoscertificacion;
+import org.registrohorasociales.entity.Institucion;
 import org.registrohorasociales.entity.Proyecto;
 import org.registrohorasociales.entity.RelacionEstudianteProyecto;
 
@@ -49,31 +52,36 @@ public class Certificaion implements Serializable {
     public void generarCertifiacion(String formDue, String formNombres, String formApellidos, String formCarrera) throws FileNotFoundException, BadElementException, IOException {
         try {
             Font font = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+            Font font2 = new Font(Font.FontFamily.TIMES_ROMAN, 11, Font.BOLD);
             Month mes = LocalDate.now().getMonth();
             Calendar c = Calendar.getInstance();
             Datoscertificacion jefe = cerController.findDatosById(1);
             Datoscertificacion vice = cerController.findDatosById(2);
             RelacionEstudianteProyecto rep = repController.findRelacionByDue(formDue);
             String[] fecha = rep.getFechaInicio().split("/");
-            String mes1 = MES[Integer.parseInt(fecha[1])-1];
+            String mes1 = MES[Integer.parseInt(fecha[1]) - 1];
             String[] fechaf = rep.getFechaFinal().split("/");
-            String mes2 = MES[Integer.parseInt(fechaf[1])-1];
-            Proyecto proy = proyController.findProyectoById(1);
+            String mes2 = MES[Integer.parseInt(fechaf[1]) - 1];
+            Proyecto proy = proyController.findProyectoById(rep.getIdProyecto());
+            Institucion ins = instiController.obtenerInstitucionById(proy.getIdInstitucion());
             String car = carController.findCarreraById(Integer.parseInt(formCarrera));
             String usuario = System.getProperty("user.name");
+
+            
             Document document = new Document();
             FileOutputStream file = new FileOutputStream("C:\\Users\\" + usuario + "\\Downloads\\certificacion.pdf");
             PdfWriter.getInstance(document, file);
             document.open();
-            Image imagen = Image.getInstance("C:\\Users\\miguel\\Documents\\prueba\\DSI_2020\\Proyecto\\Registro_HoraSociales\\src\\java\\org\\registrohorasociales\\utils\\encabezado.jpeg");
+
+            Image imagen = Image.getInstance("encabezado.jpeg");
             imagen.setAlignment(Element.ALIGN_CENTER);
             imagen.scaleAbsolute(500, 100);
             document.add(imagen);
             BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.WINANSI, false);
             PdfPTable table1 = new PdfPTable(2);
-            Paragraph pname = new Paragraph("NOMBRE",font);
-            Paragraph pdue = new Paragraph("DUE",font);
-            Paragraph pcarrera = new Paragraph("CARRERA",font);
+            Paragraph pname = new Paragraph("NOMBRE", font);
+            Paragraph pdue = new Paragraph("DUE", font);
+            Paragraph pcarrera = new Paragraph("CARRERA", font);
             table1.addCell(pname);
             table1.addCell(formNombres + ", " + formApellidos);
             table1.addCell(pdue);
@@ -88,14 +96,10 @@ public class Certificaion implements Serializable {
             table2.setWidthPercentage(100);
             PdfPTable table3 = new PdfPTable(2);
             table3.getDefaultCell().setBorder(0);
-            Paragraph pcell = new Paragraph(vice.getTitulo() + " " + vice.getNombre());
-            Paragraph pcell2 = new Paragraph(jefe.getTitulo()+ " " + jefe.getNombre());
-            Paragraph pcell3 = new Paragraph(vice.getCargo());
-            Paragraph pcell4 = new Paragraph(jefe.getCargo());
+            Paragraph pcell = new Paragraph(vice.getTitulo().toUpperCase() + " " + vice.getNombre().toUpperCase()+"\n"+vice.getCargo().toUpperCase(),font2);
+            Paragraph pcell2 = new Paragraph(jefe.getTitulo().toUpperCase() + " " + jefe.getNombre().toUpperCase()+"\n"+jefe.getCargo().toUpperCase(),font2);
             pcell.setAlignment(Element.ALIGN_CENTER);
             pcell2.setAlignment(Element.ALIGN_CENTER);
-            pcell3.setAlignment(Element.ALIGN_CENTER);
-            pcell4.setAlignment(Element.ALIGN_CENTER);
             PdfPCell cell = new PdfPCell();
             PdfPCell cell2 = new PdfPCell();
             PdfPCell cell3 = new PdfPCell();
@@ -106,8 +110,6 @@ public class Certificaion implements Serializable {
             cell4.setBorder(0);
             cell.addElement(pcell);
             cell2.addElement(pcell2);
-            cell3.addElement(pcell3);
-            cell4.addElement(pcell4);
             table3.addCell(cell);
             table3.addCell(cell2);
             table3.addCell(cell3);
@@ -117,15 +119,15 @@ public class Certificaion implements Serializable {
             table4.setWidths(medidaCeldas);
             table4.setWidthPercentage(100);
             table4.addCell("LUGAR");
-            table4.addCell("LUGAR SIN REGISTRAR");
+            table4.addCell(ins.getNomInstitucion());
             table4.addCell("FECHA DE INICIO");
-            table4.addCell(fecha[0]+" de "+mes1+" de "+fecha[2]);
+            table4.addCell(fecha[0] + " de " + mes1 + " de " + fecha[2]);
             table4.addCell("FECHA DE FIN");
-            table4.addCell(fechaf[0]+" de "+mes2+" de "+fechaf[2]);
-            Paragraph p = new Paragraph("CERTIFICACIÓN DE SERVICIO SOCIAL\n\n",font);
+            table4.addCell(fechaf[0] + " de " + mes2 + " de " + fechaf[2]);
+            Paragraph p = new Paragraph("CERTIFICACIÓN DE SERVICIO SOCIAL\n\n", font);
             p.setAlignment(Element.ALIGN_CENTER);
             Paragraph p1 = new Paragraph("Para efectos legales y administrativos, los suscritos Vicedecano y Jefe de Proyección Social\n");
-            Paragraph pc = new Paragraph("CERTIFICA QUE:\n\n",font);
+            Paragraph pc = new Paragraph("CERTIFICA QUE:\n\n", font);
             p1.setAlignment(Element.ALIGN_JUSTIFIED);
             Paragraph p2 = new Paragraph("Ha cumplido (500) horas sociales, de conformidad a lo establecido en los artículos sesenta y uno de "
                     + "la Constitución de la República, diecinueve de la Ley de Educación Superior, cuarenta y dos Ley "
@@ -136,12 +138,12 @@ public class Certificaion implements Serializable {
                     + "de Procedimientos para la Ejecución del Servicio Social, como requisito previo para optar a su "
                     + "respectivo grado Académico, desarrollando el Proyecto:\n\n");
             p2.setAlignment(Element.ALIGN_JUSTIFIED);
-            Paragraph frase = new Paragraph("CERTIFICACIÓN",font);
-            Paragraph p3 = new Paragraph("\nSe extiende y firma la presente "+frase.getContent()+" para los consiguientes trámites de"
-                    + " graduación, en Ciudad Universitaria, a los "+c.get(Calendar.DATE)+" días de "+mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
-                    +" del "+c.get(Calendar.YEAR)+". –\n\n");
+            Paragraph frase = new Paragraph("CERTIFICACIÓN", font);
+            Paragraph p3 = new Paragraph("\nSe extiende y firma la presente " + frase.getContent() + " para los consiguientes trámites de"
+                    + " graduación, en Ciudad Universitaria, a los " + c.get(Calendar.DATE) + " días de " + mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
+                    + " del " + c.get(Calendar.YEAR) + ". –\n\n");
             p3.setAlignment(Element.ALIGN_JUSTIFIED);
-            Paragraph p4 = new Paragraph("\"HACIA LA LIBERTAD POR LA CULTURA\"\n\n\n\n\n\n",font);
+            Paragraph p4 = new Paragraph("\"HACIA LA LIBERTAD POR LA CULTURA\"\n\n\n\n\n\n", font);
             p4.setAlignment(Element.ALIGN_CENTER);
             document.add(p);
             document.add(p1);
