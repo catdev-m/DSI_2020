@@ -6,28 +6,23 @@
 package org.registrohorasociales.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author balmore
+ * @author Miguel
  */
 @Entity
-@Table(name = "relacion_estudiante-proyecto")
+@Table(name = "relacion_estudiante_proyecto")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RelacionEstudianteProyecto.findAll", query = "SELECT r FROM RelacionEstudianteProyecto r")
@@ -40,43 +35,27 @@ public class RelacionEstudianteProyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id_relacionEP")
     private Integer idrelacionEP;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 7)
+    @Size(max = 255)
     @Column(name = "carnet_estudiante")
     private String carnetEstudiante;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "id_proyecto")
-    private int idProyecto;
-    @Basic(optional = false)
-    @NotNull
+    private Integer idProyecto;
+    @Size(max = 10)
     @Column(name = "fecha_inicio")
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
-    @Basic(optional = false)
-    @NotNull
+    private String fechaInicio;
+    @Size(max = 10)
     @Column(name = "fecha_final")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFinal;
+    private String fechaFinal;
 
     public RelacionEstudianteProyecto() {
     }
 
     public RelacionEstudianteProyecto(Integer idrelacionEP) {
         this.idrelacionEP = idrelacionEP;
-    }
-
-    public RelacionEstudianteProyecto(Integer idrelacionEP, String carnetEstudiante, int idProyecto, Date fechaInicio, Date fechaFinal) {
-        this.idrelacionEP = idrelacionEP;
-        this.carnetEstudiante = carnetEstudiante;
-        this.idProyecto = idProyecto;
-        this.fechaInicio = fechaInicio;
-        this.fechaFinal = fechaFinal;
     }
 
     public Integer getIdrelacionEP() {
@@ -95,27 +74,27 @@ public class RelacionEstudianteProyecto implements Serializable {
         this.carnetEstudiante = carnetEstudiante;
     }
 
-    public int getIdProyecto() {
+    public Integer getIdProyecto() {
         return idProyecto;
     }
 
-    public void setIdProyecto(int idProyecto) {
+    public void setIdProyecto(Integer idProyecto) {
         this.idProyecto = idProyecto;
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFinal() {
+    public String getFechaFinal() {
         return fechaFinal;
     }
 
-    public void setFechaFinal(Date fechaFinal) {
+    public void setFechaFinal(String fechaFinal) {
         this.fechaFinal = fechaFinal;
     }
 

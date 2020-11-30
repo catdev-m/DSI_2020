@@ -66,7 +66,7 @@
                             <p:column headerText="Apellidos">
                                 <h:outputText value="#{final.apellidos}"/>
                             </p:column>
-                            <p:column headerText="Imprimir certificación">
+                            <p:column headerText="Generar certificación">
                                 <p:column>
                                     <p:growl id="accept" />
                                     <p:commandButton icon="ui-icon-check" action="/GestionAdmin/Finalizados?faces-redirect=true" actionListener="#{certificaion.generarCertifiacion(final.due, final.nombres, final.apellidos, final.carrera)}" update="accept">

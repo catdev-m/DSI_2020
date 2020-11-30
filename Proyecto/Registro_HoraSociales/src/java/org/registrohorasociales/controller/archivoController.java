@@ -48,7 +48,7 @@ public class archivoController implements Serializable{
         
         try {
           final String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-           System.out.println("Cantidad de elementos File "+archivoRepository.ArchivoList(currentUserName).size());
+          System.out.println("Cantidad de elementos File "+archivoRepository.ArchivoList(currentUserName).size());
           archivoRepository.ArchivoList(currentUserName).forEach(o -> {
             CargasArchInfoDto i = new CargasArchInfoDto();
             i.id_archivo = o[0].toString();

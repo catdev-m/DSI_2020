@@ -19,4 +19,7 @@ import org.springframework.stereotype.Repository;
 public interface ProyectoRepository extends JpaRepository<Proyecto, Integer>{
     @Query(nativeQuery = true, value = "select * from proyecto")
     public List<Proyecto> proyectoList();
+    
+    @Query(nativeQuery = true, value = "select * from proyecto where id_proyecto = ?")
+    public Proyecto proyectoById(int id);
 }

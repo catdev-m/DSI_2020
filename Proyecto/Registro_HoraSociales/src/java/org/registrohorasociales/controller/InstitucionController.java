@@ -60,6 +60,12 @@ public class InstitucionController implements Serializable{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error creating", ""));
         }
     }
+    
+    public Institucion obtenerInstitucionById(int id){
+        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+        Institucion ins = institucionRepo.getInstitucionById(id);
+        return ins;
+    }
     //RETRIEVE
     public void obtenerDatos(){
         setFormName(institucionSelector.getNomInstitucion());
