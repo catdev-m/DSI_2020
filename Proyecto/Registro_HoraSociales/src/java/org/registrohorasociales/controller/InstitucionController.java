@@ -11,15 +11,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityManager;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Institucion;
 import org.registrohorasociales.repository.InstitucionRepository;
-import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -62,6 +59,12 @@ public class InstitucionController implements Serializable{
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error creating", ""));
         }
+    }
+    
+    public Institucion obtenerInstitucionById(int id){
+        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+        Institucion ins = institucionRepo.getInstitucionById(id);
+        return ins;
     }
     //RETRIEVE
     public void obtenerDatos(){

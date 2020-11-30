@@ -38,6 +38,12 @@ public class ProyectoController implements Serializable{
         proyectos = new ArrayList<>();
         proyectos = proyectoRepo.proyectoList();
     }
+    
+    public Proyecto findProyectoById(int id){
+        proyectoRepo = ApplicationContextProvider.getApplicationContext().getBean(ProyectoRepository.class);
+        Proyecto p = proyectoRepo.proyectoById(id);
+        return p;
+    }
     //CREATE
     //UDPATE
     //RETRIEVE

@@ -13,6 +13,8 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,6 +28,8 @@ import java.util.Locale;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.registrohorasociales.entity.Datoscertificacion;
+import org.registrohorasociales.entity.Proyecto;
+import org.registrohorasociales.entity.RelacionEstudianteProyecto;
 
 /**
  *
@@ -34,62 +38,127 @@ import org.registrohorasociales.entity.Datoscertificacion;
 @ManagedBean
 @ViewScoped
 public class Certificaion implements Serializable {
+
     carreraController carController = new carreraController();
-    certificacionContrller cerController = new certificacionContrller(); 
+    certificacionContrller cerController = new certificacionContrller();
+    RelacionEstudianteProyectoController repController = new RelacionEstudianteProyectoController();
+    ProyectoController proyController = new ProyectoController();
+    InstitucionController instiController = new InstitucionController();
+    String MES[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+
     public void generarCertifiacion(String formDue, String formNombres, String formApellidos, String formCarrera) throws FileNotFoundException, BadElementException, IOException {
-       
         try {
+            Font font = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
             Month mes = LocalDate.now().getMonth();
             Calendar c = Calendar.getInstance();
             Datoscertificacion jefe = cerController.findDatosById(1);
             Datoscertificacion vice = cerController.findDatosById(2);
-            int idcar = Integer.parseInt(formCarrera);
-            String car = carController.findCarreraById(idcar);
+            RelacionEstudianteProyecto rep = repController.findRelacionByDue(formDue);
+            String[] fecha = rep.getFechaInicio().split("/");
+            String mes1 = MES[Integer.parseInt(fecha[1])-1];
+            String[] fechaf = rep.getFechaFinal().split("/");
+            String mes2 = MES[Integer.parseInt(fechaf[1])-1];
+            Proyecto proy = proyController.findProyectoById(1);
+            String car = carController.findCarreraById(Integer.parseInt(formCarrera));
             String usuario = System.getProperty("user.name");
             Document document = new Document();
             FileOutputStream file = new FileOutputStream("C:\\Users\\" + usuario + "\\Downloads\\certificacion.pdf");
-            PdfWriter.getInstance(document, file );
+            PdfWriter.getInstance(document, file);
             document.open();
-            Image imagen = Image.getInstance("C:\\Users\\miguel\\Documents\\prueba\\DSI_2020\\Proyecto\\Registro_HoraSociales\\src\\java\\org\\registrohorasociales\\utils\\encabezado.png");
+            Image imagen = Image.getInstance("C:\\Users\\miguel\\Documents\\prueba\\DSI_2020\\Proyecto\\Registro_HoraSociales\\src\\java\\org\\registrohorasociales\\utils\\encabezado.jpeg");
             imagen.setAlignment(Element.ALIGN_CENTER);
-            imagen.scaleAbsolute(500,160);
+            imagen.scaleAbsolute(500, 100);
             document.add(imagen);
             BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.WINANSI, false);
-            Font font1 = new Font(bf,14);
-            font1.setFamily("ITALIC");
-            Paragraph parrafo = new Paragraph("Suscritos jefes de la Unidad de proyección Social y Vicedecano de la"
-                    + " Facultad de Jurisprudencia y Ciencias Sociales de la Universidad de El Salvador"
-                    + " CERTIFICAN: Que el (la) Bachiller: " + formApellidos.toUpperCase() + ", " + formNombres.toUpperCase()
-                    + " con carnet estudiantil " + formDue + ", estudiante de la "
-                    + car.toUpperCase() + ", ha concluido satisfactoriamente QUINIENTAS (500) HORAS "
-                    + "de Servicio Social, de conformidad a lo establecido en los artículos"
-                    + " sesenta y uno de la Constitución de la República, diecinueve de la Ley"
-                    + " de Educación Superior, cuarenta y dos Ley Orgánica de la Universidad de "
-                    + "El Salvador, sesenta del Reglamento General de la Ley Orgánica de la"
-                    + " Universidad de El Salvador, articulo doscientos dieciocho, romano I"
-                    + " parte segunda, literal “e” del Reglamento de la Gestión Académico "
-                    + "-Administrativa de la Universidad de El Salvador, Manual de "
-                    + "Procedimientos para la Ejecución del Servicio Social, como requisito "
-                    + "previo para optar a su respectivo grado Académico, desarrollando la "
-                    + "actividad: \"\", habiendo iniciado el día xxxx y finalizado el xxx .- "
-                    + "POR TANTO: se extiende y firma la presenta CERTIFICACIÓN para los consiguientes"
-                    + " trámites de graduación, en Ciudad Universitaria, a los "+c.get(Calendar.DATE)+" días del mes de "+mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES")) 
-                    +" del "+c.get(Calendar.YEAR)+".-\n\n\n",font1);
-            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
-            Paragraph p2 = new Paragraph("\"Hacia la Libertad por la Cultura\"\n\n\n\n\n\n");
-            p2.setAlignment(Element.ALIGN_CENTER);
-            Paragraph p3 = new Paragraph(jefe.getTitulo()+" "+jefe.getNombre()+ "             "+vice.getTitulo()+" "+vice.getNombre());
-            p3.setAlignment(Element.ALIGN_LEFT);
-            Paragraph p4 = new Paragraph(jefe.getCargo()+"                                            "+vice.getCargo());
-            p4.setAlignment(Element.ALIGN_LEFT);
-            document.add(parrafo);
+            PdfPTable table1 = new PdfPTable(2);
+            Paragraph pname = new Paragraph("NOMBRE",font);
+            Paragraph pdue = new Paragraph("DUE",font);
+            Paragraph pcarrera = new Paragraph("CARRERA",font);
+            table1.addCell(pname);
+            table1.addCell(formNombres + ", " + formApellidos);
+            table1.addCell(pdue);
+            table1.addCell(formDue);
+            table1.addCell(pcarrera);
+            table1.addCell(car);
+            float[] medidaCeldas = {25f, 75f};
+            table1.setWidths(medidaCeldas);
+            table1.setWidthPercentage(100);
+            PdfPTable table2 = new PdfPTable(1);
+            table2.addCell(proy.getNomProyecto());
+            table2.setWidthPercentage(100);
+            PdfPTable table3 = new PdfPTable(2);
+            table3.getDefaultCell().setBorder(0);
+            Paragraph pcell = new Paragraph(vice.getTitulo() + " " + vice.getNombre());
+            Paragraph pcell2 = new Paragraph(jefe.getTitulo()+ " " + jefe.getNombre());
+            Paragraph pcell3 = new Paragraph(vice.getCargo());
+            Paragraph pcell4 = new Paragraph(jefe.getCargo());
+            pcell.setAlignment(Element.ALIGN_CENTER);
+            pcell2.setAlignment(Element.ALIGN_CENTER);
+            pcell3.setAlignment(Element.ALIGN_CENTER);
+            pcell4.setAlignment(Element.ALIGN_CENTER);
+            PdfPCell cell = new PdfPCell();
+            PdfPCell cell2 = new PdfPCell();
+            PdfPCell cell3 = new PdfPCell();
+            PdfPCell cell4 = new PdfPCell();
+            cell.setBorder(0);
+            cell2.setBorder(0);
+            cell3.setBorder(0);
+            cell4.setBorder(0);
+            cell.addElement(pcell);
+            cell2.addElement(pcell2);
+            cell3.addElement(pcell3);
+            cell4.addElement(pcell4);
+            table3.addCell(cell);
+            table3.addCell(cell2);
+            table3.addCell(cell3);
+            table3.addCell(cell4);
+            table3.setWidthPercentage(100);
+            PdfPTable table4 = new PdfPTable(2);
+            table4.setWidths(medidaCeldas);
+            table4.setWidthPercentage(100);
+            table4.addCell("LUGAR");
+            table4.addCell("LUGAR SIN REGISTRAR");
+            table4.addCell("FECHA DE INICIO");
+            table4.addCell(fecha[0]+" de "+mes1+" de "+fecha[2]);
+            table4.addCell("FECHA DE FIN");
+            table4.addCell(fechaf[0]+" de "+mes2+" de "+fechaf[2]);
+            Paragraph p = new Paragraph("CERTIFICACIÓN DE SERVICIO SOCIAL\n\n",font);
+            p.setAlignment(Element.ALIGN_CENTER);
+            Paragraph p1 = new Paragraph("Para efectos legales y administrativos, los suscritos Vicedecano y Jefe de Proyección Social\n");
+            Paragraph pc = new Paragraph("CERTIFICA QUE:\n\n",font);
+            p1.setAlignment(Element.ALIGN_JUSTIFIED);
+            Paragraph p2 = new Paragraph("Ha cumplido (500) horas sociales, de conformidad a lo establecido en los artículos sesenta y uno de "
+                    + "la Constitución de la República, diecinueve de la Ley de Educación Superior, cuarenta y dos Ley "
+                    + "Orgánica de la Universidad de El Salvador, sesenta del Reglamento General de la Ley Orgánica de "
+                    + "la Universidad de El Salvador, artículo doscientos dieciocho, romano I parte segunda, literal \"e\" del "
+                    + "Reglamento de la Gestión Académico-Administrativa de la Universidad de El Salvador, treinta y uno "
+                    + "y siguientes del Reglamento General de Proyección Social de la Universidad de El Salvador, Manual "
+                    + "de Procedimientos para la Ejecución del Servicio Social, como requisito previo para optar a su "
+                    + "respectivo grado Académico, desarrollando el Proyecto:\n\n");
+            p2.setAlignment(Element.ALIGN_JUSTIFIED);
+            Paragraph frase = new Paragraph("CERTIFICACIÓN",font);
+            Paragraph p3 = new Paragraph("\nSe extiende y firma la presente "+frase.getContent()+" para los consiguientes trámites de"
+                    + " graduación, en Ciudad Universitaria, a los "+c.get(Calendar.DATE)+" días de "+mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
+                    +" del "+c.get(Calendar.YEAR)+". –\n\n");
+            p3.setAlignment(Element.ALIGN_JUSTIFIED);
+            Paragraph p4 = new Paragraph("\"HACIA LA LIBERTAD POR LA CULTURA\"\n\n\n\n\n\n",font);
+            p4.setAlignment(Element.ALIGN_CENTER);
+            document.add(p);
+            document.add(p1);
+            document.add(pc);
+            document.add(table1);
             document.add(p2);
+            document.add(table2);
+            document.add(new Paragraph(" "));
+            document.add(table4);
             document.add(p3);
             document.add(p4);
+            document.add(table3);
             // AQUÍ COMPLETAREMOS NUESTRO CÓDIGO PARA GENERAR EL PDF
             document.close();
             System.out.println("Your PDF file has been generated!(¡Se ha generado tu hoja PDF!");
-        } catch (DocumentException documentException) {            System.out.println("The file not exists (Se ha producido un error al generar un documento): " + documentException);
+        } catch (DocumentException documentException) {
+            System.out.println("The file not exists (Se ha producido un error al generar un documento): " + documentException);
 
         }
     }
