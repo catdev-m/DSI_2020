@@ -11,15 +11,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityManager;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Institucion;
 import org.registrohorasociales.repository.InstitucionRepository;
-import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -75,11 +72,6 @@ public class InstitucionController implements Serializable{
     //UPDATE
     public void actualizarInstitucion(){
         try {
-            /*
-            lo que vamos a hacer para actualizar, es, cargar los datos de la fila seleccionada en los campos del form,
-            eliminar la linea seleccionada al presionar el botón guardar y luego insertar todo el registro de nuevo.
-            Mas o menos así
-            */
             Institucion ins = new Institucion();
             ins.setIdInstitucion(institucionSelector.getIdInstitucion());
             ins.setNomInstitucion(formName);

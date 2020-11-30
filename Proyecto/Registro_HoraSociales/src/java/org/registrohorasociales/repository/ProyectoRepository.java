@@ -7,6 +7,7 @@ package org.registrohorasociales.repository;
 
 import java.util.List;
 import org.registrohorasociales.entity.Proyecto;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author balmore
  */
 @Repository
-public interface ProyectoRepository {
+public interface ProyectoRepository extends JpaRepository<Proyecto, Integer>{
     @Query(nativeQuery = true, value = "select * from proyecto")
     public List<Proyecto> proyectoList();
 }

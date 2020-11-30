@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Registro de Proyectos</ui:define>
+    <ui:define name="content">
+        <h:form id="proyectoform">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de Proyectos</h1>
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <!-- NOMBRE DE PROYECTOS-->
+                                <p:outputLabel for="nomProyecto" value="Nombre"/>
+                                <p:inputText value="#{institucionController.formName}" id="nomInstitucion" required="true"/>
+                                <!-- INSTITUCION QUE PERTENECE-->
+                                <p:outputLabel for="encInstitucion" value="Encargado"/>
+                                <p:inputText value="#{institucionController.formHead}" id="encInstitucion" required="true"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:commandButton id="guardarInstitucion" update="growl, institucionesTbl" ajax="false"
+                                                 action="#{proyectoController.crearProyecto()}" value="Guardar" icon="ui-icon-open-in-new"/>
+                                <p:commandButton id="limpiarFormInstitucion" update="institucionform" process="@this"
+                                                 action="#{proyectoController.clearFormProyecto()}" value="Limpiar" icon="ui-icon-open-in-new"/>
+                                <p:commandButton id="eliminarInstitucion" update="growl, institucionesTbl" ajax="false"
+                                                 action="#{proyectoController.eliminarProyecto()}" value="Eliminar" icon="ui-icon-open-in-new"/>
+                                <p:commandButton id="actualizarInstitucion" update="growl, institucionesTbl" ajax="false"
+                                                 action="#" value="Actualizar" icon="ui-icon-open-in-new"/>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Instructores registrados</h1>
+                        <p:dataTable id="proyectosTbl" var="proy" value="#{proyectoController.proyecto}" selectionMode="single" reflow="true"
+                                     selection="#{proyectoController.proyectoSelector}" rowKey="#{proy.idProyecto}" paginator="true" rows="10">
+                            <p:ajax listener="#{institucionController.obtenerDatos()}" update="institucionform" event="rowSelect"/>
+                            <f:facet name="header">
+                                Instituciones
+                            </f:facet>
+                            <!-- COLUMNA NOMBRE INSTITUCION-->
+                            <p:column headerText="Institucion">
+                                <h:outputText value="#{inst.nomInstitucion}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
