@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
- 
+
     </ui:define>
 
     <ui:define name="title">Listado de alumnos</ui:define>
@@ -23,9 +23,9 @@
                                 <h3>Estudiantes bajo tu cargo</h3>
                             </f:facet>
                             <p:column headerText="DUE" sortBy="#{estu.due}">
-                                <a href="#">
-                                    <h:outputText value="#{estu.due}" />
-                                </a>
+                                <f:param id="carnet" name="carnet" value="#{estu.due}" />
+                                <p:commandLink action="/GestionTutor/archivos?faces-redirect=true" actionListener="#{estudianteInstructorController.getArchivosByDue(estu.due)}" value="#{estu.due}"/>
+                                
                             </p:column>
 
                             <p:column headerText="Nombre" sortBy="#{estu.nombres}">

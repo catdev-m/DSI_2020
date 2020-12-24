@@ -23,4 +23,7 @@ public interface IArchivoRepository extends JpaRepository<Archivo, String>{
     
     @Query(nativeQuery = true, value = "select * from archivo")
     public List<Archivo> listaArchivo();
+    
+    @Query(nativeQuery = true, value = "select * from archivo where carnet = ?")
+    public List<Archivo> listaByCarnet(String due);
 }

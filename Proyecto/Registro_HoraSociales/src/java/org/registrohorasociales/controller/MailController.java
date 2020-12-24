@@ -6,10 +6,7 @@
 package org.registrohorasociales.controller;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -25,7 +22,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
-import org.registrohorasociales.entity.Rol;
 import org.registrohorasociales.entity.RolUsuario;
 import org.registrohorasociales.entity.RolUsuarioPK;
 import org.registrohorasociales.entity.Usuario;

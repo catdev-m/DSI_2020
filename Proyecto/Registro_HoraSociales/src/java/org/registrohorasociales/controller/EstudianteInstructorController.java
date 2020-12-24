@@ -5,26 +5,17 @@
  */
 package org.registrohorasociales.controller;
 
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
-import org.registrohorasociales.entity.Usuario;
 import org.registrohorasociales.repository.EstudianteRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -50,7 +41,7 @@ public class EstudianteInstructorController implements Serializable{
     
     
     @PostConstruct
-    public void init(){
+    public void initialize(){
         repoEstudiante = ApplicationContextProvider.getApplicationContext().getBean(EstudianteRepository.class);
         usuario = obtenerUsuario();
         obtenerEstudiantes(usuario);
@@ -59,6 +50,10 @@ public class EstudianteInstructorController implements Serializable{
     public void obtenerEstudiantes(String usuario){
         estudiantes = new ArrayList<>();
         estudiantes = repoEstudiante.estudiantesByInstructorList(usuario);
+    }
+    
+    public void getArchivosByDue(String carnet) {
+        ArchivoTutorController.due = carnet;
     }
 
 
@@ -77,7 +72,5 @@ public class EstudianteInstructorController implements Serializable{
     public void setEstudianteSelector(Estudiante estudianteSelector) {
         this.estudianteSelector = estudianteSelector;
     }
-    
-    
-    
 }
+
