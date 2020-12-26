@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Archivo;
 import org.registrohorasociales.repository.IArchivoRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -43,6 +44,12 @@ public class ArchivoTutorController implements Serializable {
             archivos = repo.listaByCarnet(due);
         } catch (Exception e) {
         }
+    }
+    
+    public void datosComentarios(String user, int idArc){
+        ComentarioController.idArchivo=idArc;
+        ComentarioController.user1=user;
+        ComentarioController.user2=SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     public List<Archivo> getArchivos() {

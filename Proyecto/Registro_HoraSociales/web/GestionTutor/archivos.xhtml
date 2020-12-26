@@ -34,6 +34,9 @@
                         <p:column headerText="URL">
                             <h:outputText value="#{files.url}"/>
                         </p:column>
+                        <p:column headerText="Ver/Agregar comentarios">
+                            <p:commandButton icon="ui ui-icon-chat" action="/GestionTutor/comentarios?faces-redirect=true;" actionListener="#{archivoTutorController.datosComentarios(files.carnet,files.idFile)}"/>
+                        </p:column>
                     </p:dataTable>
                 </div>
             </div>

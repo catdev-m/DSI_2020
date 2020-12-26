@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Comentarios</ui:define>
+
+    <ui:define name="content">
+        <h:form id="comentform">
+
+            <div class="card card-w-title">
+                <h1>Agregar comentario</h1>
+                <h:inputTextarea value="#{comentarioController.formComentario}" style="margin: 0px; width: 493px; height: 67px;"></h:inputTextarea>
+                <p:commandButton ajax="false" value="Comentar" action="/GestionTutor/comentarios?faces-redirect=true" actionListener="#{comentarioController.crearComentario()}" />
+            </div>
+        </h:form>
+
+
+
+        <p:dataTable id="archivosTable" var="coment" value="#{comentarioController.comentarios}"
+                     reflow="true"
+                     selection="#{comentarioController.comentSelect}" 
+                     rowKey="#{coment.id}" >
+
+            <f:facet name="header">
+            </f:facet>
+            <p:column>
+                <div class="card timeline ui-fluid">
+                    <div class="ui-g">
+                        <div class="ui-g-9">
+                            <span class="event-owner" style="color:#009688">#{coment.usuario}</span>
+                            <span class="event-text">#{coment.comentario}</span>
+                            <div class="event-content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p:column>
+
+        </p:dataTable>
+
+
+
+
+
+    </ui:define>
+</ui:composition>

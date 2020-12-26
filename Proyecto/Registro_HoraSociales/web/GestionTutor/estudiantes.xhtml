@@ -25,7 +25,7 @@
                             <p:column headerText="DUE" sortBy="#{estu.due}">
                                 <f:param id="carnet" name="carnet" value="#{estu.due}" />
                                 <p:commandLink action="/GestionTutor/archivos?faces-redirect=true" actionListener="#{estudianteInstructorController.getArchivosByDue(estu.due)}" value="#{estu.due}"/>
-                                
+
                             </p:column>
 
                             <p:column headerText="Nombre" sortBy="#{estu.nombres}">
