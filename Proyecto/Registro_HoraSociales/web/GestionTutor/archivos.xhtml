@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Lista de archivos</ui:define>
+
+    <ui:define name="content">
+        <h:form id="instructorform">
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
+            <div class="ui-g">   
+
+                <div class="card card-w-title">
+                    <h1>Lista de archivos entregados</h1>
+                    
+                    <p:dataTable id="archivosTable" var="files" value="#{archivoTutorController.archivos}"
+                                 selectionMode="single" reflow="true"
+                                 selection="#{archivoTutorController.archivoSelect}" 
+                                 rowKey="#{files.idFile}" paginator="true" rows="10">
+
+                        <f:facet name="header">
+                        </f:facet>
+                        <p:column headerText="ID">
+                            <h:outputText value="#{files.idFile}"/>
+                        </p:column>
+                        <p:column headerText="Carnet">
+                            <h:outputText value="#{files.carnet}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{files.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="URL">
+                            <h:outputText value="#{files.url}"/>
+                        </p:column>
+                        <p:column headerText="Ver/Agregar comentarios">
+                            <p:commandButton icon="ui ui-icon-chat" action="/GestionTutor/comentarios?faces-redirect=true;" actionListener="#{archivoTutorController.datosComentarios(files.carnet,files.idFile)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

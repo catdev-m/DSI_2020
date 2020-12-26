@@ -6,7 +6,6 @@
 package org.registrohorasociales.controller;
 
 import java.io.Serializable;
-import static java.lang.Integer.getInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

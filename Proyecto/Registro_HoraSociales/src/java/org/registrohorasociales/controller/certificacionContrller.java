@@ -14,7 +14,6 @@ import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Datoscertificacion;
 import org.registrohorasociales.repository.IDatosCertificacionRespository;
 import org.springframework.beans.BeansException;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 /**
  *
@@ -104,8 +103,6 @@ public class certificacionContrller {
     public void setFormCargo(String formCargo) {
         this.formCargo = formCargo;
     }
-
-
 
 }
 
