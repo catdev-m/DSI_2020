@@ -8,10 +8,14 @@ package org.registrohorasociales.controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Comentario;
 import org.registrohorasociales.repository.IComentarioRepository;
@@ -44,15 +48,19 @@ public class ComentarioController implements Serializable{
     }
     
     public void crearComentario(){
+        String value = FacesContext.getCurrentInstance().
+        getExternalContext().getRequestParameterMap().get("idArchivo");
+        
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         Comentario com = new Comentario();
         com.setUsuario(user);
         com.setComentario(formComentario);
-        com.setIdArchivo(idArchivo);
+        com.setIdArchivo(Integer.parseInt(value));
         try {
             repo.save(com);
         } catch (Exception e) {
         }
+        System.out.println("Id que falla: "+value);
         
     }
       
@@ -79,4 +87,5 @@ public class ComentarioController implements Serializable{
     public void setFormComentario(String formComentario) {
         this.formComentario = formComentario;
     }
+
 }
