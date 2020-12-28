@@ -13,35 +13,38 @@
             <div class="card card-w-title">
                 <h1>Agregar comentario</h1>
                 <h:inputTextarea value="#{comentarioController.formComentario}" style="margin: 0px; width: 493px; height: 67px;"></h:inputTextarea>
-                <p:commandButton ajax="false" value="Comentar" action="/GestionTutor/comentarios?faces-redirect=true" actionListener="#{comentarioController.crearComentario()}" />
+                <p:commandButton ajax="false" value="Comentar" action="/GestionTutor/comentarios?faces-redirect=true" actionListener="#{comentarioController.crearComentario()}">
+                    <f:param name="idArcshivo" value="#{param['comntform:archivoOculto']}Aqui"/>
+                </p:commandButton>
             </div>
-        </h:form>
 
 
 
-        <p:dataTable id="archivosTable" var="coment" value="#{comentarioController.comentarios}"
-                     reflow="true"
-                     selection="#{comentarioController.comentSelect}" 
-                     rowKey="#{coment.id}" >
 
-            <f:facet name="header">
-            </f:facet>
-            <p:column>
-                <div class="card timeline ui-fluid">
-                    <div class="ui-g">
-                        <div class="ui-g-9">
-                            <span class="event-owner" style="color:#009688">#{coment.usuario}</span>
-                            <span class="event-text">#{coment.comentario}</span>
-                            <div class="event-content">
+            <p:dataTable id="archivosTable" var="coment" value="#{comentarioController.comentarios}"
+                         reflow="true"
+                         selection="#{comentarioController.comentSelect}" 
+                         rowKey="#{coment.id}" >
+
+                <f:facet name="header">
+                </f:facet>
+                <p:column>
+                    <div class="card timeline ui-fluid">
+                        <div class="ui-g">
+                            <div class="ui-g-9">
+                                <span class="event-owner" style="color:#009688">#{coment.usuario}</span>
+                                <span class="event-text">#{coment.comentario}</span>
+                                <div class="event-content">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </p:column>
+                    <input type="hidden" name="idArchivo" id="archivoOculto" value="#{coment.idArchivo}"/>
+                </p:column>
 
-        </p:dataTable>
+            </p:dataTable>
 
-
+        </h:form>
 
 
 
