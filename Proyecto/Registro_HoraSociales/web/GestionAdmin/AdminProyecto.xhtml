@@ -20,10 +20,10 @@
                                 <p:inputText value="#{proyectoController.formNomProyecto}" id="nomProyecto" required="true"/>
                                 <!-- INSTITUCION QUE PERTENECE-->
                                 <p:outputLabel for="idInstitucion" value="Institucion"/>
-                                <p:inputText value="#{proyectoController.formIdInstitucion}" id="idInstitucion" required="true"/>
-                                <p:selectOneButton id="NombreInstitucion" required="true">
-                                    <f:selectItem itemValue="#{proyectoController}"/>
-                                </p:selectOneButton>
+                                <p:selectOneMenu id="idInstitucion" required="true" value="#{proyectoController.formNombreInstitucion}">
+                                    <f:selectItem itemLabel="Selecciones una institucion" itemValue="#{null}"/>
+                                    <f:selectItems value="#{proyectoController.listaInstituciones}" itemValue="#{proyectoController.listaInstituciones.getIdInstitucion()}"/>
+                                </p:selectOneMenu>
                                 <!-- CUPOS PARA EL PROYECTO-->
                                 <p:outputLabel for="cuposProyecto" value="Cupos disponibles"/>
                                 <p:spinner value="#{proyectoController.formCupoProyecto}" id="cuposProyecto" required="true" min="0"/>
@@ -46,7 +46,7 @@
                         <h1>Proyectos registrados</h1>
                         <p:dataTable id="proyectosTbl" var="proy" value="#{proyectoController.proyectos}" selectionMode="single" reflow="true"
                                      selection="#{proyectoController.proyectoSelector}" rowKey="#{proy.idProyecto}" paginator="true" rows="10">
-                            <p:ajax listener="#{pryectoController.obtenerDatos()}" update="proyectoform" event="rowSelect"/>
+                            <p:ajax listener="#{proyectoController.obtenerDatos(proy.idInstitucion)}" update="proyectoform" event="rowSelect"/>
                             <f:facet name="header">
                                 Proyectos
                             </f:facet>

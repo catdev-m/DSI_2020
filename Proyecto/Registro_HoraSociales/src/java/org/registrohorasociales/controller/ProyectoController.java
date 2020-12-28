@@ -15,7 +15,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.registrohorasociales.config.ApplicationContextProvider;
+import org.registrohorasociales.entity.Institucion;
 import org.registrohorasociales.entity.Proyecto;
+import org.registrohorasociales.repository.InstitucionRepository;
 import org.registrohorasociales.repository.ProyectoRepository;
 
 /**
@@ -25,17 +27,27 @@ import org.registrohorasociales.repository.ProyectoRepository;
 @ManagedBean
 @ViewScoped
 public class ProyectoController implements Serializable{
+    /*variables de campos de formulario*/
     private String formNomProyecto, formularioIdentificador, formularioCuposHabiles, formNombreInstitucion;
     private int formIdInstitucion, formCupoProyecto;
+    
+    /*variables de proyecto*/
     private ProyectoRepository proyectoRepo;            //instancia de repositorio de proyecto.
     private List<Proyecto> proyectos;
     private List<SelectItem> listaProyectos;            //es cuando se da clic sobre un elemento en la tabla de los elementos
     private Proyecto proyectoSelector;                  //elemento singular cuando se elige un proyecto.
     
+    /*variables de instituciones para relacionarlas con un proyecto*/
+    private List<Institucion> instituciones;
+    private InstitucionRepository InstitucionRepo;
+    private List<SelectItem> listaInstituciones;
+    
     @PostConstruct
     public void initialize(){
         proyectoRepo = ApplicationContextProvider.getApplicationContext().getBean(ProyectoRepository.class);
+        InstitucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
         loadProyectos();
+        loadInstituciones();
     }
     public void loadProyectos(){
         proyectos = new ArrayList<>();
@@ -47,6 +59,20 @@ public class ProyectoController implements Serializable{
         Proyecto p = proyectoRepo.proyectoById(id);
         return p;
     }
+    
+    public void loadInstituciones(){
+        //Lista de elementos institucion que obtenemos mediante el repositorio
+        instituciones = new ArrayList<>();
+        instituciones = InstitucionRepo.institucionList();
+        //lista de elementos de selectores para instituciones
+        listaInstituciones = new ArrayList<>();
+        listaInstituciones.clear();
+        //las propiedades de la instituciones que queremos en la lista que los elementos selectores deben acceder, se especifican a continuacion
+        instituciones
+                .stream()
+                .map( (institu) -> new SelectItem(institu.getIdInstitucion(), institu.getNomInstitucion() ) )
+                .forEachOrdered( (i) -> { this.listaInstituciones.add(i); });
+    }
     //CREATE
     public void crearProyecto(){
         try {
@@ -56,17 +82,22 @@ public class ProyectoController implements Serializable{
             p.setCuposProyecto(formCupoProyecto);
             proyectoRepo.save(p);
             clearFormProyecto();
+            loadProyectos();
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error creating", ""));
         }
     }
     //RETRIEVE
-    public void obtenerDatos(){
+    public void obtenerDatos(int id){
         setFormNomProyecto(proyectoSelector.getNomProyecto());
-        //setFormIdInstitucion(proyectoSelector.getIdInstitucion());
-        //setFormularioIdentificador(proyectoSelector.getIdInstitucion());
-        setFormCupoProyecto(proyectoSelector.getIdProyecto());
+        setFormNombreInstitucion(obtenerNombreInstitucion(id));
+        setFormCupoProyecto(proyectoSelector.getCuposProyecto());
+    }
+    public String obtenerNombreInstitucion(int id){
+        Institucion Ins = InstitucionRepo.getInstitucionById(id);
+        String NombreIns = Ins.getNomInstitucion();
+        return NombreIns;
     }
     //UPDATE
     public void actualizarProyecto(){
@@ -101,6 +132,7 @@ public class ProyectoController implements Serializable{
     public void clearFormProyecto(){
         formNomProyecto = null;
         formIdInstitucion = 0;
+        formCupoProyecto = 0;
     }
     
     public String getFormNomProyecto() {
@@ -178,5 +210,29 @@ public class ProyectoController implements Serializable{
 
     public void setFormNombreInstitucion(String formNombreInstitucion) {
         this.formNombreInstitucion = formNombreInstitucion;
+    }
+    
+    public List<SelectItem> getListaInstituciones() {
+        return listaInstituciones;
+    }
+
+    public void setListaInstituciones(List<SelectItem> listaInstituciones) {
+        this.listaInstituciones = listaInstituciones;
+    }
+    
+    public InstitucionRepository getInstitucionRepo() {
+        return InstitucionRepo;
+    }
+
+    public void setInstitucionRepo(InstitucionRepository InstitucionRepo) {
+        this.InstitucionRepo = InstitucionRepo;
+    }
+    
+    public List<Institucion> getInstituciones() {
+        return instituciones;
+    }
+
+    public void setInstituciones(List<Institucion> instituciones) {
+        this.instituciones = instituciones;
     }
 }
