@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -7,8 +7,58 @@
                 template="/WEB-INF/template.xhtml">
     <ui:define name="title">Asignacion de Proyectos a estudiantes</ui:define>
     <ui:define name="content">
-        <h:form>
-            
+        <h:form id="asignacionform">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>SELECCIÓN DE PROYECTOS</h1>
+                            <p:panelGrid columns="1" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <!-- CAMPO NOMBRE PROYECTO-->
+                                <div>
+                                    <p:outputLabel for="NombreProyecto" value="NOMBRE: "/><br/>
+                                    <p:outputLabel value="#{proyectoController.formNomProyecto}" id="NombreProyecto" />
+                                </div>
+                                <!-- CAMPO NOMBRE INSTITUCION QUE PERTENECE PROYECTO-->
+                                <div>
+                                    <p:outputLabel for="NombreInstitucion" value="INSTITUCION: "/>
+                                    <h:inputText id="NombreInstitucion" />
+                                </div>
+                                <!-- CAMPO CUPOS DISPONIBLES PARA PROYECTO-->
+                                <div>
+                                    <p:outputLabel for="CuposProyecto" value="CUPOS: "/>
+                                    <p:outputLabel id="CuposProyecto" value="#{proyectoController.formCupoProyecto}" />
+                                </div>
+                            </p:panelGrid>
+                            <!-- List desplegable de proyectos-->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>OTHIA. ACÁ IRÁ LA TABLA CON EL NOMBRE DE PROYECTO, INSTITUCION Y CUPOS HÁBILES</h1>
+                        <p:dataTable id="asignacionesTbl" var="projs" value="#{proyectoController.proyectos}" selectionMode="single" reflow="true"
+                                     selection="#{proyectoController.proyectoSelector}" rowKey="#{projs.idProyecto}" paginator="true" rows="10">
+                            <p:ajax listener="#{proyectoController.obtenerDatos2()}" update="asignacionform" event="rowSelect"/>
+                            <f:facet name="header">
+                                Proyectos Disponibles
+                            </f:facet>
+                            <p:column headerText="Nombre Proyecto" style="background-color: #cfd6e3;">
+                                <h:outputText value="#{projs.nomProyecto}"/>
+                            </p:column>
+                            <p:column headerText="Institucion" style="background-color: #cfd6e3;">
+                                <h:outputText value="#{null}"/>
+                            </p:column>
+                            <p:column headerText="Cupos Disponibles" style="background-color: #cfd6e3;">
+                                <h:outputText value="#{projs.cuposProyecto}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+            <!-- joder, no se como aca voy a obtener la id de estudiante  que está en la sesión.-->
         </h:form>
     </ui:define>
 </ui:composition>

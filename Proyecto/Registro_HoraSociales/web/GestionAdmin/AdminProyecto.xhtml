@@ -46,7 +46,7 @@
                         <h1>Proyectos registrados</h1>
                         <p:dataTable id="proyectosTbl" var="proy" value="#{proyectoController.proyectos}" selectionMode="single" reflow="true"
                                      selection="#{proyectoController.proyectoSelector}" rowKey="#{proy.idProyecto}" paginator="true" rows="10">
-                            <p:ajax listener="#{proyectoController.obtenerDatos(proy.idInstitucion)}" update="proyectoform" event="rowSelect"/>
+                            <p:ajax listener="#{proyectoController.obtenerDatos()}" update="proyectoform" event="rowSelect"/>
                             <f:facet name="header">
                                 Proyectos
                             </f:facet>

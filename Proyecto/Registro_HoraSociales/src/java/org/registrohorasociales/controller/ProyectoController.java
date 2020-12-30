@@ -73,6 +73,11 @@ public class ProyectoController implements Serializable{
                 .map( (institu) -> new SelectItem(institu.getIdInstitucion(), institu.getNomInstitucion() ) )
                 .forEachOrdered( (i) -> { this.listaInstituciones.add(i); });
     }
+    public String metodoParaEncontrarInstitucionPorId(int id){
+        Institucion ins = InstitucionRepo.findOne(id);
+        String NombreInstitucion = ins.getNomInstitucion();
+        return NombreInstitucion;
+    }
     //CREATE
     public void crearProyecto(){
         try {
@@ -89,15 +94,15 @@ public class ProyectoController implements Serializable{
         }
     }
     //RETRIEVE
-    public void obtenerDatos(int id){
+    public void obtenerDatos(){
         setFormNomProyecto(proyectoSelector.getNomProyecto());
-        setFormNombreInstitucion(obtenerNombreInstitucion(id));
+        setFormNombreInstitucion(null);
         setFormCupoProyecto(proyectoSelector.getCuposProyecto());
     }
-    public String obtenerNombreInstitucion(int id){
-        Institucion Ins = InstitucionRepo.getInstitucionById(id);
-        String NombreIns = Ins.getNomInstitucion();
-        return NombreIns;
+    public void obtenerDatos2(){
+        setFormNomProyecto(proyectoSelector.getNomProyecto());
+        /*setFormNombreInstitucion()*/
+        setFormCupoProyecto(proyectoSelector.getCuposProyecto());
     }
     //UPDATE
     public void actualizarProyecto(){
