@@ -103,7 +103,7 @@ public class AdjuntarDocumentosController implements Serializable {
         arc.setUsrCarga(SecurityContextHolder.getContext().getAuthentication().getName());
         archivoRepository.save(arc);
         
-        String msj = "Se adjuntó el archivo de manera exitosa";
+        String msj = "Se guardaron los datos correctamente";
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msj, "") );
     }catch(Exception e){
