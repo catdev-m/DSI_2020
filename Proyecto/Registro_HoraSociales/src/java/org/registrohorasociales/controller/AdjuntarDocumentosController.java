@@ -118,12 +118,11 @@ public class AdjuntarDocumentosController implements Serializable {
         try{
         
         InputStream inpS = event.getFile().getInputStream();
-        FacesContext context = FacesContext.getCurrentInstance();
         int file = event.getFile().getContent().length;
         setArchivoLoad(base64metodo(inpS)); 
-        String user_id = context.getExternalContext().getRequestParameterMap().get("descFile2");
-        String msj = "Se adjuntó el archivo de manera exitosa, pude guardar los datos "+user_id;
-        //FacesContext context = FacesContext.getCurrentInstance();
+        
+        String msj = "Se adjuntó el archivo de manera exitosa, pude guardar los datos";
+        FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msj, "") );
         }catch (Exception e){
         
