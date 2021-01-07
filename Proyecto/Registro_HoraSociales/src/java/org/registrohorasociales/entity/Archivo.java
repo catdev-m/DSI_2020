@@ -6,18 +6,16 @@
 package org.registrohorasociales.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,14 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Archivo.findAll", query = "SELECT a FROM Archivo a")
     , @NamedQuery(name = "Archivo.findByIdFile", query = "SELECT a FROM Archivo a WHERE a.idFile = :idFile")
-    , @NamedQuery(name = "Archivo.findByUrl", query = "SELECT a FROM Archivo a WHERE a.url = :url")
     , @NamedQuery(name = "Archivo.findByDescripcion", query = "SELECT a FROM Archivo a WHERE a.descripcion = :descripcion")
-    , @NamedQuery(name = "Archivo.findByCarnet", query = "SELECT a FROM Archivo a WHERE a.carnet = :carnet")})
+    , @NamedQuery(name = "Archivo.findByCarnet", query = "SELECT a FROM Archivo a WHERE a.carnet = :carnet")
+    , @NamedQuery(name = "Archivo.findByFecha", query = "SELECT a FROM Archivo a WHERE a.fecha = :fecha")
+    , @NamedQuery(name = "Archivo.findByUsrCarga", query = "SELECT a FROM Archivo a WHERE a.usrCarga = :usrCarga")
+    , @NamedQuery(name = "Archivo.findByLocked", query = "SELECT a FROM Archivo a WHERE a.locked = :locked")})
 public class Archivo implements Serializable {
-
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,7 +45,8 @@ public class Archivo implements Serializable {
     private Integer idFile;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 4000)
+    @Lob
+    @Size(min = 1, max = 65535)
     @Column(name = "url")
     private String url;
     @Basic(optional = false)
@@ -62,6 +59,18 @@ public class Archivo implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "carnet")
     private String carnet;
+    @Size(max = 100)
+    @Column(name = "fecha")
+    private String fecha;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4000)
+    @Column(name = "usr_carga")
+    private String usrCarga;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "locked")
+    private int locked;
 
     public Archivo() {
     }
@@ -70,11 +79,13 @@ public class Archivo implements Serializable {
         this.idFile = idFile;
     }
 
-    public Archivo(Integer idFile, String url, String descripcion, String carnet) {
+    public Archivo(Integer idFile, String url, String descripcion, String carnet, String usrCarga, int locked) {
         this.idFile = idFile;
         this.url = url;
         this.descripcion = descripcion;
         this.carnet = carnet;
+        this.usrCarga = usrCarga;
+        this.locked = locked;
     }
 
     public Integer getIdFile() {
@@ -109,6 +120,30 @@ public class Archivo implements Serializable {
         this.carnet = carnet;
     }
 
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getUsrCarga() {
+        return usrCarga;
+    }
+
+    public void setUsrCarga(String usrCarga) {
+        this.usrCarga = usrCarga;
+    }
+
+    public int getLocked() {
+        return locked;
+    }
+
+    public void setLocked(int locked) {
+        this.locked = locked;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,15 +166,7 @@ public class Archivo implements Serializable {
 
     @Override
     public String toString() {
-        return "org.registrohorasociales.config.Archivo[ idFile=" + idFile + " ]";
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+        return "org.registrohorasociales.entity.Archivo[ idFile=" + idFile + " ]";
     }
     
 }
