@@ -45,7 +45,7 @@
                     <div class="ui-g-12">
                         <p:commandButton ajax="false" actionListener="#{loginSecurity.ingresar()}" value="Ingresar" icon="ui-icon-person" />
                         <p:button outcome="/default_page/dashboard" value="Olvidé mi contraseña" icon="ui-icon-help" styleClass="secondary"/>
-                        <p:button outcome="/index" value="Página principal" icon="ui-icon-help" styleClass="secondary"/>
+                        <p:link outcome="/index" value="Ir a inicio" > <f:param name="inicio" value="10" /></p:link>
                     </div>
                 </div>
             </div>
