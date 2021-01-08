@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Registro de Proyectos</ui:define>
+    <ui:define name="content">
+        <h:form id="proyectoform">
+            <p:growl id="grow1" showDetail="true" sticky="true" />
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Registro de Proyectos</h1>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel for="nomProyecto" value="Nombre"/>
+                                <p:inputText value="#{proyectoController.formNomProyecto}" id="nomProyecto" required="true"/>
+                                <p:outputLabel for="idInstitucion" value="Institucion"/>
+                                <p:selectOneMenu id="idInstitucion" required="true" value="#{proyectoController.formIdInstitucion}">
+                                    <f:selectItem itemLabel="Seleccione una institucion" itemValue="#{null}"/>
+                                    <f:selectItems value="#{proyectoController.listaInstituciones}" itemValue="#{proyectoController.listaInstituciones.getIdInstitucion()}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="cuposProyecto" value="Cupos disponibles"/>
+                                <p:spinner value="#{proyectoController.formCupoProyecto}" id="cuposProyecto" required="true" min="0"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:commandButton id="guardarProyecto" update="growl, proyectosTbl" ajax="false"
+                                                 action="#{proyectoController.crearProyecto()}" value="Guardar" icon="ui-icon-open-in-new"/>
+                                
+                                <p:commandButton id="suprimirProyecto" update="growl, proyectosTbl" ajax="false"
+                                                 action="#{proyectoController.eliminarProyecto()}" value="Suprimir" icon="ui-icon-open-in-new"/>
+                                
+                                <p:commandButton id="limpiarFormProyecto" update="proyectoform" process="@this"
+                                                 action="#{proyectoController.clearFormProyecto()}" value="Limpiar" icon="ui-icon-open-in-new"/>
+                                
+                                <p:commandButton id="actualizarProyecto" update="grow1, proyectosTbl" ajax="false"
+                                                 action="#{proyectoController.actualizarProyecto()}" value="Actualizar" icon="ui-icon-open-in-new"/>
+                                
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Proyectos registrados</h1>
+                        <p:dataTable id="proyectosTbl" var="proy" value="#{proyectoController.proyectos}" selectionMode="single" reflow="true"
+                                     selection="#{proyectoController.proyectoSelector}" rowKey="#{proy.idProyecto}" paginator="true" rows="10">
+                            <p:ajax listener="#{proyectoController.obtenerDatos()}" update="proyectoform" event="rowSelect"/>
+                            <f:facet name="header">
+                                Proyectos
+                            </f:facet>
+                            <!-- COLUMNA NOMBRE PROYECTO-->
+                            <p:column headerText="Proyecto">
+                                <h:outputText value="#{proy.nomProyecto}"/>
+                            </p:column>
+                            <!-- COLUMNA NOMBRE INSTITUCION-->
+                            <p:column headerText="Institucion">
+                                <h:outputText value="#{institucionController.findInsitucionById(proy.idInstitucion)}"/>
+                            </p:column>
+                            <!-- COLUMNA CUPOS PROYECTO-->
+                            <p:column headerText="Cupos Disponibles">
+                                <h:outputText value="#{proy.cuposProyecto}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

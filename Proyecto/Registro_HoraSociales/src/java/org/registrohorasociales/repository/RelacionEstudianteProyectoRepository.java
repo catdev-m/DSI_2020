@@ -13,14 +13,11 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author Miguel
+ * @author balmore
  */
 @Repository
-public interface RelacionEstudianteProyectoRepository extends JpaRepository<RelacionEstudianteProyecto, Integer>{
-    @Query(nativeQuery = true, value = "select * from relacion_estudiante_proyecto")
-    public List<RelacionEstudianteProyecto> relacionesList();
+public interface RelacionEstudianteProyectoRepository extends JpaRepository<org.registrohorasociales.entity.RelacionEstudianteProyecto, Integer>{
     
-    @Query(nativeQuery = true, value = "select * from relacion_estudiante_proyecto")
-    public List<Object[]> objectList();
-    
+    @Query(nativeQuery = true, value = "select * from relacion_estudiante-proyecto")
+    public List<RelacionEstudianteProyecto> relacionEstudianteProyectoList();
 }

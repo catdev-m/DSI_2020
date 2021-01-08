@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p")
     , @NamedQuery(name = "Proyecto.findByIdProyecto", query = "SELECT p FROM Proyecto p WHERE p.idProyecto = :idProyecto")
     , @NamedQuery(name = "Proyecto.findByNomProyecto", query = "SELECT p FROM Proyecto p WHERE p.nomProyecto = :nomProyecto")
-    , @NamedQuery(name = "Proyecto.findByIdInstitucion", query = "SELECT p FROM Proyecto p WHERE p.idInstitucion = :idInstitucion")})
+    , @NamedQuery(name = "Proyecto.findByIdInstitucion", query = "SELECT p FROM Proyecto p WHERE p.idInstitucion = :idInstitucion")
+    , @NamedQuery(name = "Proyecto.findByCuposProyecto", query = "SELECT p FROM Proyecto p WHERE p.cuposProyecto = :cuposProyecto")})
 public class Proyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,13 +42,17 @@ public class Proyecto implements Serializable {
     private Integer idProyecto;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 70)
+    @Size(min = 1, max = 255)
     @Column(name = "nom_proyecto")
     private String nomProyecto;
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_institucion")
     private int idInstitucion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "cupos_proyecto")
+    private int cuposProyecto;
 
     public Proyecto() {
     }
@@ -56,10 +61,11 @@ public class Proyecto implements Serializable {
         this.idProyecto = idProyecto;
     }
 
-    public Proyecto(Integer idProyecto, String nomProyecto, int idInstitucion) {
+    public Proyecto(Integer idProyecto, String nomProyecto, int idInstitucion, int cuposProyecto) {
         this.idProyecto = idProyecto;
         this.nomProyecto = nomProyecto;
         this.idInstitucion = idInstitucion;
+        this.cuposProyecto = cuposProyecto;
     }
 
     public Integer getIdProyecto() {
@@ -84,6 +90,14 @@ public class Proyecto implements Serializable {
 
     public void setIdInstitucion(int idInstitucion) {
         this.idInstitucion = idInstitucion;
+    }
+
+    public int getCuposProyecto() {
+        return cuposProyecto;
+    }
+
+    public void setCuposProyecto(int cuposProyecto) {
+        this.cuposProyecto = cuposProyecto;
     }
 
     @Override

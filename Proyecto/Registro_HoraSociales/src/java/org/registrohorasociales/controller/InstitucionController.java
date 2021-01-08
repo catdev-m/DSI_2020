@@ -75,14 +75,16 @@ public class InstitucionController implements Serializable{
         setFormRs(institucionSelector.getRsInstitucion());
         setFormRes(institucionSelector.getResInstitucion());
     }
+    public String findInsitucionById(int id){
+        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+        Institucion ins = new Institucion();
+        ins = institucionRepo.findOne(id);
+        String NombreInstitucion = ins.getNomInstitucion();
+        return NombreInstitucion;
+    }
     //UPDATE
     public void actualizarInstitucion(){
         try {
-            /*
-            lo que vamos a hacer para actualizar, es, cargar los datos de la fila seleccionada en los campos del form,
-            eliminar la linea seleccionada al presionar el botón guardar y luego insertar todo el registro de nuevo.
-            Mas o menos así
-            */
             Institucion ins = new Institucion();
             ins.setIdInstitucion(institucionSelector.getIdInstitucion());
             ins.setNomInstitucion(formName);
@@ -114,7 +116,6 @@ public class InstitucionController implements Serializable{
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al eliminar", ""));
-            e.printStackTrace();
         }
     }
     public void clearFormInstitucion(){
