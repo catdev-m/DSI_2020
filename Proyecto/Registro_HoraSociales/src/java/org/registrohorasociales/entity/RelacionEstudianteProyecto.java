@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author balmore
  */
 @Entity
-@Table(name = "relacion_estudiante-proyecto")
+@Table(name = "relacion_estudiante_proyecto")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RelacionEstudianteProyecto.findAll", query = "SELECT r FROM RelacionEstudianteProyecto r")
@@ -52,12 +52,10 @@ public class RelacionEstudianteProyecto implements Serializable {
     private int idProyecto;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 50)
     @Column(name = "fecha_inicio")
     private String fechaInicio;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    @Size(max = 50)
     @Column(name = "fecha_final")
     private String fechaFinal;
 
@@ -68,12 +66,11 @@ public class RelacionEstudianteProyecto implements Serializable {
         this.idrelacionEP = idrelacionEP;
     }
 
-    public RelacionEstudianteProyecto(Integer idrelacionEP, String carnetEstudiante, int idProyecto, String fechaInicio, String fechaFinal) {
+    public RelacionEstudianteProyecto(Integer idrelacionEP, String carnetEstudiante, int idProyecto, String fechaInicio) {
         this.idrelacionEP = idrelacionEP;
         this.carnetEstudiante = carnetEstudiante;
         this.idProyecto = idProyecto;
         this.fechaInicio = fechaInicio;
-        this.fechaFinal = fechaFinal;
     }
 
     public Integer getIdrelacionEP() {

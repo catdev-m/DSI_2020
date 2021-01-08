@@ -75,6 +75,13 @@ public class InstitucionController implements Serializable{
         setFormRs(institucionSelector.getRsInstitucion());
         setFormRes(institucionSelector.getResInstitucion());
     }
+    public String findInsitucionById(int id){
+        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+        Institucion ins = new Institucion();
+        ins = institucionRepo.findOne(id);
+        String NombreInstitucion = ins.getNomInstitucion();
+        return NombreInstitucion;
+    }
     //UPDATE
     public void actualizarInstitucion(){
         try {
@@ -109,7 +116,6 @@ public class InstitucionController implements Serializable{
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al eliminar", ""));
-            e.printStackTrace();
         }
     }
     public void clearFormInstitucion(){

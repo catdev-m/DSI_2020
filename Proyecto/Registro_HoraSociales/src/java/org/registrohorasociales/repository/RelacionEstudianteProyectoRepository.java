@@ -5,7 +5,6 @@
  */
 package org.registrohorasociales.repository;
 
-import java.io.Serializable;
 import java.util.List;
 import org.registrohorasociales.entity.RelacionEstudianteProyecto;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -35,7 +35,7 @@ public class ProyectoController implements Serializable{
     private ProyectoRepository proyectoRepo;            //instancia de repositorio de proyecto.
     private List<Proyecto> proyectos;
     private List<SelectItem> listaProyectos;            //es cuando se da clic sobre un elemento en la tabla de los elementos
-    private Proyecto proyectoSelector;                  //elemento singular cuando se elige un proyecto.
+    protected Proyecto proyectoSelector;                  //elemento singular cuando se elige un proyecto.
     
     /*variables de instituciones para relacionarlas con un proyecto*/
     private List<Institucion> instituciones;
@@ -96,25 +96,31 @@ public class ProyectoController implements Serializable{
     //RETRIEVE
     public void obtenerDatos(){
         setFormNomProyecto(proyectoSelector.getNomProyecto());
-        setFormNombreInstitucion(null);
-        setFormCupoProyecto(proyectoSelector.getCuposProyecto());
-    }
-    public void obtenerDatos2(){
-        setFormNomProyecto(proyectoSelector.getNomProyecto());
-        /*setFormNombreInstitucion()*/
+        setFormIdInstitucion(proyectoSelector.getIdInstitucion());
         setFormCupoProyecto(proyectoSelector.getCuposProyecto());
     }
     //UPDATE
     public void actualizarProyecto(){
         try {
             Proyecto pr = new Proyecto();
+            //Getting ProjectId
             pr.setIdProyecto(proyectoSelector.getIdProyecto());
-            pr.setNomProyecto(proyectoSelector.getNomProyecto());
-            pr.setIdInstitucion(proyectoSelector.getIdInstitucion());
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Get ProjectId for Update: "+proyectoSelector.getIdProyecto(), "") );
+            //Getting ProjectName
+            pr.setNomProyecto(formNomProyecto);
+            FacesContext context3 = FacesContext.getCurrentInstance();
+            context3.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Set New Name or preserverd name: "+formNomProyecto, "") );
+            //Getting FacilityId
+            pr.setIdInstitucion(formIdInstitucion);
+            FacesContext context4 = FacesContext.getCurrentInstance();
+            context4.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Setting New InstitucionId: "+formIdInstitucion, "") );
+            pr.setCuposProyecto(formCupoProyecto);
             proyectoRepo.save(pr);
-            
+            loadProyectos();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ACTUALIZADO el proyecto: "+formNomProyecto, "") );
+            clearFormProyecto();
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se generó un error al actualizar", ""));
@@ -123,14 +129,16 @@ public class ProyectoController implements Serializable{
     //DELETE
     public void eliminarProyecto(){
         try {
-            proyectoRepo.delete(proyectoSelector.getIdProyecto());
-            loadProyectos();
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto con id: "+proyectoSelector.getIdProyecto(), "") );
+            //proyectoRepo.delete(proyectoSelector.getIdProyecto());
+            //loadProyectos();
         
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO la institucion: "+formNomProyecto, "") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto: "+formNomProyecto, "") );
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error eliminando: "+formNomProyecto, "") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error eliminando: "+formNomProyecto + e, "") );
         }
     }
     

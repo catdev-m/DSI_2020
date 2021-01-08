@@ -14,24 +14,20 @@
                     <div class="ui-g-12">
                         <div class="card card-w-title">
                             <h1>SELECCIÓN DE PROYECTOS</h1>
-                            <p:panelGrid columns="1" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                <!-- CAMPO NOMBRE PROYECTO-->
-                                <div>
-                                    <p:outputLabel for="NombreProyecto" value="NOMBRE: "/><br/>
-                                    <p:outputLabel value="#{proyectoController.formNomProyecto}" id="NombreProyecto" />
-                                </div>
-                                <!-- CAMPO NOMBRE INSTITUCION QUE PERTENECE PROYECTO-->
-                                <div>
-                                    <p:outputLabel for="NombreInstitucion" value="INSTITUCION: "/>
-                                    <h:inputText id="NombreInstitucion" />
-                                </div>
-                                <!-- CAMPO CUPOS DISPONIBLES PARA PROYECTO-->
-                                <div>
-                                    <p:outputLabel for="CuposProyecto" value="CUPOS: "/>
-                                    <p:outputLabel id="CuposProyecto" value="#{proyectoController.formCupoProyecto}" />
-                                </div>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel for="NP1" value="NOMBRE: "/>
+                                <p:outputLabel value="#{relacionEstudianteProyectoController.formNombrePoryecto}" id="NP1" style="background-color: #cfd6e3;"  />
+                                
+                                <p:outputLabel for="NI1" value="INSTITUCION: "/>
+                                <p:inputText value="#{relacionEstudianteProyectoController.formNombreInstitucion}" id="NI1" style="background-color: #cfd6e3;"/>
+                                
+                                <p:outputLabel for="CuposProyecto1" value="CUPOS: "/>
+                                <p:inputText id="CuposProyecto1" value="#{relacionEstudianteProyectoController.formCuposPoryecto}" disabled="true" />
                             </p:panelGrid>
-                            <!-- List desplegable de proyectos-->
+                            <p:panelGrid columns="5" layout="grid" styleClass="ui-panlegrid-blank form-group" style="border: 0px none; background-color: transparent;" >
+                                <p:commandButton id="guardarRelacionEstudianteProyecto" update="growl, asignacionesTbl" ajax="false"
+                                                 action="#{relacionEstudianteProyectoController.crearRelacionEstudianteProyecto()}" value="Guardar" icon="ui-icon-open-in-new" />
+                            </p:panelGrid>
                         </div>
                     </div>
                 </div>
@@ -40,18 +36,15 @@
                     <div class="card card-w-title">
                         <h1>OTHIA. ACÁ IRÁ LA TABLA CON EL NOMBRE DE PROYECTO, INSTITUCION Y CUPOS HÁBILES</h1>
                         <p:dataTable id="asignacionesTbl" var="projs" value="#{proyectoController.proyectos}" selectionMode="single" reflow="true"
-                                     selection="#{proyectoController.proyectoSelector}" rowKey="#{projs.idProyecto}" paginator="true" rows="10">
-                            <p:ajax listener="#{proyectoController.obtenerDatos2()}" update="asignacionform" event="rowSelect"/>
+                                     selection="#{relacionEstudianteProyectoController.proyectoSelector2}" rowKey="#{projs.idProyecto}" paginator="true" rows="10">
+                            <p:ajax listener="#{relacionEstudianteProyectoController.obtenerDatos3()}" update="asignacionform" event="rowSelect"/>
                             <f:facet name="header">
                                 Proyectos Disponibles
                             </f:facet>
-                            <p:column headerText="Nombre Proyecto" style="background-color: #cfd6e3;">
+                            <p:column headerText="NOMBRE PROYECTO" style="background-color: #cfd6e3;">
                                 <h:outputText value="#{projs.nomProyecto}"/>
                             </p:column>
-                            <p:column headerText="Institucion" style="background-color: #cfd6e3;">
-                                <h:outputText value="#{null}"/>
-                            </p:column>
-                            <p:column headerText="Cupos Disponibles" style="background-color: #cfd6e3;">
+                            <p:column headerText="CUPOS DISPONIBLES" style="background-color: #cfd6e3;">
                                 <h:outputText value="#{projs.cuposProyecto}"/>
                             </p:column>
                         </p:dataTable>

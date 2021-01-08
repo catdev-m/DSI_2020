@@ -15,26 +15,26 @@
                             <h1>Registro de Instituciones</h1>
                             <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
                                          layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                <!-- NOMBRE DE INSTITUCION-->
+                                
                                 <p:outputLabel for="nomInstitucion" value="Nombre"/>
                                 <p:inputText value="#{institucionController.formName}" id="nomInstitucion" required="true"/>
-                                <!-- ENCARGADO INSTITUCION-->
+                                
                                 <p:outputLabel for="encInstitucion" value="Encargado"/>
                                 <p:inputText value="#{institucionController.formHead}" id="encInstitucion" required="true"/>
-                                <!-- TELEFONO INSTITUCION-->
+                                
                                 <p:outputLabel for="telInstitucion" value="Teléfono"/>
                                 <p:inputMask value="#{institucionController.formTel}" id="telInstitucion" required="true" validatorMessage="Teléfono Incorrecto" mask="+(999) 9999-9999">
                                     <f:validateRegex pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"/>
                                 </p:inputMask>
-                                <!-- CORREO DE INSTITUCION-->
+                                
                                 <p:outputLabel for="correoInstitucion" value="Correo"/>
                                 <p:inputText value="#{institucionController.formMail}" id="correoInstitucion" required="true" validatorMessage="Correo incorrecto">
                                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                                 </p:inputText>
-                                <!-- RAZON SOCIAL INSTITUCION-->
+                                
                                 <p:outputLabel for="rsInstitucion" value="Razón Social"/>
                                 <p:inputText value="#{institucionController.formRs}" id="rsInstitucion" required="false"/>
-                                <!-- RESEÑA INSTITUCION-->
+                                
                                 <p:outputLabel for="resInstitucion" value="Reseña"/>
                                 <p:inputText value="#{institucionController.formRes}" id="resInstitucion" required="false"/>
                                 <br/><br/>

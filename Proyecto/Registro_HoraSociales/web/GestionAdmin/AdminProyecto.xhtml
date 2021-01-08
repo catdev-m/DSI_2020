@@ -13,30 +13,30 @@
                     <div class="ui-g-12">
                         <div class="card card-w-title">
                             <h1>Registro de Proyectos</h1>
-                            <p:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2"
-                                         layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                <!-- NOMBRE DE PROYECTOS-->
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                                 <p:outputLabel for="nomProyecto" value="Nombre"/>
                                 <p:inputText value="#{proyectoController.formNomProyecto}" id="nomProyecto" required="true"/>
-                                <!-- INSTITUCION QUE PERTENECE-->
                                 <p:outputLabel for="idInstitucion" value="Institucion"/>
-                                <p:selectOneMenu id="idInstitucion" required="true" value="#{proyectoController.formNombreInstitucion}">
-                                    <f:selectItem itemLabel="Selecciones una institucion" itemValue="#{null}"/>
+                                <p:selectOneMenu id="idInstitucion" required="true" value="#{proyectoController.formIdInstitucion}">
+                                    <f:selectItem itemLabel="Seleccione una institucion" itemValue="#{null}"/>
                                     <f:selectItems value="#{proyectoController.listaInstituciones}" itemValue="#{proyectoController.listaInstituciones.getIdInstitucion()}"/>
                                 </p:selectOneMenu>
-                                <!-- CUPOS PARA EL PROYECTO-->
                                 <p:outputLabel for="cuposProyecto" value="Cupos disponibles"/>
                                 <p:spinner value="#{proyectoController.formCupoProyecto}" id="cuposProyecto" required="true" min="0"/>
                             </p:panelGrid>
                             <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                                 <p:commandButton id="guardarProyecto" update="growl, proyectosTbl" ajax="false"
                                                  action="#{proyectoController.crearProyecto()}" value="Guardar" icon="ui-icon-open-in-new"/>
-                                <p:commandButton id="limpiarFormInstitucion" update="proyectoform" process="@this"
+                                
+                                <p:commandButton id="suprimirProyecto" update="growl, proyectosTbl" ajax="false"
+                                                 action="#{proyectoController.eliminarProyecto()}" value="Suprimir" icon="ui-icon-open-in-new"/>
+                                
+                                <p:commandButton id="limpiarFormProyecto" update="proyectoform" process="@this"
                                                  action="#{proyectoController.clearFormProyecto()}" value="Limpiar" icon="ui-icon-open-in-new"/>
-                                <p:commandButton id="eliminarProyecto" update="growl, proyectosTbl" ajax="false"
-                                                 action="#{proyectoController.eliminarProyecto()}" value="Eliminar" icon="ui-icon-open-in-new"/>
+                                
                                 <p:commandButton id="actualizarProyecto" update="grow1, proyectosTbl" ajax="false"
                                                  action="#{proyectoController.actualizarProyecto()}" value="Actualizar" icon="ui-icon-open-in-new"/>
+                                
                             </p:panelGrid>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             </p:column>
                             <!-- COLUMNA NOMBRE INSTITUCION-->
                             <p:column headerText="Institucion">
-                                <h:outputText value="#{proy.idInstitucion}"/>
+                                <h:outputText value="#{institucionController.findInsitucionById(proy.idInstitucion)}"/>
                             </p:column>
                             <!-- COLUMNA CUPOS PROYECTO-->
                             <p:column headerText="Cupos Disponibles">
