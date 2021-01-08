@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInscritos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c35d594d-df84-4dcf-9d42-e4aca00849a9">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="TotalIns" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\elois\\Desktop\\DSI\\DSI_2020-master\\Proyecto\\Registro_HoraSociales\\web\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(idcarrera) AS 'TOTAL'
+FROM estudiante]]>
+	</queryString>
+	<field name="TOTAL" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="94" y="19" width="466" height="60" uuid="ad2238ed-093f-428f-a5be-3862afd28993"/>
+				<imageExpression><![CDATA["C:\\Users\\elois\\Pictures\\ups.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="46" y="0" width="450" height="33" uuid="54ceb110-934f-488c-ab29-c353d0aa21e1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de alumnos inscritos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="55" width="131" height="20" uuid="a9d9ee6c-61ba-4066-8846-d55b1ce896a3"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[Fecha de emisión:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="249" y="55" width="150" height="20" uuid="c3d56cb9-834f-48d5-856c-5564c1351a0d"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="151" splitType="Stretch">
+			<rectangle>
+				<reportElement x="46" y="121" width="466" height="20" backcolor="#CCCCCC" uuid="a4e85976-5bc1-4902-ac5b-8850ba1bcd48"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="46" y="42" width="130" height="20" uuid="ae35a010-a3aa-463e-b5d8-108acf5ebbc8"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[Total de alumnos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="88" width="130" height="20" uuid="a57dc369-0070-41de-98c6-66de3088958b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="15"/>
+				</textElement>
+				<text><![CDATA[Detalle]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="177" y="42" width="100" height="20" uuid="1d7bc4be-c34e-4d88-b703-de5ae0afba92"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="58" y="121" width="100" height="20" uuid="69c34fc8-4214-41fd-8fa0-2463e3748e13"/>
+				<textElement>
+					<font fontName="Times New Roman" size="15"/>
+				</textElement>
+				<text><![CDATA[Rubro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="363" y="121" width="129" height="20" uuid="64cdae23-a2e7-49a8-a8db-0f06733635a6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="15"/>
+				</textElement>
+				<text><![CDATA[Alumnos Inscritos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="107" splitType="Stretch">
+			<subreport>
+				<reportElement x="46" y="0" width="180" height="58" uuid="61d26377-5fb2-4f6f-9405-4f9490e105d1"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reporteInscritos_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="4" splitType="Stretch"/>
+	</summary>
+</jasperReport>

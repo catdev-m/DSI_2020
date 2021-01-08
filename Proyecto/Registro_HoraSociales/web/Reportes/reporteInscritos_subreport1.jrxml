@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInscritos_subreport1" language="groovy" pageWidth="752" pageHeight="572" orientation="Landscape" columnWidth="752" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="332b9043-928e-4a3b-adb0-ebec7051c13b">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT c.nombrecarrera AS 'Rubro', COUNT(e.idcarrera) AS 'Alumnos Inscritos'
+FROM carrera c, estudiante e
+Where c.idcarrera=e.idcarrera
+group by e.idcarrera]]>
+	</queryString>
+	<field name="Rubro" class="java.lang.String"/>
+	<field name="Alumnos Inscritos" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="11" width="302" height="20" uuid="1a247af4-b093-44d2-8aee-3a7b25df8f94"/>
+				<textElement>
+					<font fontName="Times New Roman" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Rubro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="11" width="100" height="20" uuid="8b08bc69-9d92-48dd-ac4f-3b576a52a6bb"/>
+				<textElement>
+					<font fontName="Times New Roman" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Alumnos Inscritos}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="31" width="460" height="1" forecolor="#666666" uuid="4539fdb9-d017-40f5-8bb4-a71628da274d"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>
