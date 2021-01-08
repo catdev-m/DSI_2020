@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Seleccione el archivo a cargar (formato pdf)</h1>
+                    <h:form >
+                        <p:growl id="growl" showDetail="true" sticky="true" /> 
+                        <p:outputLabel for="descFile2" value="Descripción de la entrega:"/>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputTextarea maxlength="150" rows="2" cols="120" value="#{AdjuntarDocumentosController.formDescripcion}" id="descFile2" />                             
+                        </h:panelGroup>
+                        <br></br>
+                         <div class="card card-w-title">
+                             <p:panelGrid columns="1" layout="grid"  styleClass="ui-panelgrid-blank form-group">
+                              
+                                 <p:fileUpload label="Seleccionar archivo"  cancelLabel="Cancelar" uploadLabel="Cargar" 
+                                              mode="advanced" dragDropSupport="false"  
+                                              listener="#{AdjuntarDocumentosController.handleFileUpload}"
+                                              multiple="true"  sizeLimit="1000000000000"  update="growl"
+                                              allowTypes="/(\.|\/)(pdf)$/" style="width:100%" invalidFileMessage="Formato de archivo inválido"/>
+                           
+                             </p:panelGrid>
+                             <br></br>
+                             <p:commandButton action="#{AdjuntarDocumentosController.guardarFile()}" update="growl" value="Guardar"></p:commandButton>
+                         </div>
+
+                        </h:form>
+                </div>
+            </div>
+        </div>
+        <h:form id="archivosLoad">
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
+            <div class="ui-g">   
+                <div class="card card-w-title">
+                    <h1>Lista de archivos entregados</h1>
+                    <p:dataTable id="ArchivoTbl" var="FileList" value="#{AdjuntarDocumentosController.listadoArchivos}"
+                                 selectionMode="single" reflow="true"
+                                 selection="#{AdjuntarDocumentosController.archivoSelecter}" 
+                                 rowKey="#{FileList.id_archivo}" paginator="true" rows="10">
+                        <f:facet name="header">
+
+                        </f:facet>
+
+                        <p:column headerText="Estudiante">
+                            <h:outputText value="#{FileList.nombreUsr}" />
+                        </p:column>
+                        <p:column headerText="Contenido">
+                            <h:outputText value="#{FileList.descripcionContent}" />
+                        </p:column>
+                        <p:column headerText="Fecha cargado">
+                            <h:outputText value="#{FileList.fechaCarga}" />
+                        </p:column>
+                        <p:column headerText="Ver archivo">
+                            <h:outputText value="#{FileList.ruta}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton id="eliminar" rendered="#{(FileList.habilitar eq '0'?'true':'false')}" update="growl,ArchivoTbl" ajax="false" 
+                                             action="#{AdjuntarDocumentosController.eliminarArchivo}" 
+                                             value="Eliminar" icon="ui-icon-open-in-new"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

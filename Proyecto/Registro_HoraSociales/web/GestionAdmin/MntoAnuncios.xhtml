@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Mantenimiento de Anuncios</ui:define>
+
+    <ui:define name="content">
+        <div class="container">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <h1>Ingrese los anuncios a mostrar</h1>
+                        <h:form enctype="multipart/form-data">
+                            <p:outputLabel for="fin" value="Fin de la publicación"/>
+                            <p:calendar id="fin" value="" showOn="button" required="true">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <br></br>
+                            <p:outputLabel for="contenido" value="Contenido del anuncio:"/>
+                            <p:inputTextarea id="contenido" required="true"></p:inputTextarea>
+                            <br></br><br></br>
+                            <p:fileUpload label="Seleccionar archivo"  cancelLabel="Cancelar" uploadLabel="Cargar" 
+                                          mode="advanced" dragDropSupport="false"  listener="#{AdjuntarDocumentosController.CrearDirectorio}"
+                                          multiple="true"  sizeLimit="1000000000000"  
+                                          allowTypes="/(\.|\/)(png|jpg)$/" style="width:100%" />
+                            
+                            <p:growl id="messages" showDetail="true" />
+                        </h:form>
+
+                        <h:form>
+                            <p:growl id="growl" showDetail="true" sticky="true" /> 
+                            <div class="ui-g">   
+                                <div class="card card-w-title">
+                                    <h1>Anuncios publicados</h1>
+                                    <p:dataTable id="AnunciosTbl" var="FileList" value="#{AdjuntarDocumentosController.listadoArchivos}"
+                                                 selectionMode="single" reflow="true"
+                                                 selection="#{AdjuntarDocumentosController.archivoSelecter}" 
+                                                 rowKey="#{FileList.id_archivo}" paginator="true" rows="10">
+                                        <f:facet name="header">
+
+                                        </f:facet>
+                                        <p:column headerText="Contenido">
+                                            <h:outputText value="#{FileList.fechaCarga}" />
+                                        </p:column>
+                                        <p:column headerText="Fin del anuncio">
+                                            <h:outputText value="#{FileList.nombreUsr}" />
+                                        </p:column>
+                                        <p:column headerText="Ver archivo">
+                                            <h:outputText value="#{FileList.ruta}" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:commandButton id="eliminar" rendered="#{(FileList.habilitar eq '0'?'true':'false')}" update="growl,ArchivoTbl" ajax="false" 
+                                                             action="#{AdjuntarDocumentosController.eliminarArchivo}" 
+                                                             value="Eliminar" icon="ui-icon-open-in-new"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>
