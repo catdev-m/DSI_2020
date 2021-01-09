@@ -34,7 +34,7 @@
                 
                 <div class="ui-g-12">
                     <div class="card card-w-title">
-                        <h1>OTHIA. ACÁ IRÁ LA TABLA CON EL NOMBRE DE PROYECTO, INSTITUCION Y CUPOS HÁBILES</h1>
+                        <h1>PROYECTOS DISPONIBLES</h1>
                         <p:dataTable id="asignacionesTbl" var="projs" value="#{proyectoController.proyectos}" selectionMode="single" reflow="true"
                                      selection="#{relacionEstudianteProyectoController.proyectoSelector2}" rowKey="#{projs.idProyecto}" paginator="true" rows="10">
                             <p:ajax listener="#{relacionEstudianteProyectoController.obtenerDatos3()}" update="asignacionform" event="rowSelect"/>

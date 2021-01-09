@@ -88,6 +88,8 @@ public class ProyectoController implements Serializable{
             proyectoRepo.save(p);
             clearFormProyecto();
             loadProyectos();
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes!", ""));
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error creating", ""));
@@ -131,8 +133,9 @@ public class ProyectoController implements Serializable{
         try {
             FacesContext context2 = FacesContext.getCurrentInstance();
             context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto con id: "+proyectoSelector.getIdProyecto(), "") );
-            //proyectoRepo.delete(proyectoSelector.getIdProyecto());
-            //loadProyectos();
+            proyectoRepo.delete(proyectoSelector.getIdProyecto());
+            clearFormProyecto();
+            loadProyectos();
         
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto: "+formNomProyecto, "") );
