@@ -15,22 +15,21 @@
         <title>PrimeFaces Ultima</title>
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
         <script type="text/javascript">
-        $(function() {
-            $('#menu-button').on('click', function(e) {
-                var menu = $('#menu');
-                if(menu.hasClass('lmenu-active')) {
-                    menu.addClass('fadeOutUp');
-                    
-                    setTimeout(function() {
-                        menu.removeClass('fadeOutUp fadeInDown lmenu-active');
-                    },500);
-                }
-                else {
-                    menu.addClass('lmenu-active fadeInDown');
-                }
-                e.preventDefault();
+            $(function () {
+                $('#menu-button').on('click', function (e) {
+                    var menu = $('#menu');
+                    if (menu.hasClass('lmenu-active')) {
+                        menu.addClass('fadeOutUp');
+
+                        setTimeout(function () {
+                            menu.removeClass('fadeOutUp fadeInDown lmenu-active');
+                        }, 500);
+                    } else {
+                        menu.addClass('lmenu-active fadeInDown');
+                    }
+                    e.preventDefault();
+                });
             });
-        });
         </script>
     </h:head>
 
@@ -39,12 +38,12 @@
             <div id="header">
                 <div class="header-top clearfix">
 
-                    
+
                     <a id="menu-button" href="#">
-                       <span class="fa fa-bars"></span>
+                        <span class="fa fa-bars"></span>
                     </a>
                 </div>
-                
+
                 <div class="header-content clearfix">
                     <h1>Anuncios y noticias</h1>
                     <p:button outcome="/login" value="Loggin" styleClass="secondary"/>
@@ -52,22 +51,23 @@
                 </div>
             </div>
             <div id="features">
-                
-                <p:graphicImage style="margin-top: -15%" height="400" width="400" name="images/construction.png" library="ultima-layout" />
-            </div>
-            
-            
-            
-            
-         
-           
-           <div class="footer">
-               <div class="footer-content">
+                <p:carousel value="#{anunciosCarrousel.listAnuncio}" var="item" numVisible="1" effect="easeInStrong" headerText="ANUNCIOS" style="margin-bottom:0">
 
-               </div>
-           </div>
+                        <p:tab title="#{item.id}">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputText value="#{item.imagen}" escape="false" />
+                                
+                            </h:panelGrid>
+                        </p:tab>
+                </p:carousel>
+            </div>
+            <div class="footer">
+                <div class="footer-content">
+
+                </div>
+            </div>
         </div>
-        
+
         <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
         <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
         <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />

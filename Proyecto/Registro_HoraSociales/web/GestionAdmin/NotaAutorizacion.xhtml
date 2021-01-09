@@ -8,8 +8,9 @@
     <ui:define name="title">Registro de Instructores</ui:define>
 
     <ui:define name="content">
+        <p:growl id="msjNotas" showDetail="true" sticky="true" /> 
         <h:form id="Notasform">
-            <p:growl id="growl" showDetail="true" sticky="true" /> 
+            
             <div class="ui-fluid">
                 <div class="ui-g-12">
                     <div class="card card-w-title">
@@ -32,7 +33,9 @@
                             <p:column headerText="Institución">
                                 <h:outputText value="#{eList.nom_institucion}" />
                             </p:column>
-
+                            <p:column headerText="">
+                                <p:commandButton action="#{notasAController.crearPdf(eList.due)}" update="msjNotas" value="Generar archivo"></p:commandButton>
+                            </p:column>
                         </p:dataTable>
                     </div>
                 </div>

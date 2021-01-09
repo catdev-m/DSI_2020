@@ -10,7 +10,15 @@
             <div class="ui-g-12">
                 <div class="card"> 
                     <center>
-                    <p:graphicImage height="500" width="500" name="images/construction.png" library="ultima-layout" />
+                                    <p:carousel value="#{anunciosCarrousel.listAnuncio}" var="item" numVisible="1" effect="easeInStrong" headerText="ANUNCIOS" style="margin-bottom:0">
+
+                        <p:tab title="#{item.id}">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputText value="#{item.imagen}" escape="false" />
+                                
+                            </h:panelGrid>
+                        </p:tab>
+                </p:carousel>
                     </center>
                 </div>
             </div>

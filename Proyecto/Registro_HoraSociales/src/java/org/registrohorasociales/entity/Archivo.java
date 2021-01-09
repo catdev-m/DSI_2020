@@ -46,7 +46,6 @@ public class Archivo implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Lob
-    @Size(min = 1, max = 65535)
     @Column(name = "url")
     private String url;
     @Basic(optional = false)

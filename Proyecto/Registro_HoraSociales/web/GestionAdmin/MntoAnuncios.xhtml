@@ -12,60 +12,59 @@
             <div class="ui-g">
                 <div class="ui-g-12">
                     <div class="card">
-                        <h1>Ingrese los anuncios a mostrar</h1>
+                        <h1>Registrar nuevo anuncio</h1>
                         <h:form enctype="multipart/form-data">
-                            <p:outputLabel for="fin" value="Fin de la publicación"/>
-                            <p:calendar id="fin" value="" showOn="button" required="true">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </p:calendar>
-                            <br></br>
-                            <p:outputLabel for="contenido" value="Contenido del anuncio:"/>
-                            <p:inputTextarea id="contenido" required="true"></p:inputTextarea>
-                            <br></br><br></br>
-                            <p:fileUpload label="Seleccionar archivo"  cancelLabel="Cancelar" uploadLabel="Cargar" 
-                                          mode="advanced" dragDropSupport="false"  listener="#{AdjuntarDocumentosController.CrearDirectorio}"
-                                          multiple="true"  sizeLimit="1000000000000"  
-                                          allowTypes="/(\.|\/)(png|jpg)$/" style="width:100%" />
-                            
-                            <p:growl id="messages" showDetail="true" />
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                                <p:outputLabel for="fin" value="Fin de la publicación"/>
+                                <p:datePicker id="fin" value="#{AdjuntarDocumentosController.formfechaAnuncio}" showIcon="true" pattern="dd/MM/yyyy"/>
+
+                                <p:outputLabel for="contenido" value="Contenido del anuncio:"/>
+
+                                <p:textEditor widgetVar="editor1" secure='false' id="contenido" value="#{AdjuntarDocumentosController.imagenAnuncio}" height="300" style="margin-bottom:10px"/>
+
+                                <p:growl id="messages" showDetail="true" />
+
+                                <p:commandButton action="#{AdjuntarDocumentosController.guardarAnuncio()}" value="Guardar" update="@form :listaAnunciosfrm:AnunciosTbl" ></p:commandButton>
+                            </p:panelGrid>
                         </h:form>
 
-                        <h:form>
+                        <h:form id="listaAnunciosfrm">
                             <p:growl id="growl" showDetail="true" sticky="true" /> 
                             <div class="ui-g">   
                                 <div class="card card-w-title">
                                     <h1>Anuncios publicados</h1>
-                                    <p:dataTable id="AnunciosTbl" var="FileList" value="#{AdjuntarDocumentosController.listadoArchivos}"
-                                                 selectionMode="single" reflow="true"
-                                                 selection="#{AdjuntarDocumentosController.archivoSelecter}" 
-                                                 rowKey="#{FileList.id_archivo}" paginator="true" rows="10">
+                                    <p:dataTable  id="AnunciosTbl" var="FileList" value="#{AdjuntarDocumentosController.listAnuncio}"
+                                                  reflow="true"
+                                                  rowKey="#{FileList.id}" paginator="true" rows="10">
                                         <f:facet name="header">
 
                                         </f:facet>
-                                        <p:column headerText="Contenido">
-                                            <h:outputText value="#{FileList.fechaCarga}" />
+                                        <p:column width="50" headerText="Fecha fin del anuncio">
+                                            <h:outputText value="#{FileList.fecha}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>   
                                         </p:column>
-                                        <p:column headerText="Fin del anuncio">
-                                            <h:outputText value="#{FileList.nombreUsr}" />
+                                        <p:column width="50" headerText="Contenido">
+                                            <p:commandLink id="ver" value="Ver" action="#{AdjuntarDocumentosController.verAnuncio(FileList.imagen)}" update="@form" oncomplete="PF('dlg').show()"/>
                                         </p:column>
-                                        <p:column headerText="Ver archivo">
-                                            <h:outputText value="#{FileList.ruta}" />
-                                        </p:column>
-                                        <p:column>
-                                            <p:commandButton id="eliminar" rendered="#{(FileList.habilitar eq '0'?'true':'false')}" update="growl,ArchivoTbl" ajax="false" 
-                                                             action="#{AdjuntarDocumentosController.eliminarArchivo}" 
-                                                             value="Eliminar" icon="ui-icon-open-in-new"/>
+
+                                        <p:column width="50" headerText="Eliminar Anuncio">
+                                            <p:commandLink id="eliminar"  value="Eliminar" action="#{AdjuntarDocumentosController.eliminarAnuncio(FileList)}" update="@form"/>
                                         </p:column>
 
                                     </p:dataTable>
                                 </div>
                             </div>
+                            <p:dialog header="Contenido del anuncio" widgetVar="dlg" showEffect="fade" hideEffect="fade" width="800" height="400">
+                                <p:outputPanel id="display">
+                                    <h:outputText value="#{AdjuntarDocumentosController.formAnuncioDialog}" escape="false" />
+                                </p:outputPanel>
+                            </p:dialog> 
                         </h:form>
                     </div>
                 </div>
             </div>
         </div>
-
 
     </ui:define>
 

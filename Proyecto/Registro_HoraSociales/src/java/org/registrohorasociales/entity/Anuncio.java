@@ -6,6 +6,7 @@
 package org.registrohorasociales.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,8 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Anuncio.findAll", query = "SELECT a FROM Anuncio a")
     , @NamedQuery(name = "Anuncio.findById", query = "SELECT a FROM Anuncio a WHERE a.id = :id")
-    , @NamedQuery(name = "Anuncio.findByAnuncioText", query = "SELECT a FROM Anuncio a WHERE a.anuncioText = :anuncioText")})
+    , @NamedQuery(name = "Anuncio.findByAnuncioText", query = "SELECT a FROM Anuncio a WHERE a.anuncioText = :anuncioText")
+    , @NamedQuery(name = "Anuncio.findByFecha", query = "SELECT a FROM Anuncio a WHERE a.fecha = :fecha")})
 public class Anuncio implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,29 +42,22 @@ public class Anuncio implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4000)
+    @Size(max = 4000)
     @Column(name = "anuncio_text")
     private String anuncioText;
-    @Basic(optional = false)
-    @NotNull
     @Lob
-    @Size(min = 1, max = 65535)
+    @Size(max = 2147483647)
     @Column(name = "imagen")
     private String imagen;
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
 
     public Anuncio() {
     }
 
     public Anuncio(Integer id) {
         this.id = id;
-    }
-
-    public Anuncio(Integer id, String anuncioText, String imagen) {
-        this.id = id;
-        this.anuncioText = anuncioText;
-        this.imagen = imagen;
     }
 
     public Integer getId() {
@@ -86,6 +82,14 @@ public class Anuncio implements Serializable {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     @Override
