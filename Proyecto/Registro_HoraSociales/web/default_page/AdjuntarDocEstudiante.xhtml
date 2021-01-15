@@ -10,29 +10,31 @@
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="card">
-                    <h1>Seleccione el archivo a cargar (formato pdf)</h1>
-                    <h:form enctype="multipart/form-data">
-                        <p:growl id="growl" showDetail="true" sticky="true" /> 
-                        <p:outputLabel for="descFile2" value="Descripción de la entrega:"/>
-                        <h:panelGroup styleClass="md-inputfield">
-                            <p:inputTextarea maxlength="150" rows="2" cols="120" value="#{AdjuntarDocumentosController.formDescripcion}" id="descFile2" />                             
-                        </h:panelGroup>
-                        <br></br>
-                        <div class="card card-w-title">
-                            <p:panelGrid columns="1" layout="grid"  styleClass="ui-panelgrid-blank form-group">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                        <h1>Seleccione el archivo a cargar (formato pdf)</h1>
+                        <h:form enctype="multipart/form-data">
+                            <p:growl id="growl" showDetail="true" sticky="true" /> 
+                            <p:outputLabel for="descFile2" value="Descripción de la entrega:"/>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputTextarea maxlength="150" rows="2" cols="120" value="#{AdjuntarDocumentosController.formDescripcion}" id="descFile2" />                             
+                            </h:panelGroup>
+                            <br></br>
 
-                                <p:fileUpload label="Seleccionar archivo"  cancelLabel="Cancelar" uploadLabel="Adjuntar" 
-                                              mode="advanced" dragDropSupport="false"  
-                                              listener="#{AdjuntarDocumentosController.handleFileUpload}"
-                                              multiple="true"  sizeLimit="10000000000000"  update="growl"
-                                              allowTypes="/(\.|\/)(pdf)$/" style="width:100%" invalidFileMessage="Formato de archivo inválido"/>
 
-                            </p:panelGrid>
+
+                            <p:fileUpload label="Seleccionar archivo"  cancelLabel="Cancelar" uploadLabel="Adjuntar" 
+                                          mode="advanced" dragDropSupport="false"  
+                                          listener="#{AdjuntarDocumentosController.handleFileUpload}"
+                                          multiple="true"  sizeLimit="10000000000000"  update="growl"
+                                          allowTypes="/(\.|\/)(pdf)$/" style="width:100%" invalidFileMessage="Formato de archivo inválido"/>
+
+
                             <br></br>
                             <p:commandButton action="#{AdjuntarDocumentosController.guardarFile()}" update="@form :archivosLoad:tbluser" value="Guardar"></p:commandButton>
-                        </div>
 
-                    </h:form>
+
+                        </h:form>
+                    </p:panelGrid>
                 </div>
             </div>
         </div>
@@ -65,7 +67,9 @@
                         <p:column  style="text-transform: capitalize;font-weight: bold;text-align: center" headerText="Eliminar" >
                             <p:commandLink value="eliminar" update="@form" action="#{AdjuntarDocumentosController.eliminarArchivo(para.id_archivo)}"/>
                         </p:column>
-
+                        <p:column  style="text-transform: capitalize;font-weight: bold;text-align: center" headerText="Archivo" >
+                            <a href="data:application/pdf;base64,#{para.ruta}" download="descarga.pdf">Descargar</a>
+                        </p:column>
 
 
 
