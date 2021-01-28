@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RelacionEstudianteProyectoRepository extends JpaRepository<org.registrohorasociales.entity.RelacionEstudianteProyecto, Integer>{
     
-    @Query(nativeQuery = true, value = "select * from relacion_estudiante-proyecto")
+    @Query(nativeQuery = true, value = "select * from relacion_estudiante_proyecto")
     public List<RelacionEstudianteProyecto> relacionEstudianteProyectoList();
 }

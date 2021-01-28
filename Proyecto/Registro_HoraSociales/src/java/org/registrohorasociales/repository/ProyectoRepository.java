@@ -20,6 +20,9 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Integer>{
     @Query(nativeQuery = true, value = "select * from proyecto")
     public List<Proyecto> proyectoList();
     
+    @Query(nativeQuery = true, value = "select * from proyecto where cupos_proyecto > 0")
+    public List<Proyecto> proyectoConCupo();
+    
     @Query(nativeQuery = true, value = "select * from proyecto where id_proyecto = ?")
     public Proyecto proyectoById(int id);
 }

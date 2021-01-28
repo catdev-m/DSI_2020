@@ -28,6 +28,7 @@ import org.registrohorasociales.repository.InstitucionRepository;
 public class InstitucionController implements Serializable{
 
     private String formName, formHead, formTel, formMail, formRs, formRes;  //inputText elements
+    private char formStatus;
     private InstitucionRepository institucionRepo;
     private List<Institucion> instituciones;
     private List<SelectItem> listaInstituciones;
@@ -60,12 +61,7 @@ public class InstitucionController implements Serializable{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error creating", ""));
         }
     }
-    
-    public Institucion obtenerInstitucionById(int id){
-        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
-        Institucion ins = institucionRepo.getInstitucionById(id);
-        return ins;
-    }
+
     //RETRIEVE
     public void obtenerDatos(){
         setFormName(institucionSelector.getNomInstitucion());
@@ -74,14 +70,9 @@ public class InstitucionController implements Serializable{
         setFormMail(institucionSelector.getCorreoInstitucion());
         setFormRs(institucionSelector.getRsInstitucion());
         setFormRes(institucionSelector.getResInstitucion());
+        setFormStatus(institucionSelector.getStatusInstitucion());
     }
-    public String findInsitucionById(int id){
-        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
-        Institucion ins = new Institucion();
-        ins = institucionRepo.findOne(id);
-        String NombreInstitucion = ins.getNomInstitucion();
-        return NombreInstitucion;
-    }
+    
     //UPDATE
     public void actualizarInstitucion(){
         try {
@@ -93,7 +84,7 @@ public class InstitucionController implements Serializable{
             ins.setCorreoInstitucion(formMail);
             ins.setRsInstitucion(formRs);
             ins.setResInstitucion(formRes);
-            ins.setStatusInstitucion('A');
+            ins.setStatusInstitucion(formStatus);
             institucionRepo.save(ins);
             loadInstituciones();
             FacesContext context = FacesContext.getCurrentInstance();
@@ -125,6 +116,20 @@ public class InstitucionController implements Serializable{
         formMail = null;
         formRs = null;
         formRes = null;
+        formStatus = 0;
+    }
+    
+    //Se utiliza en Certificacion Controller: line 66
+    public Institucion obtenerInstitucionById(int id){
+        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+        Institucion ins = institucionRepo.findOne(id);
+        return ins;
+    }
+    //Se utiliza en administracion de proyectos para poner el nombre de la institucion en la tabla en lugar del id de la institucion
+    public String obtenerNombreInstitucionById(int id){
+        institucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
+        String NombreInstitucion = institucionRepo.findOne(id).getNomInstitucion();
+        return NombreInstitucion;
     }
     
         public String getFormName() {
@@ -205,5 +210,12 @@ public class InstitucionController implements Serializable{
 
     public void setInstitucionSelector(Institucion institucionSelector) {
         this.institucionSelector = institucionSelector;
+    }
+    public char getFormStatus() {
+        return formStatus;
+    }
+
+    public void setFormStatus(char formStatus) {
+        this.formStatus = formStatus;
     }
 }

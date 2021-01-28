@@ -37,6 +37,13 @@
                                 
                                 <p:outputLabel for="resInstitucion" value="Reseña"/>
                                 <p:inputText value="#{institucionController.formRes}" id="resInstitucion" required="false"/>
+                                
+                                <p:outputLabel for="statusInstitucion" value="Estado" />
+                                <p:selectOneMenu id="statusInstitucion" value="#{institucionController.formStatus}">
+                                    <f:selectItem itemLabel="Seleccione un estado" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="ACTIVO" itemValue='A' />
+                                    <f:selectItem itemLabel="INACTIVO" itemValue='I' />
+                                </p:selectOneMenu>
                                 <br/><br/>
                             </p:panelGrid>
                             <p:panelGrid columns="5"   layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">

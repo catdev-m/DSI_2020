@@ -28,14 +28,15 @@ import org.registrohorasociales.repository.ProyectoRepository;
 @ViewScoped
 public class ProyectoController implements Serializable{
     /*variables de campos de formulario*/
-    private String formNomProyecto, formularioIdentificador, formularioCuposHabiles, formNombreInstitucion;
+    private String formNomProyecto, formNombreInstitucion;
     private int formIdInstitucion, formCupoProyecto;
     
     /*variables de proyecto*/
     private ProyectoRepository proyectoRepo;            //instancia de repositorio de proyecto.
     private List<Proyecto> proyectos;
+    private List<Proyecto> proyectosMayorQueCero;
     private List<SelectItem> listaProyectos;            //es cuando se da clic sobre un elemento en la tabla de los elementos
-    protected Proyecto proyectoSelector;                  //elemento singular cuando se elige un proyecto.
+    protected Proyecto proyectoSelector;                //elemento singular cuando se elige un proyecto.
     
     /*variables de instituciones para relacionarlas con un proyecto*/
     private List<Institucion> instituciones;
@@ -47,13 +48,19 @@ public class ProyectoController implements Serializable{
         proyectoRepo = ApplicationContextProvider.getApplicationContext().getBean(ProyectoRepository.class);
         InstitucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
         loadProyectos();
+        loadProyectosMayorQueCero();
         loadInstituciones();
     }
     public void loadProyectos(){
         proyectos = new ArrayList<>();
         proyectos = proyectoRepo.proyectoList();
     }
+    public void loadProyectosMayorQueCero(){
+        proyectosMayorQueCero = new ArrayList<>();
+        proyectosMayorQueCero = proyectoRepo.proyectoConCupo();
+    }
     
+    //Se utiliza en Certificacion Controller: line 65
     public Proyecto findProyectoById(int id){
         proyectoRepo = ApplicationContextProvider.getApplicationContext().getBean(ProyectoRepository.class);
         Proyecto p = proyectoRepo.proyectoById(id);
@@ -72,11 +79,6 @@ public class ProyectoController implements Serializable{
                 .stream()
                 .map( (institu) -> new SelectItem(institu.getIdInstitucion(), institu.getNomInstitucion() ) )
                 .forEachOrdered( (i) -> { this.listaInstituciones.add(i); });
-    }
-    public String metodoParaEncontrarInstitucionPorId(int id){
-        Institucion ins = InstitucionRepo.findOne(id);
-        String NombreInstitucion = ins.getNomInstitucion();
-        return NombreInstitucion;
     }
     //CREATE
     public void crearProyecto(){
@@ -105,23 +107,27 @@ public class ProyectoController implements Serializable{
     public void actualizarProyecto(){
         try {
             Proyecto pr = new Proyecto();
-            //Getting ProjectId
+            //Obtener Id Proyecto
             pr.setIdProyecto(proyectoSelector.getIdProyecto());
-            FacesContext context2 = FacesContext.getCurrentInstance();
-            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Get ProjectId for Update: "+proyectoSelector.getIdProyecto(), "") );
-            //Getting ProjectName
+            
+            //Obtener Nombre Proyecto
             pr.setNomProyecto(formNomProyecto);
-            FacesContext context3 = FacesContext.getCurrentInstance();
-            context3.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Set New Name or preserverd name: "+formNomProyecto, "") );
-            //Getting FacilityId
+            
+            //Obtener Institucion Id
             pr.setIdInstitucion(formIdInstitucion);
-            FacesContext context4 = FacesContext.getCurrentInstance();
-            context4.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Setting New InstitucionId: "+formIdInstitucion, "") );
+            
+            //Obtener Cupos Proyecto
             pr.setCuposProyecto(formCupoProyecto);
+            
+            //Guardar
             proyectoRepo.save(pr);
+            
+            //Cargar Proyectos
             loadProyectos();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ACTUALIZADO el proyecto: "+formNomProyecto, "") );
+            
+            //Limpiar Formulario
             clearFormProyecto();
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -132,16 +138,16 @@ public class ProyectoController implements Serializable{
     public void eliminarProyecto(){
         try {
             FacesContext context2 = FacesContext.getCurrentInstance();
-            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto con id: "+proyectoSelector.getIdProyecto(), "") );
+            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto : "+proyectoSelector.getNomProyecto(), "") );
             proyectoRepo.delete(proyectoSelector.getIdProyecto());
             clearFormProyecto();
             loadProyectos();
         
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO el proyecto: "+formNomProyecto, "") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ELIMINADO correctamente", "") );
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error eliminando: "+formNomProyecto + e, "") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error eliminando: " + e, "") );
         }
     }
     
@@ -204,22 +210,6 @@ public class ProyectoController implements Serializable{
     public void setFormCupoProyecto(int formCupoProyecto){
         this.formCupoProyecto = formCupoProyecto;
     }
-    public String getFormularioIdentificador() {
-        return formularioIdentificador;
-    }
-
-    public void setFormularioIdentificador(String formularioIdentificador) {
-        this.formularioIdentificador = formularioIdentificador;
-    }
-
-    public String getFormularioCuposHabiles() {
-        return formularioCuposHabiles;
-    }
-
-    public void setFormularioCuposHabiles(String formularioCuposHabiles) {
-        this.formularioCuposHabiles = formularioCuposHabiles;
-    }
-    
     public String getFormNombreInstitucion() {
         return formNombreInstitucion;
     }
@@ -250,5 +240,12 @@ public class ProyectoController implements Serializable{
 
     public void setInstituciones(List<Institucion> instituciones) {
         this.instituciones = instituciones;
+    }
+    public List<Proyecto> getProyectosMayorQueCero() {
+        return proyectosMayorQueCero;
+    }
+
+    public void setProyectosMayorQueCero(List<Proyecto> proyectosMayorQueCero) {
+        this.proyectosMayorQueCero = proyectosMayorQueCero;
     }
 }

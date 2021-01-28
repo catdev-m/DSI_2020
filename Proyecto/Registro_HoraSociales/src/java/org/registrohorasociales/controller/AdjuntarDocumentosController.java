@@ -68,7 +68,12 @@ public class AdjuntarDocumentosController implements Serializable {
      }
      
      public void ObtenerAnuncio(){
-         listAnuncio = anuncioRepository.findAll();
+         try{
+             listAnuncio = anuncioRepository.findAll();
+         }catch(Exception e){
+             
+         }
+         
      }
      
      public String guardarAnuncio(){

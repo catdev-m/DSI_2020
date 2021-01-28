@@ -34,8 +34,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @SessionScoped
 public class RelacionEstudianteProyectoController implements Serializable{
     /*variables de formulario que capturan los datos*/
-    private String formIdEstudiante, formIdProyecto, fecha_inicio, fecha_final;
-    private String formNombrePoryecto, formNombreInstitucion;
+    private String formIdEstudiante, formIdProyecto;
+    private String formNombrePoryecto, formNombreInstitucion, fecha_inicio, fecha_final;
     private int formCuposPoryecto;
     private RelacionEstudianteProyecto relacionEstudianteProyectoSelector;
     private RelacionEstudianteProyectoRepository relacionesRepo;
@@ -53,9 +53,11 @@ public class RelacionEstudianteProyectoController implements Serializable{
     /*variables de instituciones*/
     private InstitucionRepository InstitucionRepo;
     
+    private String color;
+    
     @PostConstruct
     public void initialize(){
-        //proyectoRepo = ApplicationContextProvider.getApplicationContext().getBean(ProyectoRepository.class);
+        proyectoRepo = ApplicationContextProvider.getApplicationContext().getBean(ProyectoRepository.class);
         relacionesRepo = ApplicationContextProvider.getApplicationContext().getBean(RelacionEstudianteProyectoRepository.class);
     }
     
@@ -76,50 +78,55 @@ public class RelacionEstudianteProyectoController implements Serializable{
     public void crearRelacionEstudianteProyecto(){
         try{
             RelacionEstudianteProyecto rep = new RelacionEstudianteProyecto();
+            
             String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-            FacesContext context2 = FacesContext.getCurrentInstance();
-            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passed Getting StudentID: " + currentUserId, ""));
             rep.setCarnetEstudiante(currentUserId);
-            FacesContext context3 = FacesContext.getCurrentInstance();
-            context3.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passed Setting StudentID: " + currentUserId, ""));
-            FacesContext context4 = FacesContext.getCurrentInstance();
-            context4.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passed Getting ProjectID: " + proyectoSelector2.getIdProyecto(), ""));
+            
             rep.setIdProyecto(proyectoSelector2.getIdInstitucion());
-            FacesContext context5 = FacesContext.getCurrentInstance();
-            context5.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passed Setting ProjectID: " + proyectoSelector2.getIdProyecto(), ""));
+            
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             LocalDateTime now = LocalDateTime.now();
-            FacesContext context6 = FacesContext.getCurrentInstance();
-            context6.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passed Getting Current Date: " + now.toString(), ""));
             rep.setFechaInicio(now.toString());
-            FacesContext context7 = FacesContext.getCurrentInstance();
-            context7.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passed Setting Current Date: " + now.toString(), ""));
-            /*rep.setFechaInicio(now.toString());*/
-            //acáa tenog que hacer que el número de los cupos disminuya uan unidad
-            FacesContext context8 = FacesContext.getCurrentInstance();
-            context8.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Next Step is Saving: ", ""));
-            //relacionesRepo = ApplicationContextProvider.getApplicationContext().getBean(RelacionEstudianteProyectoRepository.class);
+            
             rep.setFechaFinal(null);
+            
             relacionesRepo.save(rep);
+            
             clearFormRelacionEstudianteProyecto();
             //loadProyectos();
+            
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success !", ""));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCES!", ""));
+            
+            
+            Proyecto proyecto = proyectoRepo.findOne(proyectoSelector2.getIdProyecto());
+            proyecto.setCuposProyecto(proyecto.getCuposProyecto() - 1);
+            
+            FacesContext context10 = FacesContext.getCurrentInstance();
+            context10.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "(Remaining Spots for Project: "+proyecto.getCuposProyecto() + ")", ""));
+            
+            proyectoRepo.save(proyecto);
+            
+            
         }catch (Exception e){
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No puede ser asignado a más de un proyecto", ""));
         }
     }
     
-    public void obtenerDatos3(){
+    public void obtenerDatos(){
         setFormNombrePoryecto(proyectoSelector2.getNomProyecto());
-        setFormNombreInstitucion(ObtenerNombreDeInstitucionPorId(proyectoSelector2.getIdInstitucion()));
-        setFormCuposPoryecto(proyectoSelector2.getCuposProyecto());
-    }
-    public String ObtenerNombreDeInstitucionPorId (int id){
+        
         InstitucionRepo = ApplicationContextProvider.getApplicationContext().getBean(InstitucionRepository.class);
-        String NombreInstitucionPorId = InstitucionRepo.findOne(id).getNomInstitucion();
-        return NombreInstitucionPorId;
+        String NombreIns = InstitucionRepo.findOne(proyectoSelector2.getIdInstitucion()).getNomInstitucion();
+        setFormNombreInstitucion(NombreIns);
+        
+        setFormCuposPoryecto(proyectoSelector2.getCuposProyecto());
+        
+        Proyecto proyecto = proyectoRepo.findOne(proyectoSelector2.getIdProyecto());
+        if(proyecto.getCuposProyecto() < 2) setColor("#ff6952");
+        if(proyecto.getCuposProyecto() >= 2 && proyecto.getCuposProyecto() < 10) setColor("#ffff69");
+        if(proyecto.getCuposProyecto() > 10) setColor("#73ff77");
     }
     public void clearFormRelacionEstudianteProyecto(){
         setFormNombrePoryecto(null);
@@ -273,5 +280,12 @@ public class RelacionEstudianteProyectoController implements Serializable{
 
     public void setInstitucionRepo(InstitucionRepository InstitucionRepo) {
         this.InstitucionRepo = InstitucionRepo;
+    }
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

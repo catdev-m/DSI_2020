@@ -31,8 +31,10 @@ public class AnunciosCarrousel implements Serializable {
     
     @PostConstruct
     public void init(){
-      anuncioRepository = ApplicationContextProvider.getApplicationContext().getBean(IAnuncioRepository.class);
-      ObtenerAnuncio();
+        if(anuncioRepository != null){
+            anuncioRepository = ApplicationContextProvider.getApplicationContext().getBean(IAnuncioRepository.class);
+            ObtenerAnuncio();
+        }else{}
     }
     
     public void ObtenerAnuncio(){
