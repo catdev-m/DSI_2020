@@ -4,57 +4,62 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
-
-    <ui:define name="head">
-
-    </ui:define>
-
-    <ui:define name="title">Listado de carreras</ui:define>
-
+    <ui:define name="title">Listado de Estudiantes</ui:define>
     <ui:define name="content">
         <h:form id="formTableEstudiante">
-
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            <div class="ui-fluid">
             <div class="ui-g">
-
                 <div class="ui-g-12">
                     <div class="card card-w-title">
-
-                        <p:dataTable var="est" value="#{estudianteController.sintutor}" selectionMode="single" reflow="true"
-                                     selection="#{estudianteController.estudianteSelector}" rowKey="#{est.due}" paginator="true" rows="10">
-                            <f:facet name="header">
-                                <h3>Estudiantes sin tutor asignado</h3>
-                            </f:facet>
-                            <p:column headerText="DUE" sortBy="#{est.due}">
-                                <h:outputText value="#{est.due}" />
-                            </p:column>
-
-                            <p:column headerText="Nombre" sortBy="#{est.nombres}">
-                                <h:outputText value="#{est.nombres},#{est.apellidos}" />
-                            </p:column>
-                            <p:column headerText="Seleccionar tutor">
-                                <h:form>
-                                    <p:selectOneMenu style="margin-bottom:10px;" value="#{estudianteController.formIdTutor}" required="true">
-                                        <f:selectItem itemLabel="Seleccione un tutor" itemValue="#{null}"/> 
-                                        <f:selectItems value="#{estudianteController.listaTutores}" itemValue="#{estudianteController.listaTutores.getId()}" />
-                                    </p:selectOneMenu>
-                                </h:form>
-
-                            </p:column>
-                            <p:column headerText="Acciones" >
-                                <p:growl id="AssignTutor" showDetail="true" />  
-                                <p:commandButton action="/GestionAdmin/AsignarTutor?faces-redirect=true" update="AssignTutor" icon="ui-icon-check" actionListener="#{estudianteController.asignarTutor(est.due)}">
-                                    <p:confirm header="Confirmación" message="¿Está seguro de Asignar este tutor a #{est.due}?" icon="pi pi-exclamation-triangle" />
-                                </p:commandButton>
-
-                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-                                </p:confirmDialog> 
-                            </p:column>
-                        </p:dataTable>
-
+                        <h1>Datos Estudiante</h1>
+                        <p:panelGrid columns="4" columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4" layout="grid"
+                                     styleClass="ui-panelgrid-blank form-group" style="border: 0px none; background-color: transparent;">
+                            
+                            <p:outputLabel for="AT-CarnetEstudiante" value="Carnet: " />
+                            <p:outputLabel id="AT-CarnetEstudiante" value="#{estudianteController.formDue}" style="background-color: #cfd6e3;" />
+                            
+                            <p:outputLabel for="AT-NombreEsudiante" value="Nombre(s): " />
+                            <p:outputLabel id="AT-NombreEsudiante" value="#{estudianteController.formNombre}" style="background-color: #cfd6e3;" />
+                            
+                            <p:outputLabel for="AT-ElegirInstructor" value="Instructor" />
+                            <p:selectOneMenu id="AT-ElegirInstructor" value="#{estudianteController.formIdTutor}">
+                                <f:selectItem itemLabel="Seleccione un Tutor" itemValue="#{null}" />
+                                <f:selectItems value="#{estudianteController.listaTutores}" itemValue="#{estudianteController.listaTutores.getId()}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border: 0px none; background-color: transparent;">
+                            <p:commandButton id="AT-guardarSeleccion" update="growl, AT-EstudiantesSinTutor" ajax="false"
+                                             action="#{estudianteController.asignarTutor()}" value="Asignar Tutor" icon="ui-icon-open-in-new" />
+                            <p:commandButton id="AT-limpiarForm" update="AT-EstudiantesSinTutor" ajax="false"
+                                             action="#{estudianteController.clearFormAT()}" value="Limpiar Form" icon="ui-icon-open-in-new" />
+                        </p:panelGrid>
                     </div>
                 </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    
+                    <p:dataTable id="AT-EstudiantesSinTutor" var="est" value="#{estudianteController.sintutor}" selectionMode="single" reflow="true"
+                                 selection="#{estudianteController.estudianteSelector}" rowKey="#{est.due}" paginator="true" rows="10">
+                        <p:ajax listener="#{estudianteController.ObtenerDatos()}" update="formTableEstudiante" event="rowSelect" />
+                        
+                        <f:facet name="header">
+                            <h3>Estudiantes sin tutor asignado</h3>
+                        </f:facet>
+                        
+                        <p:column headerText="DUE" sortBy="#{est.due}">
+                            <h:outputText value="#{est.due}" />
+                        </p:column>
+                        
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{est.nombres}, #{est.apellidos}" />
+                        </p:column>
+                        
+                    </p:dataTable>
+                    
+                </div>
+            </div>
             </div>
         </h:form>
 

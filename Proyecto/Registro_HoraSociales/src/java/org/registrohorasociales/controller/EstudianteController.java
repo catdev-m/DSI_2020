@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.registrohorasociales.config.ApplicationContextProvider;
 import org.registrohorasociales.entity.Estudiante;
@@ -27,7 +29,7 @@ import org.registrohorasociales.repository.IInstructorRepository;
  */
 @ManagedBean
 @ViewScoped
-@SessionScoped
+//@SessionScoped
 public class EstudianteController implements Serializable {
 
     private EstudianteRepository repoEstudiante;
@@ -78,17 +80,56 @@ public class EstudianteController implements Serializable {
         tutores = repoTutores.listaTutores();
         listaTutores = new ArrayList<>();
         listaTutores.clear();
-        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName()+car.getLastName())).forEachOrdered((c) -> {
+        tutores.stream().map((car) -> new SelectItem(car.getId(),    car.getFirstName()+" " + car.getLastName())).forEachOrdered((c) -> {
             this.listaTutores.add(c);
         });
     }
     
-    public void asignarTutor(String due){
-        Estudiante est = new Estudiante();
-        est = repoEstudiante.findByDue(due);
-        est.setIdInstructor(formIdTutor);
-        repoEstudiante.save(est);
-        System.out.println("Nombre: " + est.getNombres());
+    //METODO DE PRUEBA DE ACCESO
+    public void prueba(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PRUEBA EWE", "") );
+    }
+    
+    public void asignarTutor(){
+        
+        try{
+            
+            Estudiante est = new Estudiante();
+            
+            est = repoEstudiante.findOne(estudianteSelector.getDue());
+            //est.setDue(estudianteSelector.getDue());
+            FacesContext context1 = FacesContext.getCurrentInstance();
+            context1.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SetDue done right: " + estudianteSelector.getDue(), "") );
+            
+            est.setIdInstructor(formIdTutor);
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SetIdInstructor done right \nNext is saving..." + formIdTutor, "") );
+            
+            repoEstudiante.save(est);
+            
+            sinTutor();
+            clearFormAT();
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha ASIGNADO un tutor", "") );
+            
+        }catch(Exception e){
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se ha producido un error: " + e, "") );
+        }
+    }
+    
+    public void ObtenerDatos(){
+        setFormDue(estudianteSelector.getDue());
+        setFormNombre(estudianteSelector.getNombres());
+        setFormIdTutor(estudianteSelector.getIdInstructor());
+    }
+    
+    public void clearFormAT(){
+        setFormDue(null);
+        setFormNombre(null);
+        setFormIdTutor(null);
     }
 
     public EstudianteRepository getRepoEstudiante() {

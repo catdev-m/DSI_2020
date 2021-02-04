@@ -20,13 +20,13 @@
                             <h1>Estudiantes finalizados</h1>
                             <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                                 <h:outputLabel for="due" value="DUE"/>
-                                <h:inputText id="due" value="#{finalizadoController.formDue}" required="true" disabled="true"/>
+                                <h:outputLabel id="due" value="#{finalizadoController.formDue}" style="background-color: #cfd6e3;" />
                                 
                                 <h:outputLabel for="nombres" value="Nombres"/>
-                                <h:inputText id="nombres" value="#{finalizadoController.formNombres}" required="true"/>
+                                <h:outputLabel id="nombres" value="#{finalizadoController.formNombres}" style="background-color: #cfd6e3;" />
                                 
                                 <h:outputLabel for="apellidos" value="Apellidos"/>
-                                <h:inputText id="apellidos" value="#{finalizadoController.formApellidos}" required="true"/>
+                                <h:outputLabel id="apellidos" value="#{finalizadoController.formApellidos}" style="background-color: #cfd6e3;" />
                                 
                             </p:panelGrid>
                             <p:panelGrid>
