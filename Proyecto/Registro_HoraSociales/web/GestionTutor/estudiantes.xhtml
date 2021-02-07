@@ -28,13 +28,13 @@
 
                             </p:column>
 
-                            <p:column headerText="Nombre" sortBy="#{estu.nombres}">
+                            <p:column headerText="Nombre" >
                                 <h:outputText value="#{estu.nombres}" />
                             </p:column>
-                            <p:column headerText="Apellidos" sortBy="#{estu.nombres}">
+                            <p:column headerText="Apellidos" >
                                 <h:outputText value="#{estu.apellidos}" />
                             </p:column>
-                            <p:column headerText="Carrera" sortBy="#{estu.nombres}">
+                            <p:column headerText="Carrera" >
                                 <h:outputText value="#{carreraController.findCarreraById(estu.idcarrera)}" />
                             </p:column>
                         </p:dataTable>
